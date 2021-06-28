@@ -31,19 +31,11 @@ class BulletinController extends Controller
 
     public function postPassword(Request $request, Bulletin $bulletin)
     {
-        if (!$bulletin->password) {
-            return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
-                ->with(['error' => "This message can't delete, because this message has no been set password", 'slotName' => 'previousButton']);
-        }
+        $checked = $bulletin->passwordCheck($request->password);
 
-        if (strlen($request->password) !== 4) {
+        if ($checked) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
-                ->with(['error' => 'Your password must be 4 digit', 'slotName' => 'form']);
-        }
-
-        if ($request->password !== $bulletin->password) {
-            return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
-                ->with(['error' => 'The password you entered does not match. Please try again', 'slotName' => 'form']);
+                ->with($checked);
         }
 
         return redirect(route('bulletin.show.delete', ['bulletin' => $bulletin->id]))
