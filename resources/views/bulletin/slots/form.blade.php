@@ -9,8 +9,10 @@
             </div>
         </div>
         <div class="col-md-4">
-            <button type="submit" class="btn btn-danger mb-2" data-toggle="modal" data-target="#deleteModal"><i
-                    class="fa fa-trash p-3"></i></button>
+            <button type="submit" name="submit" value="delete" class="btn btn-danger mb-2" data-toggle="modal"
+                data-target="#deleteModal"><i class="fa fa-trash p-3"></i></button>
+            <button type="submit" name="submit" value="edit" class="btn btn-default mb-2" data-toggle="modal"
+                data-target="#editModal"><i class="fa fa-pencil p-3"></i></button>
         </div>
     </div>
     {{-- <a type="submit" class="btn btn-default mb-2" data-toggle="modal" data-target="#editModal"><i

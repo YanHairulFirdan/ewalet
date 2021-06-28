@@ -29,13 +29,22 @@ class BulletinController extends Controller
 
     public function postPassword(Request $request, Bulletin $bulletin)
     {
-        if ($checked = $bulletin->passwordCheck($request->password)) {
-            return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
+        $mode = $request->submit;
+
+        if ($checked = $bulletin->passwordCheck($request->password, $mode)) {
+            return redirect(route('bulletin.show', ['bulletin' => $bulletin->id, 'mode' => $mode]))
                 ->with($checked);
         }
 
-        return redirect(route('bulletin.show.delete', ['bulletin' => $bulletin->id]))
+        return redirect(route('bulletin.show.' . $mode, ['bulletin' => $bulletin->id]))
             ->with(['type' => 'confirm']);
+    }
+
+    public function showEdit(Bulletin $bulletin)
+    {
+        $currentPage = Session::get('currentPage');
+
+        return view('bulletin.edit', compact('bulletin', 'currentPage'));
     }
 
     public function showDelete(Bulletin $bulletin)
@@ -55,9 +64,10 @@ class BulletinController extends Controller
     public function show(Bulletin $bulletin)
     {
         $slot = Session::get('slotName');
+        $mode = Session::get('mode');
 
         session()->reflash();
 
-        return view('bulletin.show', compact('bulletin', 'slot'));
+        return view('bulletin.show', compact('bulletin', 'slot', 'mode'));
     }
 }
