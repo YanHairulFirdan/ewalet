@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="" method="post">
+    <form action="{{ route('bulletin.store') }}" method="post">
+        @csrf
         <div class="form-group">
             <label>Title</label>
             <input type="text" class="form-control">
             @error('title')
                 <div class="alert alert-danger">
-                    {{ $mssage }}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
@@ -16,7 +17,7 @@
             <textarea rows="5" class="form-control"></textarea>
             @error('body')
                 <div class="alert alert-danger">
-                    {{ $mssage }}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
@@ -25,7 +26,7 @@
             <input type="password" class="form-control">
             @error('password')
                 <div class="alert alert-danger">
-                    {{ $mssage }}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
