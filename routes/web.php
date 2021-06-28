@@ -18,4 +18,6 @@ Route::get('/', function () {
 });
 
 Route::get('bulletin', 'BulletinController@index')->name('bulletin.index');
+Route::get('bulletin/{bulletin}', 'BulletinController@show')->name('bulletin.show');
 Route::post('bulletin', 'BulletinController@store')->name('bulletin.store');
+Route::post('password/{bulletin}', 'BulletinController@postPassword')->name('post.password');
