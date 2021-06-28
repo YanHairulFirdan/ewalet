@@ -11,7 +11,7 @@
         <p>
             {{ $bulletin->body }}
         </p>
-        <div>
+        <div class="d-flex justify-content-center">
             {{ $slot }}
         </div>
     </div>

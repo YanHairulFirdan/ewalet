@@ -43,4 +43,6 @@
             You don't have any bulletin yet, try to make a new one.
         </h5>
     @endforelse
+
+    {{ $bulletins->links() }}
 @endsection

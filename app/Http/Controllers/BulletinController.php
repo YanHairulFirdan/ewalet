@@ -11,7 +11,7 @@ class BulletinController extends Controller
 {
     public function index()
     {
-        $bulletins = Bulletin::orderBy('created_at', 'DESC')->paginate(10);
+        $bulletins = Bulletin::orderBy('created_at', 'DESC')->paginate(2);
 
         session(['cuurentPage' => $bulletins->currentPage()]);
 
@@ -31,17 +31,17 @@ class BulletinController extends Controller
     {
         if (!$bulletin->password) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
-                ->with(['error' => "This message can't delete, because this message has no been set password", 'type' => 'empty_password']);
+                ->with(['error' => "This message can't delete, because this message has no been set password", 'slotName' => 'previousButton']);
         }
 
         if (strlen($request->password) !== 4) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
-                ->with(['error' => 'Your password must be 4 digit', 'type' => '']);
+                ->with(['error' => 'Your password must be 4 digit', 'slotName' => 'form']);
         }
 
         if ($request->password !== $bulletin->password) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
-                ->with(['error' => 'The password you entered does not match. Please try again', 'type' => 'wrong_password']);
+                ->with(['error' => 'The password you entered does not match. Please try again', 'slotName' => 'form']);
         }
 
         return redirect(route('bulletin.show.delete', ['bulletin' => $bulletin->id]))
@@ -64,6 +64,7 @@ class BulletinController extends Controller
 
     public function show(Bulletin $bulletin)
     {
-        return view('bulletin.show', compact('bulletin'));
+        $slot = Session::get('slotName');
+        return view('bulletin.show', compact('bulletin', 'slot'));
     }
 }
