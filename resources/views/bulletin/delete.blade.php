@@ -11,18 +11,17 @@
         <p class="text-lgray">Date:{{ $bulletin->created_at }}</p>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-md-2">
+
+    <div class="row d-flex justify-content-around ">
+        <div class="col-md-4">
             <form action="{{ route('bulletin.delete', ['bulletin' => $bulletin->id]) }}" method="post" class="d-inline">
                 @csrf
                 @method('DELETE')
-                <button type="submit">Yes</button>
+                <button type="submit" class="btn btn-lg btn-danger">Yes</button>
             </form>
         </div>
-        <div class="col-md-2">
-            <a href="{{ url('bulletin?page=' . $currentPage) }}">
-                <button type="submit">cancel</button>
-            </a>
+        <div class="col-md-4">
+            <a href="{{ url('bulletin?page=' . $currentPage) }}" class="btn btn-lg btn-primary">cancel</a>
         </div>
     </div>
 @endsection

@@ -1,18 +1,20 @@
 <div>
-    <div class="post">
+    <div class="post border-bottom">
         <div class="clearfix">
             <div class="pull-left">
                 <h2 class="mb-5 text-green"><b>{{ $bulletin->title }}</b></h2>
-            </div>
-            <div class="pull-right text-right">
-                <p class="text-lgray">{{ $bulletin->created_at }}</p>
             </div>
         </div>
         <p>
             {{ $bulletin->body }}
         </p>
-        <div class="d-flex justify-content-center">
-            {{ $slot }}
+        <div class="row d-flex align-items-center mt-30">
+            <div class="col-md-8">
+                {{ $slot }}
+            </div>
+            <div class="col-md-4">
+                <span class="text-lgray align-self-center">{{ $bulletin->created_at }}</span>
+            </div>
         </div>
     </div>
 </div>

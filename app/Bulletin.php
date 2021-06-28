@@ -14,7 +14,7 @@ class Bulletin extends Model
             return ['error' => "This message can't delete, because this message has no been set password", 'slotName' => 'previousButton'];
         }
 
-        if (strlen($this->password) !== 4) {
+        if (strlen($password) != 4) {
             return ['error' => 'Your password must be 4 digit', 'slotName' => 'form'];
         }
 
