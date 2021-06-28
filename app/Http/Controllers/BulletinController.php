@@ -29,7 +29,8 @@ class BulletinController extends Controller
 
     public function postPassword(Request $request, Bulletin $bulletin)
     {
-        $mode = $request->submit;
+
+        $mode = $request['submit_edit'] ?: $request['submit_delete'];
 
         if ($checked = $bulletin->passwordCheck($request->password, $mode)) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id, 'mode' => $mode]))
