@@ -29,9 +29,7 @@ class BulletinController extends Controller
 
     public function postPassword(Request $request, Bulletin $bulletin)
     {
-        $checked = $bulletin->passwordCheck($request->password);
-
-        if ($checked) {
+        if ($checked = $bulletin->passwordCheck($request->password)) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
                 ->with($checked);
         }
