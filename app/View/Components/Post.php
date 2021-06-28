@@ -2,18 +2,20 @@
 
 namespace App\View\Components;
 
+use App\Bulletin;
 use Illuminate\View\Component;
 
 class Post extends Component
 {
+    public $bulletin;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Bulletin $bulletin)
     {
-        //
+        $this->bulletin = $bulletin;
     }
 
     /**
