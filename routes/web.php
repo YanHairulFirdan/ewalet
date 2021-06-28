@@ -18,9 +18,10 @@ Route::get('/', function () {
 });
 
 Route::get('bulletin', 'BulletinController@index')->name('bulletin.index');
+Route::post('bulletin', 'BulletinController@store')->name('bulletin.store');
 Route::get('bulletin/{bulletin}', 'BulletinController@show')->name('bulletin.show');
 Route::get('bulletin/edit/{bulletin}', 'BulletinController@showEdit')->name('bulletin.show.edit');
+Route::put('bulletin/update/{bulletin}', 'BulletinController@update')->name('bulletin.update');
 Route::get('bulletin/delete/{bulletin}', 'BulletinController@showDelete')->name('bulletin.show.delete');
 Route::delete('bulletin/delete/{bulletin}', 'BulletinController@delete')->name('bulletin.delete');
-Route::post('bulletin', 'BulletinController@store')->name('bulletin.store');
 Route::post('password/{bulletin}', 'BulletinController@postPassword')->name('post.password');
