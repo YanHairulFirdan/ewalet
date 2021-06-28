@@ -5,7 +5,7 @@
         @csrf
         <div class="form-group">
             <label>Title</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" name="title">
             @error('title')
                 <div class="alert alert-danger">
                     {{ $message }}
@@ -14,7 +14,7 @@
         </div>
         <div class="form-group">
             <label>Body</label>
-            <textarea rows="5" class="form-control"></textarea>
+            <textarea rows="5" class="form-control" name="body"></textarea>
             @error('body')
                 <div class="alert alert-danger">
                     {{ $message }}
@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control">
+            <input type="password" class="form-control" name="password">
             @error('password')
                 <div class="alert alert-danger">
                     {{ $message }}
@@ -45,6 +45,7 @@
                 </div>
             </div>
             <p>
+                {{ $bulletin->body }}
             </p>
             <form class="form-inline mt-50">
                 <div class="form-group mx-sm-3 mb-2">

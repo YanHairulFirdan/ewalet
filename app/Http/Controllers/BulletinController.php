@@ -18,5 +18,9 @@ class BulletinController extends Controller
     public function store(BulletinRequest $bulletinRequest)
     {
         $validated = $bulletinRequest->validated();
+
+        Bulletin::create($validated);
+
+        return redirect()->back();
     }
 }
