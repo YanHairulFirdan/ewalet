@@ -13,7 +13,9 @@ class BulletinController extends Controller
     {
         $bulletins = Bulletin::orderBy('created_at', 'DESC')->paginate(2);
 
-        session(['cuurentPage' => $bulletins->currentPage()]);
+        session(['currentPage' => $bulletins->currentPage()]);
+
+        dump(Session::get('currentPage'));
 
         return view('bulletin.index', compact('bulletins'));
     }
@@ -65,6 +67,9 @@ class BulletinController extends Controller
     public function show(Bulletin $bulletin)
     {
         $slot = Session::get('slotName');
+
+        session()->reflash();
+
         return view('bulletin.show', compact('bulletin', 'slot'));
     }
 }
