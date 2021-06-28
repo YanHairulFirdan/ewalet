@@ -23,7 +23,7 @@
         </div>
         <div class="text-center mt-30 mb-30">
             <button class="btn btn-primary">Submit</button>
-            <a href="{{ url('bulletin?page=' . Session::get('currentPage')) }}" class="btn btn-lg btn-primary">cancel</a>
+            <a href="{{ url('bulletin?page=' . Session::get('currentPage')) }}" class="btn btn-danger">cancel</a>
 
         </div>
     </form>

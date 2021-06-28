@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            @if ($mode === 'delete')
+            @if (Session::get('mode') === 'delete')
                 <button type="submit" name="submit_delete" value="delete" class="btn btn-danger mb-2"
                     data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash p-3"></i></button>
             @else
