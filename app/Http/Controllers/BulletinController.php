@@ -15,8 +15,6 @@ class BulletinController extends Controller
 
         session(['currentPage' => $bulletins->currentPage()]);
 
-        dump(Session::get('currentPage'));
-
         return view('bulletin.index', compact('bulletins'));
     }
 
