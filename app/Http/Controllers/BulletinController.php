@@ -49,8 +49,22 @@ class BulletinController extends Controller
                 ->with(['error' => 'The password you entered does not match. Please try again', 'type' => 'wrong_password']);
         }
 
-        return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
+        return redirect(route('bulletin.show.delete', ['bulletin' => $bulletin->id]))
             ->with(['type' => 'confirm']);
+    }
+
+    public function showDelete(Bulletin $bulletin)
+    {
+        $currentPage = Session::get('currentPage');
+
+        return view('bulletin.delete', compact('bulletin', 'currentPage'));
+    }
+
+    public function delete(Bulletin $bulletin)
+    {
+        $bulletin->delete();
+
+        return redirect(url('bulletin?page=' . Session::get('currentPage')));
     }
 
     public function show(Bulletin $bulletin)
