@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Session;
 
 class BulletinController extends Controller
 {
-    private $currentPage;
-
     public function index()
     {
         $bulletins = Bulletin::orderBy('created_at', 'DESC')->paginate(10);
@@ -31,9 +29,6 @@ class BulletinController extends Controller
 
     public function postPassword(Request $request, Bulletin $bulletin)
     {
-        $error     = '';
-        $errorType = '';
-
         if (!$bulletin->password) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
                 ->with(['error' => "This message can't delete, because this message has no been set password", 'type' => 'empty_password']);
