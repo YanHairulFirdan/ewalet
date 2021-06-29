@@ -32,8 +32,7 @@ class BulletinController extends Controller
         $action        = $request['submit_edit'] ?: $request['submit_delete'];
         $disableButton = $action == 'edit' ? 'delete' : 'edit';
 
-        session([$action => true]);
-        session([$disableButton => false]);
+        session([$action => true, $disableButton => false]);
 
         if ($checked = $bulletin->passwordCheck($request->password, $action)) {
             session($checked);
