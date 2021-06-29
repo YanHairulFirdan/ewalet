@@ -11,7 +11,6 @@
         <p class="text-lgray">Date:{{ $bulletin->created_at }}</p>
     </div>
     <hr>
-
     <div class="row d-flex justify-content-around ">
         <div class="col-md-4">
             <form action="{{ route('bulletin.delete', ['bulletin' => $bulletin->id]) }}" method="post" class="d-inline">
