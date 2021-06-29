@@ -29,13 +29,11 @@ class BulletinController extends Controller
 
     public function postPassword(Request $request, Bulletin $bulletin)
     {
-        // refactor
         $action        = $request['submit_edit'] ?: $request['submit_delete'];
         $disableButton = $action == 'edit' ? 'delete' : 'edit';
 
         session([$action => true]);
         session([$disableButton => false]);
-        // refactor
 
         if ($checked = $bulletin->passwordCheck($request->password, $action)) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
@@ -56,7 +54,9 @@ class BulletinController extends Controller
 
         $bulletin->update($validated);
 
-        return redirect(url('bulletin?page=' . Session::get('currentPage')));
+        $currentPage = set_redirect_index(Session::get('currentPage'), Session::get('perPage'), $bulletin);
+
+        return redirect(url('bulletin?page=' . $currentPage));
     }
 
     public function show(Bulletin $bulletin)
@@ -79,6 +79,8 @@ class BulletinController extends Controller
     {
         $bulletin->delete();
 
-        return redirect(url('bulletin?page=' . Session::get('currentPage')));
+        $currentPage = set_redirect_index(Session::get('currentPage'), Session::get('perPage'), $bulletin);
+
+        return redirect(url('bulletin?page=' . $currentPage));
     }
 }

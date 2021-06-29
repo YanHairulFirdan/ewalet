@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-function setRedirectIndex($currentPage, $perPage, Model $model)
+function set_redirect_index($currentPage, $perPage, Model $model)
 {
     $numberOfRecords = $model->count();
     $countLimit      = $model->offset($currentPage)->limit($perPage)->count();
