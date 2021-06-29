@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class Bulletin extends Model
 {
@@ -18,8 +19,13 @@ class Bulletin extends Model
             return ['error' => 'Your password must be 4 digit', 'slotName' => 'form'];
         }
 
-        if ($this->password !== $password) {
+        if (!Hash::check($this->password, $password)) {
             return ['error' => 'The password you entered does not match. Please try again', 'slotName' => 'form'];
         }
+    }
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = Hash::make($password);
     }
 }

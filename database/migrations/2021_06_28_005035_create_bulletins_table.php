@@ -17,7 +17,7 @@ class CreateBulletinsTable extends Migration
             $table->id();
             $table->string('title', 32);
             $table->string('body', 200);
-            $table->string('password', 4)->nullable();
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }
