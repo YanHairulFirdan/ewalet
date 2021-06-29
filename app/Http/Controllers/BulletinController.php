@@ -36,8 +36,9 @@ class BulletinController extends Controller
         session([$disableButton => false]);
 
         if ($checked = $bulletin->passwordCheck($request->password, $action)) {
-            return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
-                ->with($checked);
+            session($checked);
+
+            return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]));
         }
 
         return redirect(route('bulletin.show.' . $action, ['bulletin' => $bulletin->id]));
@@ -62,8 +63,6 @@ class BulletinController extends Controller
     public function show(Bulletin $bulletin)
     {
         $slot = Session::get('slotName');
-
-        session()->reflash();
 
         return view('bulletin.show', compact('bulletin', 'slot'));
     }
