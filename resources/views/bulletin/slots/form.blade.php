@@ -19,9 +19,4 @@
             @endif
         </div>
     </div>
-    {{-- <a type="submit" class="btn btn-default mb-2" data-toggle="modal" data-target="#editModal"><i
-                        class="fa fa-pencil p-3"></i></a> --}}
-    {{-- <a type="submit" class="btn btn-danger mb-2" data-toggle="modal" data-target="#deleteModal"><i
-                        class="fa fa-trash p-3"></i></a> --}}
-
 </form>
