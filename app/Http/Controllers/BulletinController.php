@@ -11,9 +11,9 @@ class BulletinController extends Controller
 {
     public function index()
     {
-        $bulletins = Bulletin::orderBy('created_at', 'DESC')->paginate(2);
+        $bulletins = Bulletin::orderBy('created_at', 'DESC')->paginate(10);
 
-        session(['currentPage' => $bulletins->currentPage(), 'delete' => true, 'edit' => true]);
+        session(['currentPage' => $bulletins->currentPage(), 'perPage' => $bulletins->perPage(), 'delete' => true, 'edit' => true]);
 
         return view('bulletin.index', compact('bulletins'));
     }

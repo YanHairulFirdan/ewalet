@@ -19,7 +19,7 @@ class Bulletin extends Model
             return ['error' => 'Your password must be 4 digit', 'slotName' => 'form'];
         }
 
-        if (!Hash::check($this->password, $password)) {
+        if (!Hash::check($password, $this->password)) {
             return ['error' => 'The password you entered does not match. Please try again', 'slotName' => 'form'];
         }
     }
