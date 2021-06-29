@@ -42,8 +42,7 @@ class BulletinController extends Controller
                 ->with($checked);
         }
 
-        return redirect(route('bulletin.show.' . $action, ['bulletin' => $bulletin->id]))
-            ->with(['type' => 'confirm']);
+        return redirect(route('bulletin.show.' . $action, ['bulletin' => $bulletin->id]));
     }
 
     public function showEdit(Bulletin $bulletin)
@@ -56,8 +55,6 @@ class BulletinController extends Controller
         $validated = $request->validated();
 
         $bulletin->update($validated);
-
-
 
         return redirect(url('bulletin?page=' . Session::get('currentPage')));
     }
