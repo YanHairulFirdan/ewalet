@@ -9,10 +9,11 @@
             </div>
         </div>
         <div class="col-md-4">
-            @if (Session::get('mode') === 'delete')
+            @if (Session::get('delete'))
                 <button type="submit" name="submit_delete" value="delete" class="btn btn-danger mb-2"
                     data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash p-3"></i></button>
-            @else
+            @endif
+            @if (Session::get('edit'))
                 <button type="submit" name="submit_edit" value="edit" class="btn btn-default mb-2" data-toggle="modal"
                     data-target="#editModal"><i class="fa fa-pencil p-3"></i></button>
             @endif

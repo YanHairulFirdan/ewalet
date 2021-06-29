@@ -3,6 +3,7 @@
 @section('content')
     <form action="{{ route('bulletin.update', ['bulletin' => $bulletin->id]) }}" method="post">
         @csrf
+        @method('PUT')
         <div class="form-group">
             <label>Title</label>
             <input type="text" class="form-control" name="title" value="{{ $bulletin->title }}">

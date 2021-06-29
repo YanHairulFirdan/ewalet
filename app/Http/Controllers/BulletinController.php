@@ -13,7 +13,7 @@ class BulletinController extends Controller
     {
         $bulletins = Bulletin::orderBy('created_at', 'DESC')->paginate(2);
 
-        session(['currentPage' => $bulletins->currentPage()]);
+        session(['currentPage' => $bulletins->currentPage(), 'delete' => true, 'edit' => true]);
 
         return view('bulletin.index', compact('bulletins'));
     }
@@ -29,16 +29,20 @@ class BulletinController extends Controller
 
     public function postPassword(Request $request, Bulletin $bulletin)
     {
+        // refactor
+        $action        = $request['submit_edit'] ?: $request['submit_delete'];
+        $disableButton = $action == 'edit' ? 'delete' : 'edit';
 
-        $mode = $request['submit_edit'] ?: $request['submit_delete'];
+        session([$action => true]);
+        session([$disableButton => false]);
+        // refactor
 
-        if ($checked = $bulletin->passwordCheck($request->password, $mode)) {
-            $checked['mode'] = $mode;
+        if ($checked = $bulletin->passwordCheck($request->password, $action)) {
             return redirect(route('bulletin.show', ['bulletin' => $bulletin->id]))
                 ->with($checked);
         }
 
-        return redirect(route('bulletin.show.' . $mode, ['bulletin' => $bulletin->id]))
+        return redirect(route('bulletin.show.' . $action, ['bulletin' => $bulletin->id]))
             ->with(['type' => 'confirm']);
     }
 
@@ -51,10 +55,9 @@ class BulletinController extends Controller
     {
         $validated = $request->validated();
 
-        $bulletin->title = $validated['title'];
-        $bulletin->body  = $validated['body'];
+        $bulletin->update($validated);
 
-        $bulletin->save();
+
 
         return redirect(url('bulletin?page=' . Session::get('currentPage')));
     }
@@ -62,11 +65,10 @@ class BulletinController extends Controller
     public function show(Bulletin $bulletin)
     {
         $slot = Session::get('slotName');
-        $mode = Session::get('mode');
 
         session()->reflash();
 
-        return view('bulletin.show', compact('bulletin', 'slot', 'mode'));
+        return view('bulletin.show', compact('bulletin', 'slot'));
     }
 
     public function showDelete(Bulletin $bulletin)

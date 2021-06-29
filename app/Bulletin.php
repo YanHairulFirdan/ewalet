@@ -8,10 +8,10 @@ class Bulletin extends Model
 {
     protected $fillable = ['title', 'body', 'password'];
 
-    public function passwordCheck($password, $mode)
+    public function passwordCheck($password, $action)
     {
         if (empty($this->password)) {
-            return ['error' => "This message can't {$mode}, because this message has no been set password", 'slotName' => 'previousButton'];
+            return ['error' => "This message can't {$action}, because this message has no been set password", 'slotName' => 'previousButton'];
         }
 
         if (strlen($password) != 4) {
