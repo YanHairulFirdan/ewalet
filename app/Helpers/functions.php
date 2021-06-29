@@ -2,18 +2,19 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-function set_redirect_index($currentPage, $perPage, Model $model)
+function set_redirect_index($offset, $limit, Model $model)
 {
     $numberOfRecords = $model->count();
-    $countLimit      = $model->offset($currentPage)->limit($perPage)->count();
+    $startRecord     = $offset * $limit;
+    $countLimit      = count($model->offset($startRecord)->limit($limit)->orderBy('created_at', 'DESC')->get());
 
     if (
-        $numberOfRecords === ($currentPage * $perPage)
+        $numberOfRecords === $startRecord
         ||
         $countLimit === 0
     ) {
-        $currentPage = $currentPage > 1 ? $currentPage - 1 : $currentPage;
+        $offset = $offset > 1 ? $offset-- : $offset;
     }
 
-    return $currentPage;
+    return $offset;
 }
