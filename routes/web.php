@@ -25,3 +25,11 @@ Route::put('bulletin/update/{bulletin}', 'BulletinController@update')->name('bul
 Route::get('bulletin/delete/{bulletin}', 'BulletinController@showDelete')->name('bulletin.show.delete');
 Route::delete('bulletin/delete/{bulletin}', 'BulletinController@delete')->name('bulletin.delete');
 Route::post('password/{bulletin}', 'BulletinController@postPassword')->name('post.password');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
