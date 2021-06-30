@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('bulletin.store') }}" method="post">
+    <form action="{{ route('bulletin.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label>Title</label>
@@ -25,6 +25,24 @@
             <label>Password</label>
             <input type="password" class="form-control" name="password">
             @error('password')
+                <div class="alert alert-danger">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+        <div class="form-group">
+
+            <label>Choose image from your computer :</label>
+            <div class="input-group">
+                <input type="text" class="form-control upload-form" value="No file chosen" readonly>
+                <span class="input-group-btn">
+                    <span class="btn btn-default btn-file">
+                        <i class="fa fa-folder-open"></i>&nbsp;Browse <input type="file" name="image" multiple>
+                    </span>
+                </span>
+            </div>
+
+            @error('image')
                 <div class="alert alert-danger">
                     {{ $message }}
                 </div>

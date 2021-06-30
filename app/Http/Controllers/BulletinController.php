@@ -22,7 +22,11 @@ class BulletinController extends Controller
     {
         $validated = $bulletinRequest->validated();
 
-        Bulletin::create($validated);
+        $bulletin = Bulletin::create($validated);
+        $extension = $bulletinRequest->file('image')->getClientOriginalExtension();
+
+        // $path = $bulletinRequest->file('image')->storeAs('images', $bulletin->id . '-' . $bulletin->title . $extension);
+        $path = $bulletinRequest->file('image')->storeAs('public/images', $bulletin->id . '-' . $bulletin->title . '.' . $extension);
 
         return redirect()->back();
     }

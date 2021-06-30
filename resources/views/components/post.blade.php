@@ -8,6 +8,14 @@
         <p>
             {{ $bulletin->body }}
         </p>
+
+        @if (file_exists('storage/images/' . $bulletin->id . '-' . $bulletin->title . '.jpg'))
+            <div class="img-box my-10">
+                <img class="img-responsive img-post float-right" style="height: 6em" class=""
+                    src="{{ asset('storage/images/' . $bulletin->id . '-' . $bulletin->title . '.jpg') }}"
+                    alt="image">
+            </div>
+        @endif
         <div class="row d-flex align-items-center mt-30">
             <div class="col-md-8">
                 {{ $slot }}

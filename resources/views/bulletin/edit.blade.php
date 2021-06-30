@@ -22,6 +22,12 @@
                 </div>
             @enderror
         </div>
+        @if (file_exists('storage/images/' . $bulletin->id . '-' . $bulletin->title . '.jpg'))
+            <div class="img-box my-10">
+                <img class="img-responsive img-post float-right" style="height: 6em" class=""
+                    src="{{ asset('storage/images/' . $bulletin->id . '-' . $bulletin->title . '.jpg') }}" alt="image">
+            </div>
+        @endif
         <div class="text-center mt-30 mb-30">
             <button class="btn btn-primary">Submit</button>
             <a href="{{ url('bulletin?page=' . Session::get('currentPage')) }}" class="btn btn-danger">cancel</a>
