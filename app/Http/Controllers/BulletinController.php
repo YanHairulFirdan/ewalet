@@ -52,9 +52,19 @@ class BulletinController extends Controller
         return view('bulletin.edit', compact('bulletin'));
     }
 
-    public function update(BulletinRequest $request, Bulletin $bulletin)
+    public function update(BulletinRequest $bulletinRequest, Bulletin $bulletin)
     {
-        $validated = $request->validated();
+        $validated = $bulletinRequest->validated();
+
+        if ($bulletinRequest->has('image')) {
+            // dd('image exists');
+            if (file_exists(public_path('images/' . $bulletin->id . '-' . $bulletin->title . 'jpg'))) {
+                unlink(public_path('images/' . $bulletin->id . '-' . $bulletin->title . 'jpg'));
+            }
+
+            $extension = $bulletinRequest->file('image')->getClientOriginalExtension();
+            $path      = $bulletinRequest->file('image')->storeAs('public/images', $bulletin->id . '-' . $bulletin->title . '.' . $extension);
+        }
 
         $bulletin->update($validated);
 

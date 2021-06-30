@@ -31,7 +31,6 @@
             @enderror
         </div>
         <div class="form-group">
-
             <label>Choose image from your computer :</label>
             <div class="input-group">
                 <input type="text" class="form-control upload-form" value="No file chosen" readonly>

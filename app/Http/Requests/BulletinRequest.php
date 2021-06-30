@@ -27,7 +27,7 @@ class BulletinRequest extends FormRequest
             'title'    => 'required|between:10,32',
             'body'     => 'required|between:10,200',
             'password' => 'nullable|size:4',
-            'image'    => 'required|image|mimes:jpg,jpeg,png|max:2000',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png|max:2000',
         ];
     }
 
