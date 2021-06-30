@@ -23,10 +23,8 @@ class BulletinController extends Controller
         $validated = $bulletinRequest->validated();
 
         $bulletin = Bulletin::create($validated);
-        $extension = $bulletinRequest->file('image')->getClientOriginalExtension();
+        store_image($bulletinRequest, 'image', 'public/images',  $bulletin->id . '-' . $bulletin->title . '.');
 
-        // $path = $bulletinRequest->file('image')->storeAs('images', $bulletin->id . '-' . $bulletin->title . $extension);
-        $path = $bulletinRequest->file('image')->storeAs('public/images', $bulletin->id . '-' . $bulletin->title . '.' . $extension);
 
         return redirect()->back();
     }
@@ -54,16 +52,13 @@ class BulletinController extends Controller
 
     public function update(BulletinRequest $bulletinRequest, Bulletin $bulletin)
     {
+        // dd($bulletinRequest);
         $validated = $bulletinRequest->validated();
 
         if ($bulletinRequest->has('image')) {
-            // dd('image exists');
-            if (file_exists(public_path('images/' . $bulletin->id . '-' . $bulletin->title . 'jpg'))) {
-                unlink(public_path('images/' . $bulletin->id . '-' . $bulletin->title . 'jpg'));
-            }
+            delete_image(public_path('images/' . $bulletin->id . '-' . $bulletin->title . 'jpg'));
 
-            $extension = $bulletinRequest->file('image')->getClientOriginalExtension();
-            $path      = $bulletinRequest->file('image')->storeAs('public/images', $bulletin->id . '-' . $bulletin->title . '.' . $extension);
+            store_image($bulletinRequest, 'image', 'public/images',  $bulletin->id . '-' . $bulletin->title . '.');
         }
 
         $bulletin->update($validated);
@@ -89,6 +84,8 @@ class BulletinController extends Controller
 
     public function delete(Bulletin $bulletin)
     {
+        delete_image(public_path('images/' . $bulletin->id . '-' . $bulletin->title . 'jpg'));
+
         $bulletin->delete();
 
         $currentPage = set_redirect_index(Session::get('currentPage'), Session::get('perPage'), $bulletin);

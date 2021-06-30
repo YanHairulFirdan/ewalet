@@ -18,3 +18,15 @@ function set_redirect_index($offset, $limit, Model $model)
 
     return $offset;
 }
+
+function store_image($request, $file, $path, $fileName)
+{
+    $extension = $request->file($file)->getClientOriginalExtension();
+    $path      = $request->file($file)->storeAs($path, $fileName . $extension);
+}
+function delete_image(string $path)
+{
+    if (file_exists($path)) {
+        unlink($path);
+    }
+}
