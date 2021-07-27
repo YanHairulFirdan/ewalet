@@ -15,6 +15,15 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->string('buyer');
+            $table->float('weight');
+            $table->bigInteger('price_per_kilo');
+            $table->bigInteger('total_price');
             $table->timestamps();
         });
     }
