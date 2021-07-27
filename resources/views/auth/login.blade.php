@@ -11,8 +11,8 @@
         <div class="card-body">
             <form action="{{ route('login') }}">
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                    <label for="inputEmail">Email address</label>
+                    <input class="form-control" id="phone_number" type="email" placeholder="name@example.com" />
+                    <label for="phone_number">nomor telepon</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
