@@ -12,9 +12,20 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $transactions = Transaction::all();
+            return datatables()->of($transactions)
+                ->addColumn('action', function ($row) {
+                    $html = '<a href="#" class-"btn-xs btn-secondary btn-edit">Edit</a>';
+                    $html .= '<button data-rowid="' . $row->id . '" class-"btn-xs btn-danger btn-delete">Del</a>';
+
+                    return $html;
+                })->toJson();
+        }
+
+        return view('transaction.index');
     }
 
     /**
