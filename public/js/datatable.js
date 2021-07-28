@@ -1,27 +1,54 @@
-$(document).ready(function () {
-    $.noConflict();
+$(document).ready(function() {
+        $.noConflict();
 
-    var token = ''
-    var modal = $('.modal')
-    var form  = $('.form')
+        var token = ''
+        var modal = $('.modal');
+        var form = $('.form');
 
-    var btnAdd = $('.add'),
-    btnSave    = $('.btn-save'),
-    btnUpdate  = $('.btn-update');
+        var btnAdd = $('.add'),
+            btnSave = $('.btn-save'),
+            btnUpdate = $('.btn-update');
 
-    var table = $('#transactions').DataTable({
-        ajax:'',
-        serverSide : true,
-        processing : true,
-        aaSorting  : [[0,'desc']],
-        columns    : [
-            {data:'id', name:'id'},
-            {data:'tanggal transaksi', name:'created_at'},
-            {data:'buyer', name:'buyer'},
-            {data:'berat', name:'weight'},
-            {data:'harga perkilo', name:'price_per_kilo'},
-            {data:'total harga', name:'total_price'},
-        ]
-    });
+        var table = $('#transactions').DataTable({
+            ajax: '',
+            serverSide: true,
+            processing: true,
+            // deferLoading: 10,
+            aaSorting: [
+                [0, 'desc']
+            ],
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: 'buyer',
+                    name: 'buyer'
+                },
+                {
+                    data: 'weight',
+                    name: 'weight'
+                },
+                {
+                    data: 'price_per_kilo',
+                    name: 'price_per_kilo'
+                },
+                {
+                    data: 'total_price',
+                    name: 'total_price'
+                },
+                {
+                    data: 'Aksi',
+                    name: 'Aksi',
+                    orderable: false,
+                    searchable: false,
+                }
+            ]
+        });
 
-})
+    })
+
