@@ -5,9 +5,9 @@ $(document).ready(function() {
         var modal = $('.modal');
         var form = $('.form');
 
-        var btnAdd = $('.add'),
-            btnSave = $('.btn-save'),
-            btnUpdate = $('.btn-update');
+        // var btnAdd = $('.add'),
+        //     btnSave = $('.btn-save'),
+        //     btnUpdate = $('.btn-update');
 
         var table = $('#transactions').DataTable({
             ajax: '',
@@ -50,5 +50,7 @@ $(document).ready(function() {
             ]
         });
 
-    })
+    });
+
+    
 
