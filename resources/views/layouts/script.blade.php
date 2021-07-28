@@ -7,7 +7,7 @@
 
  <!-- Bootstrap -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
- <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+ {{-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> --}}
 
  <!-- Fonts -->
  <link rel="dns-prefetch" href="//fonts.gstatic.com">
