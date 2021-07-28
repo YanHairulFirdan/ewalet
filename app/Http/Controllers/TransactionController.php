@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -40,7 +41,7 @@ class TransactionController extends Controller
                     return $formattedTotalPrice;
                 })
                 ->addColumn('Aksi', function ($transaction) {
-                    $html = '<a href="#" class="btn btn-xs btn-success btn-edit">Edit</a>';
+                    $html = '<button href="#" data-id="' . $transaction->id . '" class="btn btn-xs btn-success btn-edit">Edit</button>';
                     $html .= '<button data-rowid="' . $transaction->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
 
                     return $html;
@@ -70,7 +71,20 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'buyer'          => 'required|min:3',
+            'weight'         => 'required|numeric',
+            'price_per_kilo' => 'required|numeric',
+        ]);
+
+        $totalPrice = $request->weight * $request->price_per_kilo;
+
+        $transaction = new Transaction($request->except('_token'));
+        $transaction->user_id = Auth::id();
+        $transaction->total_price = $totalPrice;
+        $transaction->save();
+
+        return response()->json(['message' => 'data has been created']);
     }
 
     /**

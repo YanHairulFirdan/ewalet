@@ -1,19 +1,20 @@
-$(document).ready(function() {
+
+    $(document).ready(function() {
+        
         $.noConflict();
 
         var token = ''
         var modal = $('.modal');
         var form = $('.form');
 
-        // var btnAdd = $('.add'),
-        //     btnSave = $('.btn-save'),
-        //     btnUpdate = $('.btn-update');
+        var btnAdd = $('.add'),
+            btnSave = $('.btn-save'),
+            btnUpdate = $('.btn-update');
 
         var table = $('#transactions').DataTable({
             ajax: '',
             serverSide: true,
             processing: true,
-            // deferLoading: 10,
             aaSorting: [
                 [0, 'desc']
             ],
@@ -49,8 +50,36 @@ $(document).ready(function() {
                 }
             ]
         });
+        
 
-    });
+        $('body').on('click','.btn-edit',function () {
+            let id = $(this).data('id');
+        })
 
-    
+        $('#saveBtn').click(function (event) {
+            event.preventDefault();
+            let token = $('meta[name="csrf-token"]').attr('content');
+            let form = document.getElementById('insertForm')
+            console.log(token);
+            // console.log($('#insertForm').serialize());
+
+            $.ajax({
+                url         : 'transactions',
+                data        : new FormData(form),
+                type        : 'post',
+                dataType    : "JSON",
+                contentType : false,
+                cache       : false,
+                processData : false,
+                success : function (data) {
+                    console.log(data);
+                    table.draw()
+                },
+                error:function (error) {
+                    console.error(error);
+                    console.error(error.responseText);
+                }
+            })
+            })
+    })
 

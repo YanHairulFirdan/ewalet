@@ -7,8 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    // public function getCreatedAtAttribute()
-    // {
-    //     return Carbon::create($this->created_at)->format('d-m-Y');
-    // }
+    protected $fillable = ['user_id', 'buyer', 'weight', 'price_per_kilo', 'total_price'];
 }

@@ -64,7 +64,27 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <form action="" method="post" id="insertForm">
+                        @csrf
+                        @method('POST')
+                        <div class="form-group"><label for="buyer">
+                                Pembeli
+                            </label>
+                            <input type="text" class="form-control" name="buyer">
+                        </div>
+                        <div class="form-group"><label for="weight">
+                                Berat Total
+                            </label>
+                            <input type="text" class="form-control" name="weight">
+                        </div>
+                        <div class="form-group"><label for="price_per_kilo">
+                                Harga Perkilo
+                            </label>
+                            <input type="text" class="form-control" name="price_per_kilo">
+                        </div>
+                        <button type="submit" id="saveBtn" class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Simpan
+                            data</button>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
