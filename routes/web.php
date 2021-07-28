@@ -1,5 +1,6 @@
 <?php
 
+use App\Transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'HomeController@Index')->name('home');
-
+Route::middleware(['auth'])->group(function () {
+    Route::resource('transactions', TransactionController::class);
+});
+// Route::controller('users', 'UserController');
 // Route::get('bulletin', 'BulletinController@index')->name('bulletin.index');
 // Route::post('bulletin', 'BulletinController@store')->name('bulletin.store');
 // Route::get('bulletin/{bulletin}', 'BulletinController@show')->name('bulletin.show');

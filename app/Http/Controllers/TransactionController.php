@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -16,13 +17,35 @@ class TransactionController extends Controller
     {
         if ($request->ajax()) {
             $transactions = Transaction::all();
+
             return datatables()->of($transactions)
-                ->addColumn('action', function ($row) {
+                ->addColumn('aksi', function ($transaction) {
                     $html = '<a href="#" class-"btn-xs btn-secondary btn-edit">Edit</a>';
-                    $html .= '<button data-rowid="' . $row->id . '" class-"btn-xs btn-danger btn-delete">Del</a>';
+                    $html .= '<button data-rowid="' . $transaction->id . '" class-"btn-xs btn-danger btn-delete">Del</a>';
 
                     return $html;
-                })->toJson();
+                })
+                ->editColumn('created_at', function ($transaction) {
+                    $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created_at)->format('d-m-Y');
+
+                    return $formattedDate;
+                })
+                ->editColumn('weight', function ($transaction) {
+                    $formattedWeight = $transaction->weight . ' Kg';
+
+                    return $formattedWeight;
+                })
+                ->editColumn('price_per_kilo', function ($transaction) {
+                    $formattedPrice = 'Rp.' . number_format($transaction->price_per_kilo);
+
+                    return $formattedPrice;
+                })
+                ->editColumn('total_price', function ($transaction) {
+                    $formattedTotalPrice = 'Rp.' . number_format($transaction->total_price);
+
+                    return $formattedTotalPrice;
+                })
+                ->toJson();
         }
 
         return view('transaction.index');

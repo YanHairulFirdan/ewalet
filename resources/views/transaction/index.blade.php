@@ -5,14 +5,14 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12">
             <h3>
                 Transaksi
                 {{-- <button>Tam</button> --}}
             </h3>
 
-            <table id="transactions" class="table table-bordered table-condensed table-striped">
+            <table id="transactions" class="mt-10 table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
                         <th>

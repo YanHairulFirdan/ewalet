@@ -589,5 +589,6 @@
     </div>
     @include('layouts.script')
 </body>
+@stack('js')
 
 </html>
