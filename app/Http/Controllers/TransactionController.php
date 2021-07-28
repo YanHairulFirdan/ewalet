@@ -19,12 +19,6 @@ class TransactionController extends Controller
             $transactions = Transaction::all();
 
             return datatables()->of($transactions)
-                ->addColumn('aksi', function ($transaction) {
-                    $html = '<a href="#" class-"btn-xs btn-secondary btn-edit">Edit</a>';
-                    $html .= '<button data-rowid="' . $transaction->id . '" class-"btn-xs btn-danger btn-delete">Del</a>';
-
-                    return $html;
-                })
                 ->editColumn('created_at', function ($transaction) {
                     $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created_at)->format('d-m-Y');
 
@@ -45,7 +39,14 @@ class TransactionController extends Controller
 
                     return $formattedTotalPrice;
                 })
-                ->toJson();
+                ->addColumn('Aksi', function ($transaction) {
+                    $html = '<a href="#" class="btn btn-xs btn-success btn-edit">Edit</a>';
+                    $html .= '<button data-rowid="' . $transaction->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
+
+                    return $html;
+                })
+                ->rawColumns(['Aksi'])
+                ->make(true);
         }
 
         return view('transaction.index');

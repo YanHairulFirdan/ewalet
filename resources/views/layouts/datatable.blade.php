@@ -14,6 +14,7 @@
             ajax: '',
             serverSide: true,
             processing: true,
+            // deferLoading: 10,
             aaSorting: [
                 [0, 'desc']
             ],
@@ -41,6 +42,12 @@
                     data: 'total_price',
                     name: 'total_price'
                 },
+                {
+                    data: 'Aksi',
+                    name: 'Aksi',
+                    orderable: false,
+                    searchable: false,
+                }
             ]
         });
 
