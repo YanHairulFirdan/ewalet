@@ -16,7 +16,7 @@
                 <div class="p-2">
                     <!-- Button trigger modal -->
                     <button type="button" class=" d-inline-block btn btn-primary ml-auto" data-toggle="modal"
-                        data-target="#exampleModal">
+                        data-target="#insertModal">
                         Input Transaksi
                     </button>
                 </div>
@@ -54,11 +54,11 @@
 
     {{-- insert modal --}}
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="insertModalLabel">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -72,15 +72,24 @@
                             </label>
                             <input type="text" class="form-control" name="buyer">
                         </div>
+                        <div id="buyer_error" class="alert alert-danger d-none">
+
+                        </div>
                         <div class="form-group"><label for="weight">
                                 Berat Total
                             </label>
                             <input type="text" class="form-control" name="weight">
                         </div>
+                        <div id="weight_error" class="alert alert-danger d-none">
+
+                        </div>
                         <div class="form-group"><label for="price_per_kilo">
                                 Harga Perkilo
                             </label>
                             <input type="text" class="form-control" name="price_per_kilo">
+                        </div>
+                        <div id="price_per_kilo_error" class="alert alert-danger d-none">
+
                         </div>
                         <button type="submit" id="saveBtn" class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Simpan
                             data</button>
@@ -117,6 +126,27 @@
         </div>
     </div>
     {{-- end of update modal --}}
+
+    {{-- message modal --}}
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="deleteTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert" id="message">
+                        Are you sure?
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {{-- end of message modal --}}
 
 @endsection
 @push('js')

@@ -58,11 +58,8 @@
 
         $('#saveBtn').click(function (event) {
             event.preventDefault();
-            let token = $('meta[name="csrf-token"]').attr('content');
             let form = document.getElementById('insertForm')
-            console.log(token);
-            // console.log($('#insertForm').serialize());
-
+        
             $.ajax({
                 url         : 'transactions',
                 data        : new FormData(form),
@@ -72,14 +69,33 @@
                 cache       : false,
                 processData : false,
                 success : function (data) {
-                    console.log(data);
+                    $('#messageModal').modal('show');
+                    $('#insertModal').modal('hide');
+                    $('#message').html(data.message);
+                    $('#message').addClass('alert-' + data.class);
                     table.draw()
                 },
                 error:function (error) {
-                    console.error(error);
-                    console.error(error.responseText);
+                    display_error(error.responseJSON.errors)
                 }
             })
-            })
+        })
     })
 
+    function display_error(errors) {
+    for (const error of Object.keys(errors)) {
+        let alert = document.getElementById(error + "_error");
+        
+        alert.classList.toggle('d-none');
+
+        alert.innerText = errors[error];
+        
+        $("#" + error + "_error").fadeOut(5000, function () {
+            document.getElementById(error + "_error").classList.toggle('d-none');
+        })
+    }
+}
+
+function show_message(id, type, message) {
+    // $('#'+id).
+}

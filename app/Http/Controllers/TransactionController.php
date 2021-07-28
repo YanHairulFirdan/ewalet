@@ -84,7 +84,7 @@ class TransactionController extends Controller
         $transaction->total_price = $totalPrice;
         $transaction->save();
 
-        return response()->json(['message' => 'data has been created']);
+        return response()->json(['message' => 'data has been created', 'class' => 'success']);
     }
 
     /**
