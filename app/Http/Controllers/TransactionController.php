@@ -95,7 +95,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        return response()->json(['transaction' => $transaction]);
     }
 
     /**
@@ -106,7 +106,6 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        //
     }
 
     /**
@@ -118,7 +117,21 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+        // return response()->json(['request' => $request->except('_token')]);
+        $request->validate([
+            'buyer'          => 'required|min:3',
+            'weight'         => 'required|numeric',
+            'price_per_kilo' => 'required|numeric',
+        ]);
+
+        $totalPrice = $request->weight * $request->price_per_kilo;
+
+        $transaction->update($request->except('_token'));
+        $transaction->user_id = Auth::id();
+        $transaction->total_price = $totalPrice;
+        $transaction->save();
+
+        return response()->json(['message' => 'data has been updated', 'class' => 'success']);
     }
 
     /**

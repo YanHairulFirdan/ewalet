@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@Index')->name('home');
 Route::middleware(['auth'])->group(function () {
-    Route::resource('transactions', TransactionController::class);
+    Route::post('transactions/{transaction}', 'TransactionController@update');
+    Route::resource('transactions', TransactionController::class)->except(['create', 'edit', 'update']);
 });
 // Route::controller('users', 'UserController');
 // Route::get('bulletin', 'BulletinController@index')->name('bulletin.index');

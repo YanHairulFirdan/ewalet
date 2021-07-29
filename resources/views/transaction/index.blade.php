@@ -106,17 +106,46 @@
     {{-- end of insert modal --}}
 
     {{-- update modal --}}
-    <div class="modal" tabindex="-1">
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title" id="updateModalLabel">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Modal body text goes here.</p>
+                    <form action="" method="post" id="updateForm">
+                        @csrf
+                        @method('POST')
+                        <div class="form-group"><label for="buyer">
+                                Pembeli
+                            </label>
+                            <input type="text" class="form-control" name="buyer" id="edit_buyer">
+                        </div>
+                        <div id="buyer_error" class="alert alert-danger d-none">
+
+                        </div>
+                        <div class="form-group"><label for="weight">
+                                Berat Total
+                            </label>
+                            <input type="text" class="form-control" name="weight" id="edit_weight">
+                        </div>
+                        <div id="weight_error" class="alert alert-danger d-none">
+
+                        </div>
+                        <div class="form-group"><label for="price_per_kilo">
+                                Harga Perkilo
+                            </label>
+                            <input type="text" class="form-control" name="price_per_kilo" id="edit_price_per_kilo">
+                        </div>
+                        <div id="price_per_kilo_error" class="alert alert-danger d-none">
+
+                        </div>
+                        <button type="submit" id="updateBtn" class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Perbarui
+                            data</button>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

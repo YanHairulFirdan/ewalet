@@ -1,15 +1,10 @@
-
     $(document).ready(function() {
         
         $.noConflict();
 
-        var token = ''
+        var id = ''
         var modal = $('.modal');
         var form = $('.form');
-
-        var btnAdd = $('.add'),
-            btnSave = $('.btn-save'),
-            btnUpdate = $('.btn-update');
 
         var table = $('#transactions').DataTable({
             ajax: '',
@@ -53,9 +48,55 @@
         
 
         $('body').on('click','.btn-edit',function () {
-            let id = $(this).data('id');
+            let transaction = {};
+            id = $(this).data('id')
+            $.get('transactions/'+id, function (data, status) {
+                transaction = data.transaction;
+                $('#updateModal').modal('show');
+                console.log(transaction);
+
+                for (const field in transaction) {
+                    $('#edit_'+field).val(transaction[field])
+                }
+            });
         })
 
+        $('#updateBtn').click(function (event) {
+            event.preventDefault();
+            let form = document.getElementById('updateForm')
+            let data = {
+                    _method        : 'POST',
+                    buyer          : $('#edit_buyer').val(),
+                    weight         : $('#edit_weight').val(),
+                    price_per_kilo : $('#edit_price_per_kilo').val(),
+                };
+            
+            $.ajax({
+                type        : 'POST',
+                url         : 'transactions/'+id,
+                headers     : {
+                    'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content'),
+                    // "Content-Type": "application/json",
+                }, 
+                data        : new FormData(form),
+                dataType    : "JSON",
+                contentType : false,
+                cache       : false,
+                processData : false,
+                success : function (data) {
+                    console.log(data);
+                    $('#messageModal').modal('show');
+                    $('#updateModal').modal('hide');
+                    $('#message').html(data.message);
+                    $('#message').addClass('alert-' + data.class);
+                    table.draw()
+                },
+                error:function (error) {
+                    display_error(error.responseJSON.errors)
+                }
+            })
+        })
+        
         $('#saveBtn').click(function (event) {
             event.preventDefault();
             let form = document.getElementById('insertForm')
@@ -82,7 +123,7 @@
         })
     })
 
-    function display_error(errors) {
+function display_error(errors) {
     for (const error of Object.keys(errors)) {
         let alert = document.getElementById(error + "_error");
         
@@ -96,6 +137,28 @@
     }
 }
 
-function show_message(id, type, message) {
-    // $('#'+id).
+function ajax(url, formData, modal, method) {
+    $.ajax({
+        url         : url,
+        type        : method,
+        data        : formData,
+        dataType    : "JSON",
+        contentType : false,
+        cache       : false,
+        processData : false,
+        success     : function (response) {
+            $(modal).modal('hide');
+            $('#messageModal').modal('show');
+            $('#message').html(response.message);
+            $('#message').addClass('alert-' + response.class);
+        },
+        error       : function (error) {
+            display_error(error.responseJSON.errors)
+
+
+            }
+    });
 }
+
+function show_message(id, type, message) {
+    }
