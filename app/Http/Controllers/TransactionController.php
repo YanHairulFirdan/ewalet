@@ -18,15 +18,16 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            DB::statement(DB::raw('set @rownum=0'));
-            $transactions = Transaction::select([
-                DB::raw('@rownum := @rownum + 1 as rownum'),
-                'buyer',
-                'weight',
-                'price_per_kilo',
-                'total_price',
-                'created_at',
-            ]);
+            // DB::statement(DB::raw('set @rownum=0'));
+            // $transactions = Transaction::select([
+            //     DB::raw('@rownum := @rownum + 1 as rownum'),
+            //     'buyer',
+            //     'weight',
+            //     'price_per_kilo',
+            //     'total_price',
+            //     'created_at',
+            // ]);
+            $transactions = Transaction::all();
             $datatables =  datatables()->of($transactions)
                 ->editColumn('created_at', function ($transaction) {
                     $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created_at)->format('d-m-Y');
@@ -56,9 +57,9 @@ class TransactionController extends Controller
                 })
                 ->rawColumns(['Aksi']);
 
-            if ($keyword = $request->get('search')['value']) {
-                $datatables->filterColumn('rowNum', 'whereRaw', '@rownum + 1 like ?', ["%{$keyword}%"]);
-            }
+            // if ($keyword = $request->get('search')['value']) {
+            //     $datatables->filterColumn('rowNum', 'whereRaw', '@rownum + 1 like ?', ["%{$keyword}%"]);
+            // }
 
             return $datatables->make(true);
         }

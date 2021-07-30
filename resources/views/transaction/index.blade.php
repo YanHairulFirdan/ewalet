@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="row d-flex justify-content-center">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="d-flex justify-content-between">
                 <div class="p-2">
                     <h3>
