@@ -6,6 +6,7 @@ use App\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -17,9 +18,16 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $transactions = Transaction::all();
-
-            return datatables()->of($transactions)
+            DB::statement(DB::raw('set @rownum=0'));
+            $transactions = Transaction::select([
+                DB::raw('@rownum := @rownum + 1 as rownum'),
+                'buyer',
+                'weight',
+                'price_per_kilo',
+                'total_price',
+                'created_at',
+            ]);
+            $datatables =  datatables()->of($transactions)
                 ->editColumn('created_at', function ($transaction) {
                     $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created_at)->format('d-m-Y');
 
@@ -46,8 +54,13 @@ class TransactionController extends Controller
 
                     return $html;
                 })
-                ->rawColumns(['Aksi'])
-                ->make(true);
+                ->rawColumns(['Aksi']);
+
+            if ($keyword = $request->get('search')['value']) {
+                $datatables->filterColumn('rowNum', 'whereRaw', '@rownum + 1 like ?', ["%{$keyword}%"]);
+            }
+
+            return $datatables->make(true);
         }
 
         return view('transaction.index');

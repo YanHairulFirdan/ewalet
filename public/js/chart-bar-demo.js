@@ -3,7 +3,7 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Bar Chart Example
-function drawBarChart(months, data) {
+function drawBarChart(months, data, max) {
   var ctx = document.getElementById("myBarChart");
   var myLineChart = new Chart(ctx, {
     type: 'bar',
@@ -36,10 +36,9 @@ function drawBarChart(months, data) {
         yAxes: [{
           ticks: {
             min: 0,
-            max: 15000000000,
+            max: max,
             maxTicksLimit: 5,
             callback : function (value) {
-              // return "Rp." + value
               return new Intl.NumberFormat('INA', { style: 'currency', currency: 'IDR' }).format(value)
             }
           },
@@ -51,25 +50,13 @@ function drawBarChart(months, data) {
       legend: {
         display: false
       },
-      plugins : {
-        tooltip : {
+      tooltips : {
           callbacks : {
-            label : function (context) {
-              var label = context.dataset.label || '';
-
-              if (label) {
-                label+=': ';
-              }
-
-              if (context.parsed.y !== null) {
-                label += new Intl.NumberFormat('INA', { style: 'currency', currency: 'IDR' }).format(context.parsed.y);
-              }
-
-              return label
-            }
+            label: function(tooltipItem, data) {
+              return new Intl.NumberFormat('INA', { style: 'currency', currency: 'IDR' }).format(data['datasets'][0]['data'][tooltipItem['index']])
+            },
           }
         }
-      }
     }
   });
 }

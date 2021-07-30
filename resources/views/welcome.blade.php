@@ -106,11 +106,14 @@
             summaryTotalPrice.push(report.total_price)
         });
 
-        drawAreaChart(summaryMonths, summaryWeights)
-        drawBarChart(summaryMonths, summaryTotalPrice)
-
-        console.log(summaryTotalPrice.reduce((a, b) => {
+        let maxProfit = summaryTotalPrice.reduce((a, b) => {
             return Math.max(a, b)
-        }));
+        });
+        let maxWeight = summaryWeights.reduce((a, b) => {
+            return Math.max(a, b)
+        });
+
+        drawAreaChart(summaryMonths, summaryWeights, maxWeight)
+        drawBarChart(summaryMonths, summaryTotalPrice, maxProfit)
     </script>
 @endpush

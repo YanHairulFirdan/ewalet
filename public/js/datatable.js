@@ -10,8 +10,8 @@
                 [0, 'desc']
             ],
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'rownum',
+                    name: 'rownum'
                 },
                 {
                     data: 'created_at',
