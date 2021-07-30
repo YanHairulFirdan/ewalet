@@ -42,7 +42,7 @@ class TransactionController extends Controller
                 })
                 ->addColumn('Aksi', function ($transaction) {
                     $html = '<button href="#" data-id="' . $transaction->id . '" class="btn btn-xs btn-success btn-edit">Edit</button>';
-                    $html .= '<button data-rowid="' . $transaction->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
+                    $html .= '<button data-id="' . $transaction->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
 
                     return $html;
                 })
@@ -140,8 +140,10 @@ class TransactionController extends Controller
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Request $request, Transaction $transaction)
     {
-        //
+        $result = $transaction->delete();
+
+        return response()->json(['message' => 'transaction has been deleted', 'class' => 'success', 'result' => $result]);
     }
 }

@@ -45,6 +45,7 @@ class UserSeeder extends Seeder
                     'weight'         => $weight,
                     'price_per_kilo' => $price_per_kilo,
                     'total_price'    => $weight * $price_per_kilo,
+                    'created_at'     => $faker->dateTimeThisYear
                 ]
             );
         }

@@ -2,10 +2,6 @@
         
         $.noConflict();
 
-        var id = ''
-        var modal = $('.modal');
-        var form = $('.form');
-
         var table = $('#transactions').DataTable({
             ajax: '',
             serverSide: true,
@@ -60,105 +56,80 @@
                 }
             });
         })
+        
+        $('body').on('click','.btn-delete',function () {
+            let transaction = {};
+            id = $(this).data('id')
+            // let confirm = confirm('Apakah anda ingin menghapus data ini?');
+
+            if(confirm('Apakah anda ingin menghapus data ini?')){
+                // console.log(confirm);
+                let form = new FormData();
+                form.append('_method', 'DELETE');
+
+                ajax('transactions/'+id, form, '', 'DELETE', table);
+            }
+        })
 
         $('#updateBtn').click(function (event) {
             event.preventDefault();
             let form = document.getElementById('updateForm')
-            let data = {
-                    _method        : 'POST',
-                    buyer          : $('#edit_buyer').val(),
-                    weight         : $('#edit_weight').val(),
-                    price_per_kilo : $('#edit_price_per_kilo').val(),
-                };
             
-            $.ajax({
-                type        : 'POST',
-                url         : 'transactions/'+id,
-                headers     : {
-                    'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content'),
-                    // "Content-Type": "application/json",
-                }, 
-                data        : new FormData(form),
-                dataType    : "JSON",
-                contentType : false,
-                cache       : false,
-                processData : false,
-                success : function (data) {
-                    console.log(data);
-                    $('#messageModal').modal('show');
-                    $('#updateModal').modal('hide');
-                    $('#message').html(data.message);
-                    $('#message').addClass('alert-' + data.class);
-                    table.draw()
-                },
-                error:function (error) {
-                    display_error(error.responseJSON.errors)
-                }
+            ajax('transactions/'+id, new FormData(form), '#updateModal', 'POST', table)
+            
             })
-        })
         
         $('#saveBtn').click(function (event) {
             event.preventDefault();
             let form = document.getElementById('insertForm')
+
+            ajax('transactions', new FormData(form), '#insertModal', 'POST', table)
         
-            $.ajax({
-                url         : 'transactions',
-                data        : new FormData(form),
-                type        : 'post',
-                dataType    : "JSON",
-                contentType : false,
-                cache       : false,
-                processData : false,
-                success : function (data) {
-                    $('#messageModal').modal('show');
-                    $('#insertModal').modal('hide');
-                    $('#message').html(data.message);
-                    $('#message').addClass('alert-' + data.class);
-                    table.draw()
-                },
-                error:function (error) {
-                    display_error(error.responseJSON.errors)
-                }
             })
-        })
-    })
-
-function display_error(errors) {
-    for (const error of Object.keys(errors)) {
-        let alert = document.getElementById(error + "_error");
-        
-        alert.classList.toggle('d-none');
-
-        alert.innerText = errors[error];
-        
-        $("#" + error + "_error").fadeOut(5000, function () {
-            document.getElementById(error + "_error").classList.toggle('d-none');
-        })
-    }
-}
-
-function ajax(url, formData, modal, method) {
-    $.ajax({
-        url         : url,
-        type        : method,
-        data        : formData,
-        dataType    : "JSON",
-        contentType : false,
-        cache       : false,
-        processData : false,
-        success     : function (response) {
-            $(modal).modal('hide');
-            $('#messageModal').modal('show');
-            $('#message').html(response.message);
-            $('#message').addClass('alert-' + response.class);
-        },
-        error       : function (error) {
-            display_error(error.responseJSON.errors)
-
-
-            }
     });
-}
 
-function show_message(id, type, message) {
+    function display_error(errors) {
+        for (const error of Object.keys(errors)) {
+            let alert = document.getElementById(error + "_error");
+            
+            alert.classList.toggle('d-none');
+
+            alert.innerText = errors[error];
+            
+            $("#" + error + "_error").fadeOut(5000, function () {
+                document.getElementById(error + "_error").classList.toggle('d-none');
+            })
+        }
+    }
+
+    function ajax(url, formData, modal, method, datatable) {
+        $.ajax({
+            type        : method,
+            url         : url,
+            headers     : {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content'),
+            }, 
+            data        : formData,
+            dataType    : "JSON",
+            contentType : false,
+            cache       : false,
+            processData : false,
+            success : function (data) {
+                $('#messageModal').modal('show');
+                $(modal).modal('hide');
+                $('#message').html(data.message);
+                $('#message').addClass('alert-' + data.class);
+                datatable.draw()
+            },
+            error:function (error) {
+                console.log(error);
+                if(error.statusCode){
+                    console.log(error);
+                    $('#messageModal').modal('show');
+                    $('#message').html(error.statusCode.statusText);
+                    $('#message').addClass('alert-danger');
+                }
+                display_error(error.responseJSON.errors)
+            }
+         })
     }

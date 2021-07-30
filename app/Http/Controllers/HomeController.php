@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon as SupportCarbon;
@@ -39,8 +40,14 @@ class HomeController extends Controller
             ->whereYear('created_at', Carbon::now()->year)
             ->sum('total_price');
 
-        $total_income         = $user->transactions()->sum('total_price');
+        $summaryReports = Transaction::select(DB::raw("MONTH(created_at) as month"), DB::raw("SUM(weight) as weight"), DB::raw("SUM(total_price) as total_price"))
+            ->where('user_id', Auth::id())
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('month')
+            ->get();
 
-        return view('welcome', compact('total_weight', 'total_income', 'current_month_weight', 'current_month_price'));
+        $total_income = $user->transactions()->sum('total_price');
+
+        return view('welcome', compact('total_weight', 'total_income', 'current_month_weight', 'current_month_price', 'summaryReports'));
     }
 }

@@ -65,4 +65,52 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-area me-1"></i>
+                    Area Chart Example
+                </div>
+                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    Bar Chart Example
+                </div>
+                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+            </div>
+        </div>
+    </div>
 @endsection
+@push('js')
+    <script src="js/chart-area-demo.js"></script>
+    <script src="js/chart-bar-demo.js"></script>
+    <script>
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        let summaryReports = @json($summaryReports);
+
+        let summaryWeights = []
+        let summaryMonths = []
+        let summaryTotalPrice = []
+
+        summaryReports.forEach(report => {
+            summaryMonths.push(monthNames[report.month - 1])
+            summaryWeights.push(report.weight)
+            summaryTotalPrice.push(report.total_price)
+        });
+
+        drawAreaChart(summaryMonths, summaryWeights)
+        drawBarChart(summaryMonths, summaryTotalPrice)
+
+        console.log(summaryTotalPrice.reduce((a, b) => {
+            return Math.max(a, b)
+        }));
+    </script>
+@endpush
