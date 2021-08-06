@@ -7,7 +7,7 @@ use App\Transaction;
 class TransactionObserver
 {
     /**
-     * Handle the transaction "creating" event.
+     * Handle the Transaction "creating" event.
      *
      * @param  \App\transaction  $transaction
      * @return void
@@ -17,7 +17,7 @@ class TransactionObserver
         $transaction->total_price = $transaction->weight * $transaction->price_per_kilo;
     }
     /**
-     * Handle the transaction "created" event.
+     * Handle the Transaction "created" event.
      *
      * @param  \App\transaction  $transaction
      * @return void
@@ -28,7 +28,7 @@ class TransactionObserver
     }
 
     /**
-     * Handle the transaction "updated" event.
+     * Handle the Transaction "updated" event.
      *
      * @param  \App\transaction  $transaction
      * @return void
@@ -39,7 +39,7 @@ class TransactionObserver
     }
 
     /**
-     * Handle the transaction "deleted" event.
+     * Handle the Transaction "deleted" event.
      *
      * @param  \App\transaction  $transaction
      * @return void
@@ -50,7 +50,7 @@ class TransactionObserver
     }
 
     /**
-     * Handle the transaction "restored" event.
+     * Handle the Transaction "restored" event.
      *
      * @param  \App\transaction  $transaction
      * @return void
@@ -61,7 +61,7 @@ class TransactionObserver
     }
 
     /**
-     * Handle the transaction "force deleted" event.
+     * Handle the Transaction "force deleted" event.
      *
      * @param  \App\transaction  $transaction
      * @return void
