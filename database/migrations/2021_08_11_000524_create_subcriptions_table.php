@@ -21,7 +21,7 @@ class CreateSubcriptionsTable extends Migration
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->bigIncrementssubcription_('type_id');
+            $table->bigIncrements('subcription_type_id');
             $table->foreign('subcription_type_id')
                 ->references('id')
                 ->on('subcription_types')
