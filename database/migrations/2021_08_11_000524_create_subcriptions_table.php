@@ -21,10 +21,10 @@ class CreateSubcriptionsTable extends Migration
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->bigIncrements('type_id');
-            $table->foreign('type_id')
+            $table->bigIncrementssubcription_('type_id');
+            $table->foreign('subcription_type_id')
                 ->references('id')
-                ->on('types')
+                ->on('subcription_types')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->timestamp('started_at');
