@@ -29,9 +29,7 @@ class LoginController extends Controller
 
         $login = Auth::guard('admin')->attempt($request->only(['username', 'password']));
 
-        if ($login) {
-            dd('authenticated');
-        } else return redirect()->back()->withErrors(['errors' => 'wrong cridential']);
+        return $login ? redirect(route('admin.dashboard')) : redirect()->back()->withErrors(['errors' => 'wrong cridential']);
     }
 
     public function logout(Request $request)
