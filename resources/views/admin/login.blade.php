@@ -31,6 +31,7 @@
                         </div>
                     @enderror
                 </div>
+                <button class="btn btn-primary" type="submit">login</button>
             </form>
         </div>
     </div>
