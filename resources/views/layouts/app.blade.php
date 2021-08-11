@@ -45,8 +45,12 @@
         </ul>
     </nav>
     <div id="layoutSidenav">
+        @if (Request::is('admin') || Request::is('admin/*'))
+            @include('layouts.adminsidebar')
+        @else
+            @include('layouts.sidebar')
+        @endif
         {{-- sidebar --}}
-        @include('layouts.sidebar')
         {{-- end sidebar --}}
 
         <div id="layoutSidenav_content">
