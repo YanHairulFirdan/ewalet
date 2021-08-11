@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Payment;
+use App\Models\Subscription;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,5 +42,15 @@ class User extends Authenticatable
     public function transactions()
     {
         return $this->hasMany(Transaction::class)->orderByDesc('created_at');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class)->orderByDesc('created_at');
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
     }
 }

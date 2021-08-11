@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 
 class UserSeeder extends Seeder
 {
@@ -12,7 +13,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         factory(App\User::class, 50)->create()->each(function ($user) {
-            $user->transactions()->createMany(factory(App\Transaction::class, 10)->make()->toArray());
+            $user->transactions()->save(factory(App\Transaction::class)->make());
+            $user->payments()->save(factory(App\Models\Payment::class)->make());
+            Log::info("ok");
+            $user->subscription()->save(factory(App\Models\Subscription::class)->make());
+
             // make subscription
         });
     }

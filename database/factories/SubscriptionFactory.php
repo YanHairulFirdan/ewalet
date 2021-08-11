@@ -7,27 +7,24 @@ use App\Models\Type;
 use App\User;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Log;
 
 $factory->define(Subscription::class, function (Faker $faker) {
 
     $type = Type::inRandomOrder()->first();
-    $now  = Carbon::now();
-    switch ($type->name) {
-        case 'Coba Gratis':
-        case 'Bulanan':
-            $ended_at = $now->addDays(30);
-            break;
+    $subscriptionDays = $type->name == 'Coba Gratis' || $type->name == 'Bulanan' ? 30 : 360;
 
-        default:
-            $ended_at = $now->addDays(360);
-            break;
-    }
+    $started_at = Carbon::now();
+    $ended_at   = Carbon::now()->addDays($subscriptionDays);
 
-    return [
-        'user_id'             => factory(User::class),
-        'type_id'             => $type->id,
-        'started_at'          => $now,
-        'end_at'              => $ended_at,
-        'status'              => true
-    ];
+    Log::info("started at " . $started_at);
+    Log::info("ended at " . $ended_at);
+    return
+        [
+            'user_id'    => factory(User::class),
+            'type_id'    => $type->id,
+            'started_at' => $started_at,
+            'end_at'     => $ended_at,
+            'status'     => true
+        ];
 });
