@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(SubscriptionType::class, function (Faker $faker) {
     return [
-        //
+        'free trial'
     ];
 });

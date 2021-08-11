@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\SubscriptionType;
+use App\Models\Type;
 use Illuminate\Database\Seeder;
 
-class SubscriptionTypeSeeder extends Seeder
+class TypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,7 +19,7 @@ class SubscriptionTypeSeeder extends Seeder
         ];
 
         foreach ($names as $name => $price) {
-            SubscriptionType::create([
+            Type::create([
                 'name'  => $name,
                 'price' => $price,
             ]);
