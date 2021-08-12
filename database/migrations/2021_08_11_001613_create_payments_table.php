@@ -17,7 +17,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('amount');
             $table->timestamps();
         });
 
@@ -25,10 +25,6 @@ class CreatePaymentsTable extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade');
-            $table->foreign('type_id')
-                ->references('id')
-                ->on('types')
                 ->onDelete('cascade');
         });
     }

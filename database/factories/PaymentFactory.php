@@ -8,9 +8,9 @@ use App\User;
 use Faker\Generator as Faker;
 
 $factory->define(Payment::class, function (Faker $faker) {
-    $type = (Type::inRandomOrder()->first())->id;
+    $type = (Type::inRandomOrder()->first())->price;
     return [
         'user_id' => factory(User::class),
-        'type_id' => $type,
+        'amount' => $type,
     ];
 });
