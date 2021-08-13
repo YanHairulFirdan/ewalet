@@ -5,13 +5,14 @@
         var table = $('#transactions').DataTable({
             ajax: '',
             serverSide: true,
+            length: 25,
             processing: true,
             aaSorting: [
                 [0, 'desc']
             ],
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
                 },
                 {
                     data: 'created_at',
