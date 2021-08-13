@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
+     *  
      * @return void
      */
     public function run()
@@ -35,8 +35,8 @@ class UserSeeder extends Seeder
 
                 $type = Type::inRandomOrder()->first();
 
-                Payment::created([
-                    'user_id' => factory(User::class),
+                Payment::create([
+                    'user_id' => $user->id,
                     'amount' => $type->price,
                 ]);
 
