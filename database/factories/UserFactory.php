@@ -27,5 +27,6 @@ $factory->define(User::class, function (Faker $faker) use ($index) {
         'phone_number' => $faker->phoneNumber,
         'password' => Hash::make('paswordku1234'), // password
         'remember_token' => Str::random(10),
+        'created_at' => $faker->dateTimeThisYear()
     ];
 });

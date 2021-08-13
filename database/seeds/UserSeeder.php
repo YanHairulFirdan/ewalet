@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        $users = factory(App\User::class, 10)->create()->each(function ($user) use ($faker) {
+        $users = factory(App\User::class, 100)->create()->each(function ($user) use ($faker) {
             for ($i = 0; $i < rand(0, 40); $i++) {
                 $weight         = $faker->randomNumber(2);
                 $price_per_kilo = rand(8000000, 10000000);
@@ -54,17 +54,6 @@ class UserSeeder extends Seeder
 
                 ]);
             }
-
-
-
-            // $user->transactions()->createMany(
-            //     factory(App\Transaction::class, 2)->make()->toArray()
-            // );
-            // $user->payments()->save(factory(App\Models\Payment::class)->make());
-            // Log::info("ok");
-            // $user->subscription()->save(factory(App\Models\Subscription::class)->make());
-
-            // make subscription
         });
     }
 }
