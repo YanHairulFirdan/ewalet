@@ -13,6 +13,6 @@ class DashboardController
         $users    = User::count();
         $payments = Payment::sum('amount');
 
-        return view('admin.dashboard');
+        return view('admin.dashboard', compact('users', 'payments'));
     }
 }
