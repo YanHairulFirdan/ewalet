@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Transaction;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class TransactionObserver
 {
@@ -14,6 +16,8 @@ class TransactionObserver
      */
     public function creating(Transaction $transaction)
     {
+        Log::info("called from observer");
+
         $transaction->total_price = $transaction->weight * $transaction->price_per_kilo;
     }
     /**
@@ -25,6 +29,13 @@ class TransactionObserver
     public function created(Transaction $transaction)
     {
         //
+    }
+
+    public function retrieved(Transaction $transaction)
+    {
+        $transaction->created_at     = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created_at)->format('d-m-Y');
+        $transaction->weight         = $transaction->weight . ' Kg';
+        $transaction->price_per_kilo = 'Rp.' . number_format($transaction->price_per_kilo);
     }
 
     /**
