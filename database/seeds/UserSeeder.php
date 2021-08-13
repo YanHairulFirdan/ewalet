@@ -32,27 +32,26 @@ class UserSeeder extends Seeder
                     'price_per_kilo' => $price_per_kilo,
                     'total_price'    => $weight * $price_per_kilo,
                 ]);
-
-                $type = Type::inRandomOrder()->first();
-
-                Payment::create([
-                    'user_id' => $user->id,
-                    'amount' => $type->price,
-                ]);
-
-                $subscriptionDays = $type->name == 'Coba Gratis' || $type->name == 'Bulanan' ? 30 : 360;
-
-                $started_at = Carbon::now();
-                $ended_at   = Carbon::now()->addDays($subscriptionDays);
-
-                Subscription::create([
-                    'user_id' => $user->id,
-                    'type_id' => $type->id,
-                    'started_at' => $started_at,
-                    'end_at'     => $ended_at,
-                    'status'     => true
-                ]);
             }
+            $type = Type::inRandomOrder()->first();
+
+            Payment::create([
+                'user_id' => $user->id,
+                'amount' => $type->price,
+            ]);
+
+            $subscriptionDays = $type->name == 'Coba Gratis' || $type->name == 'Bulanan' ? 30 : 360;
+
+            $started_at = Carbon::now();
+            $ended_at   = Carbon::now()->addDays($subscriptionDays);
+
+            Subscription::create([
+                'user_id' => $user->id,
+                'type_id' => $type->id,
+                'started_at' => $started_at,
+                'end_at'     => $ended_at,
+                'status'     => true
+            ]);
         });
     }
 }

@@ -14,12 +14,21 @@ class DashboardController
     {
         $users    = User::count();
         $payments = Payment::sum('amount');
-        $signUpUsers = User::select(DB::raw('COUNT(*) AS user_permonth, MONTH(created_at) as monthRegister, YEAR(created_at) as yearRegister'),)
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->groupBy('created_at')->get();
+        $userAmounts = $months = [];
 
-        dd($signUpUsers);
+        $signUpUsers = User::groupBy(DB::raw('MONTHNAME(created_at)'))->select(DB::raw('COUNT(*) AS user_permonth, MONTHNAME(created_at) as monthRegister'),)
+            ->get();
+        $paymentsSummary = Payment::groupBy(DB::raw('MONTHNAME(created_at)'))->select(DB::raw('COUNT(*) AS pay_permonth, MONTHNAME(created_at) as monthRegister'),)
+            ->get();
 
-        return view('admin.dashboard', compact('users', 'payments'));
+        dd($paymentsSummary);
+        foreach ($signUpUsers as $key => $user) {
+            $userAmounts[] = $user['user_permonth'];
+            $months[]      = $user['monthRegister'];
+        }
+
+        unset($signUpUsers);
+
+        return view('admin.dashboard', compact('users', 'payments', 'userAmounts', 'months'));
     }
 }

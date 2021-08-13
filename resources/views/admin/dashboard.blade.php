@@ -87,32 +87,16 @@
     </div>
 @endsection
 @push('js')
-    <script src="js/chart-area-demo.js"></script>
-    <script src="js/chart-bar-demo.js"></script>
+    <script src="{{ asset('js/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('js/chart-bar-demo.js') }}"></script>
     <script>
-        // const monthNames = ["January", "February", "March", "April", "May", "June",
-        //     "July", "August", "September", "October", "November", "December"
-        // ];
-
-
-        // let summaryWeights = []
-        // let summaryMonths = []
-        // let summaryTotalPrice = []
-
-        // summaryReports.forEach(report => {
-        //     summaryMonths.push(monthNames[report.month - 1])
-        //     summaryWeights.push(report.weight)
-        //     summaryTotalPrice.push(report.total_price)
-        // });
-
-        // let maxProfit = summaryTotalPrice.reduce((a, b) => {
-        //     return Math.max(a, b)
-        // });
-        // let maxWeight = summaryWeights.reduce((a, b) => {
-        //     return Math.max(a, b)
-        // });
-
-        // drawAreaChart(summaryMonths, summaryWeights, maxWeight)
+        let months = @json($months);
+        let users = @json($userAmounts);
+        let max = Math.max(...users);
+        console.log(months);
+        console.log(users);
+        console.log(max);
+        drawAreaChart(months, users, max)
         // drawBarChart(summaryMonths, summaryTotalPrice, maxProfit)
     </script>
 @endpush
