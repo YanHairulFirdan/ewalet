@@ -51,7 +51,6 @@ class UserSeeder extends Seeder
                     'started_at' => $started_at,
                     'end_at'     => $ended_at,
                     'status'     => true
-
                 ]);
             }
         });
