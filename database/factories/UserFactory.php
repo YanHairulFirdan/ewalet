@@ -21,7 +21,6 @@ use Illuminate\Support\Str;
 
 $index = 0;
 $factory->define(User::class, function (Faker $faker) use ($index) {
-    Log::info("called " . $index++);
     return [
         'name' => $faker->name,
         'phone_number' => $faker->phoneNumber,
