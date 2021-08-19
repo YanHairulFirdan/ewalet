@@ -21,26 +21,6 @@ class TransactionController extends Controller
             $transactions = Transaction::where('user_id', Auth::id())->get();
             $datatables =  datatables()->of($transactions)
                 ->addIndexColumn()
-                // ->editColumn('created_at', function ($transaction) {
-                //     $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created_at)->format('d-m-Y');
-
-                //     return $formattedDate;
-                // })
-                // ->editColumn('weight', function ($transaction) {
-                //     $formattedWeight = $transaction->weight . ' Kg';
-
-                //     return $formattedWeight;
-                // })
-                // ->editColumn('price_per_kilo', function ($transaction) {
-                //     $formattedPrice = 'Rp.' . number_format($transaction->price_per_kilo);
-
-                //     return $formattedPrice;
-                // })
-                // ->editColumn('total_price', function ($transaction) {
-                //     $formattedTotalPrice = 'Rp.' . number_format($transaction->total_price);
-
-                //     return $formattedTotalPrice;
-                // })
                 ->addColumn('Aksi', function ($transaction) {
                     $html = '<button href="#" data-id="' . $transaction->id . '" class="btn btn-xs btn-success btn-edit">Edit</button>';
                     $html .= '<button data-id="' . $transaction->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';

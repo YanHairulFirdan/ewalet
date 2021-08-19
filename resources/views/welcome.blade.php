@@ -19,7 +19,7 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        {{ $total_weight }} Kg
+                        {{ $totalWeight }} Kg
                     </p>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        Rp.{{ number_format($total_income) }}
+                        Rp.{{ number_format($totalIncome) }}
                     </p>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        {{ $current_month_weight }} Kg
+                        {{ $currentHarvest }} Kg
                     </p>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        Rp.{{ number_format($current_month_price) }}
+                        Rp.{{ number_format($currentIncome) }}
                     </p>
                 </div>
             </div>
@@ -90,30 +90,23 @@
     <script src="js/chart-area-demo.js"></script>
     <script src="js/chart-bar-demo.js"></script>
     <script>
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-
         let summaryReports = @json($summaryReports);
+        let summary = {
+            weights: [],
+            months: [],
+            prices: [],
+        };
 
-        let summaryWeights = []
-        let summaryMonths = []
-        let summaryTotalPrice = []
 
-        summaryReports.forEach(report => {
-            summaryMonths.push(monthNames[report.month - 1])
-            summaryWeights.push(report.weight)
-            summaryTotalPrice.push(report.total_price)
+        summaryReports.forEach((report, index) => {
+            {
+                summary.weights[index] = report.weight
+                summary.months[index] = report.month
+                summary.prices[index] = parseInt(report.total_price.replace(',', ''))
+            }
         });
 
-        let maxProfit = summaryTotalPrice.reduce((a, b) => {
-            return Math.max(a, b)
-        });
-        let maxWeight = summaryWeights.reduce((a, b) => {
-            return Math.max(a, b)
-        });
-
-        drawAreaChart(summaryMonths, summaryWeights, maxWeight)
-        drawBarChart(summaryMonths, summaryTotalPrice, maxProfit)
+        drawAreaChart(summary.months, summary.weights, Math.max(...summary.weights))
+        drawBarChart(summary.months, summary.prices, Math.max(...summary.prices))
     </script>
 @endpush

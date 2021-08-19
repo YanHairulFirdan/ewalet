@@ -90,13 +90,16 @@
     <script src="{{ asset('js/chart-area-demo.js') }}"></script>
     <script src="{{ asset('js/chart-bar-demo.js') }}"></script>
     <script>
+        let paymentAmounts = monthRegister = [];
+        let paymentsSummary = @json($paymentsSummary);
         let months = @json($months);
         let users = @json($userAmounts);
-        let max = Math.max(...users);
-        console.log(months);
-        console.log(users);
-        console.log(max);
-        drawAreaChart(months, users, max)
-        // drawBarChart(summaryMonths, summaryTotalPrice, maxProfit)
+
+        paymentsSummary.forEach(payment => {
+            paymentAmounts.push(parseInt(payment.payPermonth))
+        })
+
+        drawAreaChart(months, users, Math.max(...users))
+        drawBarChart(months, paymentAmounts, Math.max(...paymentAmounts))
     </script>
 @endpush

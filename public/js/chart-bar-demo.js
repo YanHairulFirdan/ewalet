@@ -18,9 +18,9 @@ function drawBarChart(months, data, max) {
     },
     options: {
       // String - Template string for single tooltips
-    // tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= 'Rp.'+value %>",
+      tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= 'Rp.'+value %>",
     // String - Template string for multiple tooltips
-      // multiTooltipTemplate: "<%= value + ' %' %>",
+      multiTooltipTemplate: "<%= value + ' %' %>",
       scales: {
         xAxes: [{
           time: {
@@ -36,7 +36,7 @@ function drawBarChart(months, data, max) {
         yAxes: [{
           ticks: {
             min: 0,
-            max: max,
+            max: max+100,
             maxTicksLimit: 5,
             callback : function (value) {
               return new Intl.NumberFormat('INA', { style: 'currency', currency: 'IDR' }).format(value)

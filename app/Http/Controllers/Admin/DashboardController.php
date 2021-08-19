@@ -16,19 +16,25 @@ class DashboardController
         $payments = Payment::sum('amount');
         $userAmounts = $months = [];
 
-        $signUpUsers = User::groupBy(DB::raw('MONTHNAME(created_at)'))->select(DB::raw('COUNT(*) AS user_permonth, MONTHNAME(created_at) as monthRegister'),)
+        $signUpUsers = User::groupBy('monthRegister')->select(
+            DB::raw('COUNT(*) AS user_permonth'),
+            DB::raw("DATE_FORMAT(created_at, '%m-%Y') as monthRegister"),
+        )
+            ->orderBy('monthRegister', 'ASC')
             ->get();
-        $paymentsSummary = Payment::groupBy(DB::raw('MONTHNAME(created_at)'))->select(DB::raw('COUNT(*) AS pay_permonth, MONTHNAME(created_at) as monthRegister'),)
-            ->get();
+        $paymentsSummary = Payment::select(
+            DB::raw('SUM(amount) AS payPermonth'),
+        )
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))->get();
 
-        dd($paymentsSummary);
         foreach ($signUpUsers as $key => $user) {
             $userAmounts[] = $user['user_permonth'];
             $months[]      = $user['monthRegister'];
         }
 
+
         unset($signUpUsers);
 
-        return view('admin.dashboard', compact('users', 'payments', 'userAmounts', 'months'));
+        return view('admin.dashboard', compact('users', 'payments', 'userAmounts', 'months', 'paymentsSummary'));
     }
 }

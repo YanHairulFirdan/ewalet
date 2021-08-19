@@ -31,13 +31,15 @@ class UserSeeder extends Seeder
                     'weight'         => $weight,
                     'price_per_kilo' => $price_per_kilo,
                     'total_price'    => $weight * $price_per_kilo,
+                    'created_at'     => Carbon::today()->subDays(rand(0, 365))
                 ]);
             }
             $type = Type::inRandomOrder()->first();
 
             Payment::create([
-                'user_id' => $user->id,
-                'amount' => $type->price,
+                'user_id'    => $user->id,
+                'amount'     => $type->price,
+                'created_at' => Carbon::today()->subDays(rand(0, 365))
             ]);
 
             $subscriptionDays = $type->name == 'Coba Gratis' || $type->name == 'Bulanan' ? 30 : 360;

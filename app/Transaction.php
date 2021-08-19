@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\App;
 class Transaction extends Model
 {
     // use HasFactory;
-    protected $fillable = ['user_id', 'buyer', 'weight', 'price_per_kilo', 'total_price'];
+    protected $fillable = ['user_id', 'buyer', 'weight', 'price_per_kilo', 'total_price', 'created_at'];
 
     protected $casts = [
         'created_at' => 'datetime:d-m-Y'
@@ -29,16 +29,16 @@ class Transaction extends Model
 
     public function getWeightAttribute($weight)
     {
-        return $weight . ' Kg';
+        return $weight;
     }
 
     public function getPricePerKiloAttribute($value)
     {
-        return 'Rp.' . number_format($value);
+        return number_format($value);
     }
 
     public function getTotalPriceAttribute($value)
     {
-        return 'Rp.' . number_format($value);
+        return number_format($value);
     }
 }

@@ -47,9 +47,7 @@ var myLineChart = new Chart(ctx, {
           maxTicksLimit: 5,
           callback : function(value) {
               return new Intl.NumberFormat('pt-PT', { style: 'unit', unit: 'kilogram' }).format(value)
-
-              // return "Rp."+ data['datasets'][0]['data'][tooltipItem['index']];
-            },
+          },
         gridLines: {
           color: "rgba(0, 0, 0, .125)",
         }
@@ -63,8 +61,6 @@ var myLineChart = new Chart(ctx, {
           callbacks : {
             label: function(tooltipItem, data) {
               return new Intl.NumberFormat('pt-PT', { style: 'unit', unit: 'kilogram' }).format(data['datasets'][0]['data'][tooltipItem['index']])
-
-              // return "Rp."+ data['datasets'][0]['data'][tooltipItem['index']];
             },
           }
         }
