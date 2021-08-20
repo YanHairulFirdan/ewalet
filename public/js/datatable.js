@@ -84,10 +84,6 @@ const crudDataTable = {
                             alert.classList.remove('d-none');
 
                         alert.innerText = errors[error][0];
-                        
-                        // $("#" + error + "_error").fadeOut(5000, function () {
-                        //     alert.classList.add('d-none');
-                        // })
                     }
                 }
             }
