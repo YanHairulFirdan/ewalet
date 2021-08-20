@@ -1,95 +1,47 @@
-    $(document).ready(function() {
-        
+const crudDataTable = {
+    dataTable : null,
+    make : function (columnConfig, tableId, url = '') {
         $.noConflict();
-
-        var table = $('#transactions').DataTable({
-            ajax: '',
+    
+        this.dataTable = $('#'+tableId).DataTable({
+            ajax: url,
             serverSide: true,
             length: 25,
             processing: true,
             aaSorting: [
                 [0, 'desc']
             ],
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'created_at',
-                    name: 'created_at'
-                },
-                {
-                    data: 'buyer',
-                    name: 'buyer'
-                },
-                {
-                    data: 'weight',
-                    name: 'weight'
-                },
-                {
-                    data: 'price_per_kilo',
-                    name: 'price_per_kilo'
-                },
-                {
-                    data: 'total_price',
-                    name: 'total_price'
-                },
-                {
-                    data: 'Aksi',
-                    name: 'Aksi',
-                    orderable: false,
-                    searchable: false,
-                }
-            ]
+            columns: columnConfig
         });
-        
+    },
+    edit : function (event) {
+        let transaction = {};
+        let button = event.target
+        let id = button.getAttribute('data-id')
+        let url = button.getAttribute('data-url')
 
-        $('body').on('click','.btn-edit',function () {
-            let transaction = {};
-            id = $(this).data('id')
-            $.get('transactions/'+id, function (data, status) {
-                transaction = data.transaction;
-                $('#updateModal').modal('show');
-                console.log(transaction);
-
-                for (const field in transaction) {
-                    $('#edit_'+field).val(transaction[field])
-                }
-            });
-        })
-        
-        $('body').on('click','.btn-delete',function () {
-            let transaction = {};
-            id = $(this).data('id')
-            // let confirm = confirm('Apakah anda ingin menghapus data ini?');
-
-            if(confirm('Apakah anda ingin menghapus data ini?')){
-                // console.log(confirm);
-                let form = new FormData();
-                form.append('_method', 'DELETE');
-
-                ajax('transactions/'+id, form, '', 'DELETE', table);
+        $.get(url+'/'+id, function (data, status) {
+            transaction = data.transaction;
+            $('#updateModal').modal('show');
+            console.log(transaction)
+            for (const field in transaction) {
+                $('#edit_'+field).val(transaction[field])
             }
-        })
+        });
+    },
+    delete : function (event) {
+        let transaction = {};
+        let button = event.target
+        let id = button.getAttribute('data-id')
+        let url = button.getAttribute('data-url')
 
-        $('#updateBtn').click(function (event) {
-            event.preventDefault();
-            let form = document.getElementById('updateForm')
-            
-            ajax('transactions/'+id, new FormData(form), '#updateModal', 'POST', table)
-            
-            })
-        
-        $('#saveBtn').click(function (event) {
-            event.preventDefault();
-            let form = document.getElementById('insertForm')
-
-            ajax('transactions', new FormData(form), '#insertModal', 'POST', table)
-        
-            })
-    });
-
-    function display_error(errors) {
+        if(confirm('Apakah anda ingin menghapus data ini?')){
+            let form = new FormData();
+            form.append('_method', 'DELETE');
+            this.ajax(url+'/'+id, form, '', 'DELETE', table);
+        }
+    },
+    display_error : function(errors) {
         for (const error of Object.keys(errors)) {
             let alert = document.getElementById(error + "_error");
             
@@ -101,9 +53,15 @@
                 document.getElementById(error + "_error").classList.toggle('d-none');
             })
         }
-    }
+    },
+    update : function (event) {
+        event.preventDefault();
+        let form = document.getElementById('updateForm')
 
-    function ajax(url, formData, modal, method, datatable) {
+        this.ajax('transactions/'+id, new FormData(form), '#updateModal', 'POST', table)
+    },
+
+    ajax : function(url, formData, modal, method) {
         $.ajax({
             type        : method,
             url         : url,
@@ -120,7 +78,7 @@
                 $(modal).modal('hide');
                 $('#message').html(data.message);
                 $('#message').addClass('alert-' + data.class);
-                datatable.draw()
+                this.datatable.draw()
             },
             error:function (error) {
                 console.log(error);
@@ -134,3 +92,14 @@
             }
          })
     }
+
+}
+
+    // $(document).ready(function() {
+        
+        
+
+        
+    // });
+
+    

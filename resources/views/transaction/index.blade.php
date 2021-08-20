@@ -143,7 +143,8 @@
                         <div id="price_per_kilo_error" class="alert alert-danger d-none">
 
                         </div>
-                        <button type="submit" id="updateBtn" class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Perbarui
+                        <button type="submit" id="updateBtn" onclick="crudDataTable.update(event)"
+                            class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Perbarui
                             data</button>
                     </form>
                 </div>
@@ -181,4 +182,40 @@
 @push('js')
     {{-- @include('layouts.datatable') --}}
     <script src="{{ asset('js/datatable.js') }}"></script>
+    {{-- <script src="{{ asset('js/ajaxCrud.js') }}"></script> --}}
+    <script>
+        let columnConfig = [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at'
+            },
+            {
+                data: 'buyer',
+                name: 'buyer'
+            },
+            {
+                data: 'weight',
+                name: 'weight'
+            },
+            {
+                data: 'price_per_kilo',
+                name: 'price_per_kilo'
+            },
+            {
+                data: 'total_price',
+                name: 'total_price'
+            },
+            {
+                data: 'Aksi',
+                name: 'Aksi',
+                orderable: false,
+                searchable: false,
+            }
+        ];
+
+        crudDataTable.make(columnConfig, 'transactions')
+    </script>
 @endpush

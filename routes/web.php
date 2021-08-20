@@ -35,6 +35,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', 'Admin\LoginController@showForm')->name('login');
     Route::post('login', 'Admin\LoginController@login')->name('post.login');
     Route::get('/', 'Admin\DashboardController@index')->name('dashboaard');
+    Route::get('/users', 'Admin\DashboardController@showUsers')->name('show.users');
 });
 
 // Route::get('/home', 'HomeController@index')->name('home');

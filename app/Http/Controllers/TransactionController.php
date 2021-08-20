@@ -22,8 +22,8 @@ class TransactionController extends Controller
             $datatables =  datatables()->of($transactions)
                 ->addIndexColumn()
                 ->addColumn('Aksi', function ($transaction) {
-                    $html = '<button href="#" data-id="' . $transaction->id . '" class="btn btn-xs btn-success btn-edit">Edit</button>';
-                    $html .= '<button data-id="' . $transaction->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
+                    $html = '<button data-id="' . $transaction->id . '" data-url="transactions" class="btn btn-xs btn-success btn-edit" onclick="crudDataTable.edit(event)">Edit</button>';
+                    $html .= '<button data-id="' . $transaction->id . '" data-url="transactions" class="btn btn-xs btn-danger btn-delete" onclick="crudDataTable.delete(event, ' . "transactions" . ')">Del</button>';
 
                     return $html;
                 })

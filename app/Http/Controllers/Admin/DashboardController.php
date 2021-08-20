@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Transaction;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController
@@ -14,6 +15,7 @@ class DashboardController
     {
         $users    = User::count();
         $payments = Payment::sum('amount');
+
         $userAmounts = $months = [];
 
         $signUpUsers = User::groupBy('monthRegister')->select(
@@ -36,5 +38,19 @@ class DashboardController
         unset($signUpUsers);
 
         return view('admin.dashboard', compact('users', 'payments', 'userAmounts', 'months', 'paymentsSummary'));
+    }
+
+    public function showUsers(Request $request)
+    {
+        if ($request->ajax()) {
+            $users = User::orderByDesc('created_at')->get();
+
+            $datatable = datatables()->of($users)
+                ->addIndexColumn();
+
+            return $datatable->make(true);
+        }
+
+        return view('admin.users');
     }
 }

@@ -90,7 +90,7 @@
     <script src="{{ asset('js/chart-area-demo.js') }}"></script>
     <script src="{{ asset('js/chart-bar-demo.js') }}"></script>
     <script>
-        let paymentAmounts = monthRegister = [];
+        let paymentAmounts = [];
         let paymentsSummary = @json($paymentsSummary);
         let months = @json($months);
         let users = @json($userAmounts);
