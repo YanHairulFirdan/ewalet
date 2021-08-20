@@ -1,18 +1,19 @@
 const crudDataTable = {
     dataTable : null,
     table : '',
-    make : function (columnConfig, tableId, url = '') {
+    columnConfig : {},
+    make : function () {
         $.noConflict();
     
-        this.dataTable = $('#'+tableId).DataTable({
-            ajax: url,
-            serverSide: true,
+        this.dataTable = $('#'+this.table).DataTable({
+            ajax : '',
+            serverSide : true,
             length: 25,
             processing: true,
             aaSorting: [
                 [0, 'desc']
             ],
-            columns: columnConfig
+            columns: this.columnConfig
         });
     },
     edit : function (event) {
@@ -31,7 +32,6 @@ const crudDataTable = {
         });
     },
     delete : function (event) {
-        let transaction = {};
         let button = event.target
         let id = button.getAttribute('data-id')
         let url = button.getAttribute('data-url')
@@ -39,16 +39,21 @@ const crudDataTable = {
         if(confirm('Apakah anda ingin menghapus data ini?')){
             let form = new FormData();
             form.append('_method', 'DELETE');
-            this.ajax(url+'/'+id, form, '', 'DELETE', table);
+            this.ajax(url+'/'+id, form, '', 'DELETE');
         }
     },
     update : function (event) {
         event.preventDefault();
         let form = document.getElementById('updateForm')
         let id = $('#edit_id').val();
-        this.ajax('transactions/'+id, new FormData(form), '#updateModal', 'POST')
+        let formData =  new FormData(form);
+        formData.set('price_per_kilo', removeComma(formData.get('price_per_kilo')))
+
+        this.ajax('transactions/'+id, formData, '#updateModal', 'POST')
     },
     ajax : function(url, formData, modal, method) {
+        let dataTableObj = this.dataTable;
+        
         $.ajax({
             type        : method,
             url         : url,
@@ -65,7 +70,7 @@ const crudDataTable = {
                 $(modal).modal('hide');
                 $('#message').html(data.message);
                 $('#message').addClass('alert-' + data.class);
-                this.datatable.draw()
+                dataTableObj.draw()
             },
             error:function (error) {
                 console.log(error.status);
@@ -99,8 +104,15 @@ const crudDataTable = {
             })
         }
     },
+    success : function () {
+        this.dataTable.draw()
+    }
 
 }
 
+
+function removeComma(value) {
+    return value.replace(/,/g,'');
+}
 
     

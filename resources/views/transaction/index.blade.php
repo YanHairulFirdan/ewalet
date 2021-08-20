@@ -225,6 +225,8 @@
         ];
 
         crudDataTable.table = 'transactions'
-        crudDataTable.make(columnConfig, 'transactions')
+        crudDataTable.columnConfig = columnConfig
+        console.log(crudDataTable.columnConfig);
+        crudDataTable.make()
     </script>
 @endpush
