@@ -1,5 +1,6 @@
 const crudDataTable = {
     dataTable : null,
+    table : '',
     make : function (columnConfig, tableId, url = '') {
         $.noConflict();
     
@@ -23,7 +24,7 @@ const crudDataTable = {
         $.get(url+'/'+id, function (data, status) {
             transaction = data.transaction;
             $('#updateModal').modal('show');
-            console.log(transaction)
+            $('#edit_id').val(id)
             for (const field in transaction) {
                 $('#edit_'+field).val(transaction[field])
             }
@@ -41,26 +42,12 @@ const crudDataTable = {
             this.ajax(url+'/'+id, form, '', 'DELETE', table);
         }
     },
-    display_error : function(errors) {
-        for (const error of Object.keys(errors)) {
-            let alert = document.getElementById(error + "_error");
-            
-            alert.classList.toggle('d-none');
-
-            alert.innerText = errors[error];
-            
-            $("#" + error + "_error").fadeOut(5000, function () {
-                document.getElementById(error + "_error").classList.toggle('d-none');
-            })
-        }
-    },
     update : function (event) {
         event.preventDefault();
         let form = document.getElementById('updateForm')
-
-        this.ajax('transactions/'+id, new FormData(form), '#updateModal', 'POST', table)
+        let id = $('#edit_id').val();
+        this.ajax('transactions/'+id, new FormData(form), '#updateModal', 'POST')
     },
-
     ajax : function(url, formData, modal, method) {
         $.ajax({
             type        : method,
@@ -81,25 +68,39 @@ const crudDataTable = {
                 this.datatable.draw()
             },
             error:function (error) {
-                console.log(error);
-                if(error.statusCode){
-                    console.log(error);
-                    $('#messageModal').modal('show');
-                    $('#message').html(error.statusCode.statusText);
-                    $('#message').addClass('alert-danger');
+                console.log(error.status);
+                if(error.status){
+                    let errors = error.responseJSON.errors;
+
+                    for (const error of Object.keys(errors)) {
+                        let alert = document.getElementById(error + "_error");
+                        
+                        if(alert.classList.contains('d-none'))
+                            alert.classList.remove('d-none');
+
+                        alert.innerText = errors[error][0];
+                        
+                        // $("#" + error + "_error").fadeOut(5000, function () {
+                        //     alert.classList.add('d-none');
+                        // })
+                    }
                 }
-                display_error(error.responseJSON.errors)
             }
          })
-    }
+    },
+    showErrors : function(errors) {
+        for (const error of Object.keys(errors)) {
+            let alert = document.getElementById(error + "_error");
+            alert.classList.toggle('d-none');
+            alert.innerText = errors[error];
+            
+            $("#" + error + "_error").fadeOut(5000, function () {
+                document.getElementById(error + "_error").classList.toggle('d-none');
+            })
+        }
+    },
 
 }
 
-    // $(document).ready(function() {
-        
-        
-
-        
-    // });
 
     

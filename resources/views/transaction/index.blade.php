@@ -67,28 +67,31 @@
                     <form action="" method="post" id="insertForm">
                         @csrf
                         @method('POST')
-                        <div class="form-group"><label for="buyer">
+                        <div class="form-group">
+                            <label for="buyer">
                                 Pembeli
                             </label>
                             <input type="text" class="form-control" name="buyer">
                         </div>
-                        <div id="buyer_error" class="alert alert-danger d-none">
+                        <div id="buyer_error" class="alert">
 
                         </div>
-                        <div class="form-group"><label for="weight">
+                        <div class="form-group">
+                            <label for="weight">
                                 Berat Total
                             </label>
                             <input type="text" class="form-control" name="weight">
                         </div>
-                        <div id="weight_error" class="alert alert-danger d-none">
+                        <div id="weight_error" class="alert">
 
                         </div>
-                        <div class="form-group"><label for="price_per_kilo">
+                        <div class="form-group">
+                            <label for="price_per_kilo">
                                 Harga Perkilo
                             </label>
                             <input type="text" class="form-control" name="price_per_kilo">
                         </div>
-                        <div id="price_per_kilo_error" class="alert alert-danger d-none">
+                        <div id="price_per_kilo_error" class="alert">
 
                         </div>
                         <button type="submit" id="saveBtn" class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Simpan
@@ -119,33 +122,38 @@
                     <form action="" method="post" id="updateForm">
                         @csrf
                         @method('POST')
-                        <div class="form-group"><label for="buyer">
+                        <input type="hidden" name="id" id="edit_id">
+                        <div class="form-group">
+                            <label for="buyer">
                                 Pembeli
                             </label>
                             <input type="text" class="form-control" name="buyer" id="edit_buyer">
                         </div>
-                        <div id="buyer_error" class="alert alert-danger d-none">
+                        <div id="buyer_error" class="alert">
 
                         </div>
-                        <div class="form-group"><label for="weight">
+                        <div class="form-group">
+                            <label for="weight">
                                 Berat Total
                             </label>
                             <input type="text" class="form-control" name="weight" id="edit_weight">
                         </div>
-                        <div id="weight_error" class="alert alert-danger d-none">
+                        <div id="weight_error" class="alert">
 
                         </div>
-                        <div class="form-group"><label for="price_per_kilo">
+                        <div class="form-group">
+                            <label for="price_per_kilo">
                                 Harga Perkilo
                             </label>
                             <input type="text" class="form-control" name="price_per_kilo" id="edit_price_per_kilo">
                         </div>
-                        <div id="price_per_kilo_error" class="alert alert-danger d-none">
+                        <div id="price_per_kilo_error" class="alert">
 
                         </div>
                         <button type="submit" id="updateBtn" onclick="crudDataTable.update(event)"
-                            class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Perbarui
-                            data</button>
+                            class="btn btn-primary ml-auto">Perbarui
+                            data
+                        </button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -216,6 +224,7 @@
             }
         ];
 
+        crudDataTable.table = 'transactions'
         crudDataTable.make(columnConfig, 'transactions')
     </script>
 @endpush
