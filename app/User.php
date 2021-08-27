@@ -53,4 +53,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Subscription::class);
     }
+
+    public function getStatusAttribute($value)
+    {
+        return $value ?
+            '<span class="text-center d-block rounded bg-primary text-white">aktif</span>'
+            :
+            '<span class="text-center d-inline-block btn btn-danger">tidak aktif</span>';
+    }
 }

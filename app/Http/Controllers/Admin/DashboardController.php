@@ -51,11 +51,8 @@ class DashboardController
 
             return DataTables::of($users)
                 ->addIndexColumn()
-                // ->addColumn('status', function (User $user) {
-                //     return $user->subscription->status ? '<span class="badge badge-success" style="background:green">Aktif</span>' : '<span class="badge badge-danger" style="background:red">Tidak Aktif</span>';
-                // })
-                // ->rawColumns(['status'])
-                // ->make(true)
+                // ->editColumn('status', '{!!$status!!}')
+                ->rawColumns(['status'])
                 ->make(true);
         }
 

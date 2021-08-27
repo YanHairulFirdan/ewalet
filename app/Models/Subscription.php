@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Subscription extends Model
 {
@@ -11,8 +12,8 @@ class Subscription extends Model
         return $this->belongsTo(User::class);
     }
 
-    // public function getStatusAttribute($value)
-    // {
-    //     return $value ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tidak Aktif</span>';
-    // }
+    public function getStatusAttribute($value)
+    {
+        return $value ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tidak Aktif</span>';
+    }
 }
