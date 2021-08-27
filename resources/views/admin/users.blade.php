@@ -19,6 +19,9 @@
                 <td>
                     Nomor Telepon
                 </td>
+                <td>
+                    Status
+                </td>
             </tr>
         </thead>
     </table>
@@ -28,7 +31,9 @@
     <script>
         let columnConfig = [{
                 data: 'DT_RowIndex',
-                name: 'DT_RowIndex'
+                name: 'DT_RowIndex',
+                orderable: false,
+                // searchable: false,
             },
             {
                 data: 'name',
@@ -38,10 +43,19 @@
                 data: 'phone_number',
                 name: 'phone_number'
             },
+            {
+                data: 'status',
+                name: 'user.subscription',
+                orderable: false,
+                searchable: false,
+            },
         ];
         let url = document.querySelector("meta[name='current-url']").content
 
-        makeDatatable(columnConfig, 'users')
+        crudDataTable.table = 'users'
+        crudDataTable.columnConfig = columnConfig
+        console.log(crudDataTable.columnConfig);
+        crudDataTable.make()
     </script>
     <script>
 

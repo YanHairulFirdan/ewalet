@@ -94,7 +94,8 @@
                         <div id="price_per_kilo_error" class="alert">
 
                         </div>
-                        <button type="submit" id="saveBtn" class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Simpan
+                        <button type="submit" id="saveBtn" onclick="crudDataTable.store(event, 'transactions')"
+                            class="btn btn-primary btn-lg btn-block mt-10 ml-auto">Simpan
                             data</button>
                     </form>
                 </div>

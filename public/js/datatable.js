@@ -16,6 +16,15 @@ const crudDataTable = {
             columns: this.columnConfig
         });
     },
+    store : function (event, url) {
+        event.preventDefault();
+        
+        let form = document.getElementById('insertForm')
+        
+        this.ajax(url, new FormData(form), '#insertModal', 'POST')
+
+        form.reset();
+    },  
     edit : function (event) {
         let transaction = {};
         let button = event.target

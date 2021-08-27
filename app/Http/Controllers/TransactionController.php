@@ -21,6 +21,9 @@ class TransactionController extends Controller
             $transactions = Transaction::where('user_id', Auth::id())->get();
             $datatables =  datatables()->of($transactions)
                 ->addIndexColumn()
+                ->editColumn('price_per_kilo', 'Rp.{{$price_per_kilo}}')
+                ->editColumn('total_price', 'Rp.{{$total_price}}')
+                ->editColumn('weight', '{{$weight}} Kg')
                 ->addColumn('Aksi', function ($transaction) {
                     $html = '<button data-id="' . $transaction->id . '" data-url="transactions" class="btn btn-xs btn-success btn-edit" onclick="crudDataTable.edit(event)">Edit</button>';
                     $html .= '<button data-id="' . $transaction->id . '" data-url="transactions" class="btn btn-xs btn-danger btn-delete" onclick="crudDataTable.delete(event, ' . "transactions" . ')">Del</button>';

@@ -10,4 +10,9 @@ class Subscription extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // public function getStatusAttribute($value)
+    // {
+    //     return $value ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tidak Aktif</span>';
+    // }
 }
