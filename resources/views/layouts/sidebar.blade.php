@@ -72,7 +72,11 @@
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
-            Start Bootstrap
         </div>
+        <form action="{{ route('logout') }}" method="post">
+            @csrf
+            @method('POST')
+            <button type="submit">logout</button>
+        </form>
     </nav>
 </div>
