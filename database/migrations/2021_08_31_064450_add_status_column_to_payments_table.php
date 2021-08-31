@@ -14,7 +14,9 @@ class AddStatusColumnToPaymentsTable extends Migration
     public function up()
     {
         Schema::table('payments', function (Blueprint $table) {
-            //
+            $table->enum('status', [1, 2, 3, 4])
+                ->comment('1=Menunggu pembayaran, 2=Sudah dibayar, 3=kadaluarsa, 4=batal')
+                ->default(null);
         });
     }
 
