@@ -30,24 +30,28 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        $totalWeight   = $user->transactions()->sum('weight');
-        $currentHarvest = $user->transactions()
+        $monthlyReport = $user->transactions()->select(
+            DB::raw('SUM(weight) as monthlyWeight'),
+            DB::raw('SUM(total_price) as monthlyIncome')
+        )
             ->whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
-            ->sum('weight');
-        $currentIncome  = $user->transactions()
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
-            ->sum('total_price');
+            ->get();
 
-        $summaryReports = Transaction::select(DB::raw("DATE_FORMAT(created_at, '%m-%Y') as month"), DB::raw("SUM(weight) as weight"), DB::raw("SUM(total_price) as total_price"))
-            ->where('user_id', Auth::id())
+        $totalReport = $user->transactions()->select(
+            DB::raw("DATE_FORMAT(created_at, '%m-%Y') as month"),
+            DB::raw("SUM(weight) as weight"),
+            DB::raw("SUM(total_price) as total_price")
+        )
             ->whereYear('created_at', Carbon::now()->year)
             ->groupBy('month')
             ->get();
 
-        $totalIncome = $user->transactions()->sum('total_price');
+        dd($totalReport);
 
-        return view('welcome', compact('totalWeight', 'totalIncome', 'currentHarvest', 'currentIncome', 'summaryReports'));
+        return view('welcome', [
+            'monthlyReport' => $monthlyReport[0],
+            'totalReport'   => $totalReport[0]
+        ]);
     }
 }
