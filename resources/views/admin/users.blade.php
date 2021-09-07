@@ -45,7 +45,8 @@
     </table>
 @endsection
 @push('js')
-    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script defer src="{{ asset('js/datatable.js') }}"></script>
+    <script defer src="{{ asset('js/ajaxCrud.js') }}"></script>
     <script>
         let columnConfig = [{
                 data: 'DT_RowIndex',
@@ -78,17 +79,41 @@
                                 
                             }
 
-        crudDataTable.table = 'users'
-        crudDataTable.columnConfig = columnConfig
-        crudDataTable.make(callbackData)
+        // function make_datatable(columnConfig, table, callbackData) {
+             
+        // });
+
+        $('#users').DataTable({
+                ajax: {
+                    url: '',
+                    data: function (data) {
+                            data.month = $('#month').val();
+                            data.status = $('#status').val();
+                            
+                        }
+                },
+                serverSide : true,
+                length: 25,
+                processing: true,
+                aaSorting: [
+                    [0, 'desc']
+                ],
+                columns: columnConfig
+})
+
+        // let datatable = make_datatable(columnConfig, 'users', callbackData)
+        // console.log(datatable);
+
+        // crudDataTable.table = 'users'
+        // crudDataTable.make(datatable)
 
         $('#month').on('change', function (event) {
-            crudDataTable.dataTable.draw()
+            dataTable.draw()
             event.preventDefault()
         })
        
         $('#status').on('change', function (event) {
-            crudDataTable.dataTable.draw()
+            dataTable.draw()
             event.preventDefault()
         })
     </script>
