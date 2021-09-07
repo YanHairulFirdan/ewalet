@@ -55,11 +55,13 @@
             },
             {
                 data: 'name',
-                name: 'name'
+                name: 'name',
+                
             },
             {
                 data: 'phone_number',
-                name: 'phone_number'
+                name: 'phone_number',
+                
             },
             {
                 data: 'status',
@@ -73,7 +75,7 @@
         let callbackData = function (data) {
                                 data.month = $('#month').val();
                                 data.status = $('#status').val();
-                                console.log(data.status);
+                                
                             }
 
         crudDataTable.table = 'users'
