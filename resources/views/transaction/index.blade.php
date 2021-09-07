@@ -22,11 +22,15 @@
                 </div>
             </div>
 
-            <form action="" method="post" class="mb-4">
-                <select name="month" id="month">
-
-                </select>
-            </form>
+            <div class="row">
+                <div class="col-md-2">
+                    <form action="" method="post" class="mb-4">
+                        <select name="month" id="month" class="form-control">
+                            <option value="">Select month</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
 
             <table id="transactions" class="mt-10 table table-bordered table-condensed table-striped">
                 <thead>
