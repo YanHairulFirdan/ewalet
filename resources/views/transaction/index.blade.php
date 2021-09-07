@@ -235,5 +235,10 @@
         crudDataTable.columnConfig = columnConfig
         console.log(crudDataTable.columnConfig);
         crudDataTable.make()
+
+        $('#month').on('change', function (event) {
+            crudDataTable.dataTable.draw()
+            event.preventDefault()
+        })
     </script>
 @endpush

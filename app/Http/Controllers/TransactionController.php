@@ -18,8 +18,15 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $transactions = Transaction::where('user_id', Auth::id())->get();
-            $datatables =  datatables()->of($transactions)
+            $transactions = Transaction::where(function ($query) use ($request) {
+                $query = $query->where('user_id', Auth::id());
+                $query = $request->filled('month')
+                    ? $query->whereRaw("MONTHNAME(transactions.created_at) = '{$request->month}'")
+                    : $query;
+            })
+                ->get();
+
+            return datatables()->of($transactions)
                 ->addIndexColumn()
                 ->editColumn('price_per_kilo', 'Rp.{{$price_per_kilo}}')
                 ->editColumn('total_price', 'Rp.{{$total_price}}')
@@ -34,9 +41,8 @@ class TransactionController extends Controller
 
                     return $html;
                 })
-                ->rawColumns(['Aksi']);
-
-            return $datatables->make(true);
+                ->rawColumns(['Aksi'])
+                ->make(true);
         }
 
         return view('transaction.index');
