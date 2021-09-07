@@ -1,11 +1,11 @@
 const datatableObj = {
-    make : function(columnConfig, table, callbackData) {
-        $.noConflict(callbackData);
+    make : function(config, table) {
+        $.noConflict(config.callbackData);
 
         return $('#'+table).DataTable({
             ajax: {
                 url: '',
-                data: callbackData
+                data: config.callbackData
             },
             serverSide : true,
             length: 25,
@@ -13,7 +13,7 @@ const datatableObj = {
             aaSorting: [
                 [0, 'desc']
             ],
-            columns: columnConfig
+            columns: config.column,
         })
     }
 }

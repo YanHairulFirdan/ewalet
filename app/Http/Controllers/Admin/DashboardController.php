@@ -46,11 +46,8 @@ class DashboardController
     {
         if ($request->ajax()) {
             $users = User::join('subscriptions', 'users.id', '=', 'subscriptions.user_id')
-                ->select(['users.name', 'users.phone_number', 'subscriptions.status AS status']);
-
-            return DataTables::of($users)
-                ->addIndexColumn()
-                ->filter(function ($query) use ($request) {
+                ->select(['users.name', 'users.phone_number', 'subscriptions.status AS status'])
+                ->where(function ($query) use ($request) {
                     if ($request->filled('month')) {
                         $query->whereRaw("MONTHNAME(users.created_at) = '{$request->month}'");
                     }
@@ -60,7 +57,10 @@ class DashboardController
                             $query->where('status', $request->status);
                         });
                     }
-                })
+                });
+
+            return DataTables::of($users)
+                ->addIndexColumn()
                 ->editColumn('status', function ($user) {
                     return $user->status
                         ? '<span class="btn btn-success">Active</span>'

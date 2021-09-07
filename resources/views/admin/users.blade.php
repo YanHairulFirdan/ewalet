@@ -52,10 +52,12 @@
 
         months.forEach(month=>$('#month').append(`<option value="${month}">${month}</option>`))
 
-        let columnConfig = [{
+        let config = {
+            column : [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
+                searchable: false,
                 },
             {
                 data: 'name',
@@ -73,19 +75,16 @@
                 orderable: false,
                 searchable: false,
             },
-        ];
-        
-        let url = document.querySelector("meta[name='current-url']").content
-
-        let callbackData = function (data) {
+            ],
+            callbackData : function (data) {
                                 data.month = $('#month').val();
                                 data.status = $('#status').val();
                                 
-                            }
+            }
+        };
 
-        let datatable = datatableObj.make(columnConfig, 'users', callbackData)
-        console.log(datatable);
-
+        let datatable = datatableObj.make(config, 'users')
+        
         $('#month').on('change', function (event) {
             datatable.draw()
             event.preventDefault()
