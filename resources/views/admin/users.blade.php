@@ -24,7 +24,6 @@
                 </select>
             </div>
         </div>
-      
     </form>
     <table id="users" class="mt-10 table table-bordered table-condensed table-striped">
         <thead>
