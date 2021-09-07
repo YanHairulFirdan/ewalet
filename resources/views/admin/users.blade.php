@@ -12,13 +12,13 @@
             <div class="col-md-2">
                 <label for="month" class="mb-2">Select Month</label>
                 <select class="form-control" name="month" id="month">
-                    <option value=""></option>
+                    <option value="">Default</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <label for="status" class="mb-2">Select Status</label>
                  <select class="form-control" name="status" id="status">
-                    <option value=""></option>
+                    <option value="">Default</option>
                     <option value="1">Active</option>
                     <option value="0">Not Active</option>
                 </select>

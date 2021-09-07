@@ -56,7 +56,6 @@ class DashboardController
                     }
 
                     if ($request->filled('status')) {
-                        Log::info("status ");
                         $query->whereHas('subscription', function ($query) use ($request) {
                             $query->where('status', $request->status);
                         });
@@ -64,8 +63,8 @@ class DashboardController
                 })
                 ->editColumn('status', function ($user) {
                     return $user->status
-                        ? '<span class="btn btn-success">Aktif</span>'
-                        : '<span class="btn btn-secondary">Tidak Aktif</span>';
+                        ? '<span class="btn btn-success">Active</span>'
+                        : '<span class="btn btn-secondary">Not Active</span>';
                 })
                 ->rawColumns(['status'])
                 ->make(true);
