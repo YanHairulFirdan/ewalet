@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DataTables;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController
 {
@@ -45,13 +46,15 @@ class DashboardController
     {
         if ($request->ajax()) {
             $users = User::join('subscriptions', 'users.id', '=', 'subscriptions.user_id')
-                ->select(['users.name', 'users.phone_number', 'subscriptions.status AS status'])
-                ->get();
-            // ->with('subscription')
-            // ->orderByDesc('created_at');
+                ->select(['users.name', 'users.phone_number', 'subscriptions.status AS status']);
 
             return DataTables::of($users)
                 ->addIndexColumn()
+                ->filter(function ($query) use ($request) {
+                    if ($request->filled('month')) {
+                        $query->whereRaw("MONTHNAME(users.created_at) = '{$request->month}'");
+                    }
+                })
                 ->editColumn('status', '{!!$status!!}')
                 ->rawColumns(['status'])
                 ->make(true);

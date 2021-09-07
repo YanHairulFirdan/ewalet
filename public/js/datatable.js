@@ -1,5 +1,7 @@
-const months = [ "January", "February", "March", "April", "May", "June",
+const months = ["", "January", "February", "March", "April", "May", "June",
 "July", "August", "September", "October", "November", "December" ];
+
+months.forEach(month=>$('#month').append(`<option value="${month}">${month}</option>`))
 
 const crudDataTable = {
     dataTable : null,
@@ -11,9 +13,10 @@ const crudDataTable = {
         this.dataTable = $('#'+this.table).DataTable({
             ajax: {
                 url: '',
-                data: function (d) {
-                    d.name = $('input[name=name]').val();
-                    d.email = $('input[name=email]').val();
+                data: function (data) {
+                    data.month = $('#month').val();
+
+                    console.log($('#month').val());
                 }
             },
             serverSide : true,

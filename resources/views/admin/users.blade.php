@@ -7,6 +7,11 @@
 
 @section('content')
     <h1 class="mt-4">Daftar Pengguna</h1>
+    <form action="" method="post" class="mb-4">
+        <select name="month" id="month">
+
+        </select>
+    </form>
     <table id="users" class="mt-10 table table-bordered table-condensed table-striped">
         <thead>
             <tr>
@@ -56,8 +61,10 @@
         crudDataTable.columnConfig = columnConfig
         console.log(crudDataTable.columnConfig);
         crudDataTable.make()
-    </script>
-    <script>
 
+        $('#month').on('change', function (event) {
+            crudDataTable.dataTable.draw()
+            event.preventDefault()
+        })
     </script>
 @endpush
