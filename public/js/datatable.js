@@ -1,6 +1,14 @@
 const months = ["", "January", "February", "March", "April", "May", "June",
 "July", "August", "September", "October", "November", "December" ];
 
+const status = [
+    {
+        'aktif' : 1
+    },
+    {
+        'tidak aktif' : 0
+    }
+]
 months.forEach(month=>$('#month').append(`<option value="${month}">${month}</option>`))
 
 const crudDataTable = {
@@ -15,8 +23,6 @@ const crudDataTable = {
                 url: '',
                 data: function (data) {
                     data.month = $('#month').val();
-
-                    console.log($('#month').val());
                 }
             },
             serverSide : true,

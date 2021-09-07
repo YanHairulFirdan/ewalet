@@ -22,6 +22,12 @@
                 </div>
             </div>
 
+            <form action="" method="post" class="mb-4">
+                <select name="month" id="month">
+
+                </select>
+            </form>
+
             <table id="transactions" class="mt-10 table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
