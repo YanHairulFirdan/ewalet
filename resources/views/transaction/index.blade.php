@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <table id="transactions" class="mt-10 table table-bordered table-condensed table-striped">
+            <table id="transactions" class="m-0 w-100 table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
                         <th>
