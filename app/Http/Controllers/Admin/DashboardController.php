@@ -63,8 +63,8 @@ class DashboardController
                 ->addIndexColumn()
                 ->editColumn('status', function ($user) {
                     return $user->status
-                        ? '<span class="btn btn-success">Active</span>'
-                        : '<span class="btn btn-secondary">Not Active</span>';
+                        ? '<span class="d-block w-50 m-auto btn btn-sm btn-success">Active</span>'
+                        : '<span class="d-block w-50 m-auto btn btn-sm btn-secondary">Not Active</span>';
                 })
                 ->rawColumns(['status'])
                 ->make(true);
