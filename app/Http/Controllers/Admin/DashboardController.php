@@ -55,7 +55,11 @@ class DashboardController
                         $query->whereRaw("MONTHNAME(users.created_at) = '{$request->month}'");
                     }
                 })
-                ->editColumn('status', '{!!$status!!}')
+                ->editColumn('status', function ($user) {
+                    return $user->status
+                        ? '<span class="btn btn-success">Aktif</span>'
+                        : '<span class="btn btn-secondary">Tidak Aktif</span>';
+                })
                 ->rawColumns(['status'])
                 ->make(true);
         }
