@@ -19,14 +19,15 @@ class DashboardController
 
         $userAmounts = $months = [];
 
-        $signUpUsers = User::groupBy('monthRegister')->select(
-            DB::raw('COUNT(*) AS user_permonth'),
-            DB::raw("DATE_FORMAT(created_at, '%m-%Y') as monthRegister"),
-        )
-            ->orderBy('monthRegister', 'ASC')
+        $signUpUsers = User::groupBy('monthRegister')
+            ->selectRaw(
+                'COUNT(*) AS user_permonth, DATE_FORMAT(created_at, \'%m-%Y\') as monthRegister'
+            )
+            ->orderBy('monthRegister')
             ->get();
-        $paymentsSummary = Payment::select(
-            DB::raw('SUM(amount) AS payPermonth'),
+
+        $paymentsSummary = Payment::selectRaw(
+            'SUM(amount) AS payPermonth'
         )
             ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))->get();
 
@@ -51,7 +52,7 @@ class DashboardController
 
             return DataTables::of($users)
                 ->addIndexColumn()
-                // ->editColumn('status', '{!!$status!!}')
+                ->editColumn('status', '{!!$status!!}')
                 ->rawColumns(['status'])
                 ->make(true);
         }

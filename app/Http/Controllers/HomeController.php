@@ -30,7 +30,6 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        // $monthlyReport = $user->transactions()->monthlyReport()->get();
         $monthlyReport = $user->transactions()
             ->selectRaw('SUM(weight) AS monthlyWeight, SUM(total_price) AS monthlyPrice')
             ->thisMonth()
@@ -43,16 +42,14 @@ class HomeController extends Controller
 
         $graphReport = Transaction::selectRaw(
             "DATE_FORMAT(created_at, '%m-%Y') as month,
-                SUM(weight) as graphweight,
-                SUM(total_price) as graphtotal_price
+                SUM(weight) as weight,
+                SUM(total_price) as total_price
                 "
         )
             ->where('user_id', $user->id)
             ->thisYear()
             ->groupBy('month')
             ->get();
-
-        dd($graphReport);
 
         return view('welcome', [
             'monthlyReport' => $monthlyReport[0],
