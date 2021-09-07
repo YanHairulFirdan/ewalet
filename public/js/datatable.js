@@ -1,3 +1,6 @@
+const months = [ "January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December" ];
+
 const crudDataTable = {
     dataTable : null,
     table : '',
@@ -6,7 +9,13 @@ const crudDataTable = {
         $.noConflict();
     
         this.dataTable = $('#'+this.table).DataTable({
-            ajax : '',
+            ajax: {
+                url: '',
+                data: function (d) {
+                    d.name = $('input[name=name]').val();
+                    d.email = $('input[name=email]').val();
+                }
+            },
             serverSide : true,
             length: 25,
             processing: true,
