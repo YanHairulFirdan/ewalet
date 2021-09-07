@@ -78,7 +78,6 @@
 
         crudDataTable.table = 'users'
         crudDataTable.columnConfig = columnConfig
-        console.log(crudDataTable.columnConfig);
         crudDataTable.make(callbackData)
 
         $('#month').on('change', function (event) {

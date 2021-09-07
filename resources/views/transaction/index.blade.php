@@ -237,8 +237,12 @@
 
         crudDataTable.table = 'transactions'
         crudDataTable.columnConfig = columnConfig
-        console.log(crudDataTable.columnConfig);
-        crudDataTable.make()
+        
+        let callbackData = function (data) {
+                                data.month = $('#month').val();
+                        }
+                        
+        crudDataTable.make(callbackData)
 
         $('#month').on('change', function (event) {
             crudDataTable.dataTable.draw()
