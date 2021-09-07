@@ -201,9 +201,15 @@
 @push('js')
     {{-- @include('layouts.datatable') --}}
     <script src="{{ asset('js/datatable.js') }}"></script>
-    {{-- <script src="{{ asset('js/ajaxCrud.js') }}"></script> --}}
+    <script src="{{ asset('js/ajaxCrud.js') }}"></script>
     <script>
-        let columnConfig = [{
+        const months = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December" ];
+
+        months.forEach(month=>$('#month').append(`<option value="${month}">${month}</option>`))
+
+        let Config ={
+            column: [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex'
             },
@@ -233,19 +239,17 @@
                 orderable: false,
                 searchable: false,
             }
-        ];
-
-        crudDataTable.table = 'transactions'
-        crudDataTable.columnConfig = columnConfig
-        
-        let callbackData = function (data) {
-                                data.month = $('#month').val();
+        ],
+        callbackData : function (data) {
+                            data.month = $('#month').val();
                         }
-                        
-        crudDataTable.make(callbackData)
+    };
+
+        let datatable = datatableObj.make(Config, 'transactions')
+        let crud =  crudDataTable.make(datatable)
 
         $('#month').on('change', function (event) {
-            crudDataTable.dataTable.draw()
+            datatable.draw()
             event.preventDefault()
         })
     </script>

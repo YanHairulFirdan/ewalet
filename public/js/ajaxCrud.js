@@ -1,20 +1,6 @@
-const months = ["January", "February", "March", "April", "May", "June",
-"July", "August", "September", "October", "November", "December" ];
-
-const status = [
-    {
-        'aktif' : 1
-    },
-    {
-        'tidak aktif' : 0
-    }
-]
-
 const crudDataTable = {
     dataTable : null,
     make : function (datatable) {
-        $.noConflict(callbackData);
-    
         this.dataTable = datatable
     },
     store : function (event, url) {
