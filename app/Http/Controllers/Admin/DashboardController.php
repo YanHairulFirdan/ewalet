@@ -54,6 +54,13 @@ class DashboardController
                     if ($request->filled('month')) {
                         $query->whereRaw("MONTHNAME(users.created_at) = '{$request->month}'");
                     }
+
+                    if ($request->filled('status')) {
+                        Log::info("status ");
+                        $query->whereHas('subscription', function ($query) use ($request) {
+                            $query->where('status', $request->status);
+                        });
+                    }
                 })
                 ->editColumn('status', function ($user) {
                     return $user->status

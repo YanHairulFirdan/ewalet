@@ -16,14 +16,12 @@ const crudDataTable = {
     table : '',
     columnConfig : {},
     make : function () {
-        $.noConflict();
+        $.noConflict(callbackData);
     
         this.dataTable = $('#'+this.table).DataTable({
             ajax: {
                 url: '',
-                data: function (data) {
-                    data.month = $('#month').val();
-                }
+                data: callbackData
             },
             serverSide : true,
             length: 25,

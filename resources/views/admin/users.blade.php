@@ -8,9 +8,23 @@
 @section('content')
     <h1 class="mt-4">Daftar Pengguna</h1>
     <form action="" method="post" class="mb-4">
-        <select name="month" id="month">
-
-        </select>
+        <div class="row">
+            <div class="col-md-2">
+                <label for="month" class="mb-2">Select Month</label>
+                <select class="form-control" name="month" id="month">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="status" class="mb-2">Select Status</label>
+                 <select class="form-control" name="status" id="status">
+                    <option value=""></option>
+                    <option value="1">Active</option>
+                    <option value="0">Not Active</option>
+                </select>
+            </div>
+        </div>
+      
     </form>
     <table id="users" class="mt-10 table table-bordered table-condensed table-striped">
         <thead>
@@ -57,12 +71,23 @@
         ];
         let url = document.querySelector("meta[name='current-url']").content
 
+        let callbackData = function (data) {
+                                data.month = $('#month').val();
+                                data.status = $('#status').val();
+                                console.log(data.status);
+                            }
+
         crudDataTable.table = 'users'
         crudDataTable.columnConfig = columnConfig
         console.log(crudDataTable.columnConfig);
-        crudDataTable.make()
+        crudDataTable.make(callbackData)
 
         $('#month').on('change', function (event) {
+            crudDataTable.dataTable.draw()
+            event.preventDefault()
+        })
+       
+        $('#status').on('change', function (event) {
             crudDataTable.dataTable.draw()
             event.preventDefault()
         })
