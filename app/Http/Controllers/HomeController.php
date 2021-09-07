@@ -30,28 +30,34 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        $monthlyReport = $user->transactions()->select(
-            DB::raw('SUM(weight) as monthlyWeight'),
-            DB::raw('SUM(total_price) as monthlyIncome')
-        )
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
+        // $monthlyReport = $user->transactions()->monthlyReport()->get();
+        $monthlyReport = $user->transactions()
+            ->selectRaw('SUM(weight) AS monthlyWeight, SUM(total_price) AS monthlyPrice')
+            ->thisMonth()
+            ->thisYear()
             ->get();
 
-        $totalReport = $user->transactions()->select(
-            DB::raw("DATE_FORMAT(created_at, '%m-%Y') as month"),
-            DB::raw("SUM(weight) as weight"),
-            DB::raw("SUM(total_price) as total_price")
+        $totalReport = $user->transactions()
+            ->selectRaw('SUM(weight) AS totalWeight, SUM(total_price) AS totalPrice')
+            ->get();
+
+        $graphReport = Transaction::selectRaw(
+            "DATE_FORMAT(created_at, '%m-%Y') as month,
+                SUM(weight) as graphweight,
+                SUM(total_price) as graphtotal_price
+                "
         )
-            ->whereYear('created_at', Carbon::now()->year)
+            ->where('user_id', $user->id)
+            ->thisYear()
             ->groupBy('month')
             ->get();
 
-        dd($totalReport);
+        dd($graphReport);
 
         return view('welcome', [
             'monthlyReport' => $monthlyReport[0],
-            'totalReport'   => $totalReport[0]
+            'totalReport'   => $totalReport[0],
+            'graphReport'   => $graphReport
         ]);
     }
 }

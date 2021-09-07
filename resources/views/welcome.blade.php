@@ -19,7 +19,8 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        {{ $totalWeight }} Kg
+                        {{-- {{dd($totalReport->totalWeight)}} --}}
+                        {{ $totalReport->totalWeight }} Kg
                     </p>
                 </div>
             </div>
@@ -33,11 +34,12 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        Rp.{{ number_format($totalIncome) }}
+                        Rp.{{ number_format($totalReport->totalIncome) }}
                     </p>
                 </div>
             </div>
         </div>
+        @if ($monthlyReport->monthlyWeight)
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
                 <div class="card-body">
@@ -47,23 +49,27 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        {{ $currentHarvest }} Kg
+                        {{ $monthlyReport->monthlyWeight }} Kg
                     </p>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        @endif
+
+        @if ($monthlyReport->monthlyIncome)
+            <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
                 <div class="card-body">
                     <h6>Pendapatan Bulan Ini</h6>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        Rp.{{ number_format($currentIncome) }}
+                        Rp.{{ number_format($monthlyReport->monthlyIncome) }}
                     </p>
                 </div>
             </div>
         </div>
+        @endif
     </div>
     <div class="row">
         <div class="col-xl-6">
@@ -90,19 +96,19 @@
     <script src="js/chart-area-demo.js"></script>
     <script src="js/chart-bar-demo.js"></script>
     <script>
-        let summaryReports = @json($summaryReports);
+        let summaryReports = @json($graphReport);
         let summary = {
-            weights: [],
-            months: [],
-            prices: [],
+            weights : [],
+            months  : [],
+            prices  : [],
         };
 
 
         summaryReports.forEach((report, index) => {
             {
-                summary.weights[index] = report.weight
-                summary.months[index] = report.month
-                summary.prices[index] = parseInt(report.total_price.replace(',', ''))
+                summary.weights[index] = report.weight;
+                summary.months[index]  = report.month;
+                summary.prices[index]  = parseInt(report.total_price.replace(',', ''));
             }
         });
 

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class Transaction extends Model
 {
@@ -40,5 +41,23 @@ class Transaction extends Model
     public function getTotalPriceAttribute($value)
     {
         return number_format($value);
+    }
+
+    public function scopeThisMonth($query)
+    {
+        return $query->whereMonth('created_at', Carbon::now()->month);
+    }
+
+    public function scopeThisYear($query)
+    {
+        return $query->whereYear('created_at', Carbon::now()->year);
+    }
+
+    public function scopeTotalReport($query)
+    {
+        return $query->select(
+            DB::raw('SUM(weight) as totalWeight'),
+            DB::raw('SUM(total_price) as totalIncome')
+        );
     }
 }
