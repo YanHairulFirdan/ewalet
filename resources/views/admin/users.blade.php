@@ -45,19 +45,18 @@
     </table>
 @endsection
 @push('js')
-    <script defer src="{{ asset('js/datatable.js') }}"></script>
-    <script defer src="{{ asset('js/ajaxCrud.js') }}"></script>
+    <script src="{{ asset('js/datatable.js') }}"></script>
     <script defer>
-        console.log(datatableObj);
+        const months = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December" ];
 
-    </script>
-    {{-- <script defer>
+        months.forEach(month=>$('#month').append(`<option value="${month}">${month}</option>`))
+
         let columnConfig = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
-                // searchable: false,
-            },
+                },
             {
                 data: 'name',
                 name: 'name',
@@ -75,6 +74,7 @@
                 searchable: false,
             },
         ];
+        
         let url = document.querySelector("meta[name='current-url']").content
 
         let callbackData = function (data) {
@@ -86,9 +86,6 @@
         let datatable = datatableObj.make(columnConfig, 'users', callbackData)
         console.log(datatable);
 
-        // crudDataTable.table = 'users'
-        // crudDataTable.make(datatable)
-
         $('#month').on('change', function (event) {
             datatable.draw()
             event.preventDefault()
@@ -98,5 +95,5 @@
             datatable.draw()
             event.preventDefault()
         })
-    </script> --}}
+    </script>
 @endpush

@@ -9,7 +9,6 @@ const status = [
         'tidak aktif' : 0
     }
 ]
-months.forEach(month=>$('#month').append(`<option value="${month}">${month}</option>`))
 
 const crudDataTable = {
     dataTable : null,

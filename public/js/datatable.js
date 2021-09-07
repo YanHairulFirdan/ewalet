@@ -1,6 +1,7 @@
 const datatableObj = {
     make : function(columnConfig, table, callbackData) {
-        console.log('ok');
+        $.noConflict(callbackData);
+
         return $('#'+table).DataTable({
             ajax: {
                 url: '',
@@ -17,4 +18,3 @@ const datatableObj = {
     }
 }
 
-console.log(datatableObj);
