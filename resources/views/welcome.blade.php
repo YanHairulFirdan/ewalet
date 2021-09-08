@@ -34,12 +34,10 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        Rp.{{ number_format($totalReport->totalIncome) }}
-                    </p>
+                        Rp.{{ $totalReport->totalPrice }}
                 </div>
             </div>
         </div>
-        @if ($monthlyReport->monthlyWeight)
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
                 <div class="card-body">
@@ -49,27 +47,25 @@
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        {{ $monthlyReport->monthlyWeight }} Kg
+                        {{ $monthlyReport->monthlyWeight?:0 }} Kg
                     </p>
                 </div>
             </div>
         </div>
-        @endif
 
-        @if ($monthlyReport->monthlyIncome)
-            <div class="col-xl-3 col-md-6">
+        <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
                 <div class="card-body">
                     <h6>Pendapatan Bulan Ini</h6>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <p>
-                        Rp.{{ number_format($monthlyReport->monthlyIncome) }}
+                        Rp.{{ $monthlyReport->monthlyIncome?:0 }}
                     </p>
                 </div>
             </div>
         </div>
-        @endif
+        
     </div>
     <div class="row">
         <div class="col-xl-6">
@@ -108,9 +104,11 @@
             {
                 summary.weights[index] = report.weight;
                 summary.months[index]  = report.month;
-                summary.prices[index]  = parseInt(report.total_price.replace(',', ''));
+                summary.prices[index]  = parseInt(report.total_price.replace(/,/g, ''));
             }
         });
+
+        console.log(summary.prices);
 
         drawAreaChart(summary.months, summary.weights, Math.max(...summary.weights))
         drawBarChart(summary.months, summary.prices, Math.max(...summary.prices))
