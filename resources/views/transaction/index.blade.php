@@ -23,11 +23,23 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-6">
                     <form action="" method="post" class="mb-4">
-                        <select name="month" id="month" class="form-control">
-                            <option value="">Select month</option>
-                        </select>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <select name="month" id="month" class="form-control">
+                                    <option value="">Select month</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="year" id="year" class="form-control">
+                                    <option value="">Select Year</option>
+                                    @foreach ($transactionYears as $transactionYear)
+                                        <option value="{{ $transactionYear->year }}">{{ $transactionYear->year }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

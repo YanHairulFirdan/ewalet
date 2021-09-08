@@ -45,7 +45,12 @@ class TransactionController extends Controller
                 ->make(true);
         }
 
-        return view('transaction.index');
+        $transactionYears = Transaction::selectRaw('DISTINCT YEAR(created_at) as year')
+            ->groupBy('year')
+            ->get();
+
+        // dd($years);
+        return view('transaction.index', compact('transactionYears'));
     }
 
     /**
