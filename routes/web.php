@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomeController@Index')->name('home');
-Route::middleware(['auth', 'active'])->group(function () {
-    Route::post('transactions/{transaction}', 'TransactionController@update');
-    Route::resource('transactions', TransactionController::class)->except(['create', 'edit', 'update']);
+Route::namespace('User')->group(function () {
+    Route::get('/', 'HomeController@Index')->name('home');
+    Route::middleware(['auth', 'active'])->group(function () {
+        Route::post('transactions/{transaction}', 'TransactionController@update');
+        Route::resource('transactions', TransactionController::class)->except(['create', 'edit', 'update']);
+    });
+
+    Auth::routes();
 });
 
-Auth::routes();
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', 'Admin\LoginController@showForm')->name('login');
