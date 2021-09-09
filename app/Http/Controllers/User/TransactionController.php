@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exports\Transaction as ExportsTransaction;
 use App\Filters\TransactionFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\TransactionFilterRequest;
 use App\Http\Requests\User\TransactionRequest;
 use App\Models\Transaction;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class TransactionController extends Controller
 {
@@ -22,15 +26,14 @@ class TransactionController extends Controller
     public function index(TransactionFilterRequest $request, TransactionFilter $filter)
     {
         if ($request->ajax()) {
-            $transactions = Transaction::where('user_id', Auth::id())
-                ->filter($filter, $request)
+            $transactions = Auth::user()->transactions()->filter($filter, $request)
                 ->get();
 
             return datatables()->of($transactions)
                 ->addIndexColumn()
-                ->editColumn('price_per_kilo', 'Rp.{{$price_per_kilo}}')
-                ->editColumn('total_price', 'Rp.{{$total_price}}')
                 ->editColumn('weight', '{{$weight}} Kg')
+                // ->editColumn('price_per_kilo', 'Rp. {{number_format($price_per_kilo}}')
+                // ->editColumn('total_price', 'Rp. {{number_format($total_price}}')
                 ->addColumn('Aksi', function ($transaction) {
                     $html = '<button data-id="' . $transaction->id .
                         '" data-url="transactions" class="btn btn-xs btn-success btn-edit"
@@ -139,4 +142,35 @@ class TransactionController extends Controller
 
         return response()->json(['message' => 'transaction has been deleted', 'class' => 'success', 'result' => $result]);
     }
+
+    public function exportExcel(TransactionFilterRequest $request, TransactionFilter $filter)
+    {
+        $transaction = Auth::user()
+            ->transactions()
+            ->select('id', 'buyer', 'weight', 'price_per_kilo', 'total_price', 'created_at')
+            ->filter($filter, $request)
+            ->get();
+
+        $title  = 'Laporan Transaksi ';
+        $title .= $request->filled('month') ? 'Bulan ' . $request->month : '';
+        $title .= $request->filled('year') ? ' Tahun ' . $request->year : '';
+
+        return Excel::download(new ExportsTransaction($transaction), $title . '.xlsx');
+    }
+
+    // public function exportPdf(TransactionFilterRequest $request, TransactionFilter $filter)
+    // {
+    //     $transactions = Transaction::where('user_id', Auth::id())
+    //         ->filter($filter, $request)
+    //         ->get();
+
+    //     $title  = 'Laporan Transaksi ' . $request->filled('month') ? 'Bulan ' . $request->month : '';
+    //     $title .= $request->filled('year') ? ' Tahun ' . $request->year : '';
+    //     $pdf = PDF::loadview('user.transaction.export', [
+    //         'transactions' => $transactions,
+    //         'title' => $title
+    //     ]);
+
+    //     return $pdf->download($title);
+    // }
 }

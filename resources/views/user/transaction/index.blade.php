@@ -25,6 +25,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <form action="" method="post" class="mb-4">
+                        @csrf
+                        @method('POST')
                         <div class="row">
                             <div class="col-md-3">
                                 <select name="month" id="month" class="filter form-control">
@@ -43,12 +45,12 @@
                                 <span class="small d-block">
                                     Download laporan dalam format : 
                                 </span>
-                                <button class="text-right btn btn-sm btn-success">
+                                <button formaction="{{route('export.excel')}}" class="text-right btn btn-sm btn-success">
                                     Excel
                                 </button>
-                                <button class="text-right btn btn-sm btn-danger">
+                                {{-- <button formaction="{{route('export.pdf')}}" class="text-right btn btn-sm btn-danger">
                                     PDF
-                                </button>
+                                </button> --}}
                             </div>
                         </div>
                     </form>

@@ -52,6 +52,8 @@ class HomeController extends Controller
             ->groupBy('month')
             ->get();
 
+        // dd($graphReport);
+
         return view('user.welcome', [
             'monthlyReport' => $monthlyReport[0],
             'totalReport'   => $totalReport[0],

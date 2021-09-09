@@ -18,12 +18,13 @@ Route::namespace('User')->group(function () {
     Route::get('/', 'HomeController@Index')->name('home');
     Route::middleware(['auth', 'active'])->group(function () {
         Route::post('transactions/{transaction}', 'TransactionController@update');
+        Route::post('transactions/export/excel', 'TransactionController@exportExcel')->name('export.excel');
+        // Route::post('transactions/export/pdf', 'TransactionController@exportPdf')->name('export.pdf');
         Route::resource('transactions', TransactionController::class)->except(['create', 'edit', 'update']);
     });
 
     Auth::routes();
 });
-
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', 'Admin\LoginController@showForm')->name('login');

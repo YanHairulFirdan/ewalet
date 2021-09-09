@@ -33,8 +33,9 @@ class TransactionObserver
 
     public function retrieved(Transaction $transaction)
     {
-        $transaction->weight         = $transaction->weight;
-        $transaction->price_per_kilo = number_format($transaction->price_per_kilo);
+        // $transaction->weight         = $transaction->weight . ' Kg';
+        // $transaction->price_per_kilo = 'Rp.' . number_format($transaction->price_per_kilo);
+        // $transaction->total_price    = 'Rp' . number_format($transaction->total_price);
     }
 
     /**

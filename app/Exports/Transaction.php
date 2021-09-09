@@ -2,21 +2,44 @@
 
 namespace App\Exports;
 
-use Illuminate\Http\Request;
+use App\Contracts\Filter;
 use Maatwebsite\Excel\Concerns\FromCollection;
+// use App\Models\Transaction as TransactionModel;
+use App\Models\Transaction as Model;
+use Illuminate\Foundation\Http\FormRequest;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class Transaction implements FromCollection
+class Transaction implements FromCollection, WithHeadings
 {
-    private $request;
+    // use Exportable;
 
-    public function __construct(Request $request)
+    private $transaction;
+
+
+    public function __construct($transaction)
     {
-        $this->$request = $request;
+        $this->transaction = $transaction;
     }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
+        return $this->transaction;
+    }
+
+    public function headings(): array
+    {
+        return [
+            'no',
+            'Pembeli',
+            'Berat',
+            'Harga Perkilogram',
+            'Pendapatan',
+            'Tanggal Transaksi'
+        ];
     }
 }
