@@ -56,34 +56,36 @@
                     </form>
                 </div>
             </div>
+            <div class="table-responsive">
+                <table id="transactions" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                no
+                            </th>
+                            <th>
+                                Tanggal Transaksi
+                            </th>
+                            <th>
+                                Pembeli
+                            </th>
+                            <th>
+                                Berat
+                            </th>
+                            <th>
+                                Harga Perkilo
+                            </th>
+                            <th>
+                                Total Harga
+                            </th>
+                            <th>
+                                Aksi
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
 
-            <table id="transactions" class="table table-responsive table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            no
-                        </th>
-                        <th>
-                            Tanggal Transaksi
-                        </th>
-                        <th>
-                            Pembeli
-                        </th>
-                        <th>
-                            Berat
-                        </th>
-                        <th>
-                            Harga Perkilo
-                        </th>
-                        <th>
-                            Total Harga
-                        </th>
-                        <th>
-                            Aksi
-                        </th>
-                    </tr>
-                </thead>
-            </table>
         </div>
     </div>
 

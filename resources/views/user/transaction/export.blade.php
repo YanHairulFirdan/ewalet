@@ -42,13 +42,13 @@
                             {{$transaction->buyer}}
                         </td>
                         <td>
-                            {{$transaction->weigth}}
+                            {{$transaction->weight}} Kg
                         </td>
                         <td>
-                            {{$transaction->price_per_kilo}}
+                            Rp. {{$transaction->price_per_kilo}}
                         </td>
                         <td>
-                            {{$transaction->total_price}}
+                            Rp. {{$transaction->total_price}}
                         </td>
                         <td>
                             {{$transaction->created_at}}
