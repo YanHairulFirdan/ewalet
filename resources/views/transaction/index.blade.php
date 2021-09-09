@@ -26,13 +26,13 @@
                 <div class="col-md-6">
                     <form action="" method="post" class="mb-4">
                         <div class="row">
-                            <div class="col-md-3">
-                                <select name="month" id="month" class="form-control">
+                            <div class="col-md-4">
+                                <select name="month" id="month" class="filter form-control">
                                     <option value="">Select month</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <select name="year" id="year" class="form-control">
+                            <div class="col-md-4">
+                                <select name="year" id="year" class="filter form-control">
                                     <option value="">Select Year</option>
                                     @foreach ($transactionYears as $transactionYear)
                                         <option value="{{ $transactionYear->year }}">{{ $transactionYear->year }}</option>
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <table id="transactions" class="m-0 w-100 table table-bordered table-condensed table-striped">
+            <table id="transactions" class="table table-responsive table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>
@@ -254,13 +254,14 @@
         ],
         callbackData : function (data) {
                             data.month = $('#month').val();
+                            data.year = $('#year').val();
                         }
     };
 
         let datatable = datatableObj.make(Config, 'transactions')
         let crud =  crudDataTable.make(datatable)
 
-        $('#month').on('change', function (event) {
+        $('.filter').on('change', function (event) {
             datatable.draw()
             event.preventDefault()
         })

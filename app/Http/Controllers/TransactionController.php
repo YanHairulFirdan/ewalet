@@ -23,6 +23,9 @@ class TransactionController extends Controller
                 $query = $request->filled('month')
                     ? $query->whereRaw("MONTHNAME(transactions.created_at) = '{$request->month}'")
                     : $query;
+                $query = $request->filled('year')
+                    ? $query->whereRaw("YEAR(transactions.created_at) = '{$request->year}'")
+                    : $query;
             })
                 ->get();
 
@@ -46,8 +49,15 @@ class TransactionController extends Controller
         }
 
         $transactionYears = Transaction::selectRaw('DISTINCT YEAR(created_at) as year')
+            ->where('user_id', Auth::id())
             ->groupBy('year')
             ->get();
+
+        // $transactionMonths = Transaction::selectRaw('DISTINCT MONTHNAME(created_at) as month')
+        //     ->where('user_id', Auth::id())
+        //     ->groupBy('month')
+        //     ->orderByDesc('month')
+        //     ->get();
 
         // dd($years);
         return view('transaction.index', compact('transactionYears'));
