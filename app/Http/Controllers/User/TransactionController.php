@@ -31,9 +31,9 @@ class TransactionController extends Controller
 
             return datatables()->of($transactions)
                 ->addIndexColumn()
+                ->editColumn('price_per_kilo', 'Rp.{{$price_per_kilo}}')
+                ->editColumn('total_price', 'Rp.{{$total_price}}')
                 ->editColumn('weight', '{{$weight}} Kg')
-                // ->editColumn('price_per_kilo', 'Rp. {{number_format($price_per_kilo}}')
-                // ->editColumn('total_price', 'Rp. {{number_format($total_price}}')
                 ->addColumn('Aksi', function ($transaction) {
                     $html = '<button data-id="' . $transaction->id .
                         '" data-url="transactions" class="btn btn-xs btn-success btn-edit"
@@ -52,7 +52,6 @@ class TransactionController extends Controller
             ->where('user_id', Auth::id())
             ->groupBy('year')
             ->get();
-
 
         return view('user.transaction.index', compact('transactionYears'));
     }
@@ -111,20 +110,10 @@ class TransactionController extends Controller
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(TransactionRequest $request, Transaction $transaction)
     {
-        // return response()->json(['request' => $request->except('_token')]);
-        $request->validate([
-            'buyer'          => 'required|min:3',
-            'weight'         => 'required|numeric',
-            'price_per_kilo' => 'required|numeric',
-        ]);
-
-        $totalPrice = $request->weight * $request->price_per_kilo;
 
         $transaction->update($request->except('_token'));
-        $transaction->user_id = Auth::id();
-        $transaction->total_price = $totalPrice;
         $transaction->save();
 
         return response()->json(['message' => 'data has been updated', 'class' => 'success']);
@@ -158,19 +147,24 @@ class TransactionController extends Controller
         return Excel::download(new ExportsTransaction($transaction), $title . '.xlsx');
     }
 
-    // public function exportPdf(TransactionFilterRequest $request, TransactionFilter $filter)
-    // {
-    //     $transactions = Transaction::where('user_id', Auth::id())
-    //         ->filter($filter, $request)
-    //         ->get();
+    public function exportPdf(TransactionFilterRequest $request, TransactionFilter $filter)
+    {
+        $transactions = Transaction::where('user_id', Auth::id())
+            ->filter($filter, $request)
+            ->select('id', 'buyer', 'weight', 'price_per_kilo', 'total_price', 'created_at')
+            ->filter($filter, $request)
+            ->get();
+        $title  = 'Laporan Transaksi ';
+        $title .= $request->filled('month') ? 'Bulan ' . $request->month : '';
+        $title .= $request->filled('year') ? ' Tahun ' . $request->year : '';
 
-    //     $title  = 'Laporan Transaksi ' . $request->filled('month') ? 'Bulan ' . $request->month : '';
-    //     $title .= $request->filled('year') ? ' Tahun ' . $request->year : '';
-    //     $pdf = PDF::loadview('user.transaction.export', [
-    //         'transactions' => $transactions,
-    //         'title' => $title
-    //     ]);
+        // view()->share('employee', $transactions);
 
-    //     return $pdf->download($title);
-    // }
+        // $pdf = PDF::loadView('user.transaction.export');
+        $pdf = PDF::loadView('user.transaction.export', compact('transactions', 'title'));
+
+        // dd($pdf->download($title));
+
+        return $pdf->download($title . '.pdf');
+    }
 }

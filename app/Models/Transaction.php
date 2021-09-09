@@ -30,6 +30,21 @@ class Transaction extends Model
         return $this->belongsTo(Type::class);
     }
 
+    public function getWeightAttribute($weight)
+    {
+        return $weight;
+    }
+
+    public function getPricePerKiloAttribute($value)
+    {
+        return number_format($value);
+    }
+
+    public function getTotalPriceAttribute($value)
+    {
+        return number_format($value);
+    }
+
     public function scopeThisMonth($query)
     {
         return $query->whereMonth('created_at', Carbon::now()->month);

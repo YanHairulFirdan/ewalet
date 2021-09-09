@@ -48,9 +48,9 @@
                                 <button formaction="{{route('export.excel')}}" class="text-right btn btn-sm btn-success">
                                     Excel
                                 </button>
-                                {{-- <button formaction="{{route('export.pdf')}}" class="text-right btn btn-sm btn-danger">
+                                <button formaction="{{route('export.pdf')}}" class="text-right btn btn-sm btn-danger">
                                     PDF
-                                </button> --}}
+                                </button>
                             </div>
                         </div>
                     </form>
