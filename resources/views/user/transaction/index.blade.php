@@ -26,18 +26,29 @@
                 <div class="col-md-6">
                     <form action="" method="post" class="mb-4">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <select name="month" id="month" class="filter form-control">
                                     <option value="">Select month</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <select name="year" id="year" class="filter form-control">
                                     <option value="">Select Year</option>
                                     @foreach ($transactionYears as $transactionYear)
                                         <option value="{{ $transactionYear->year }}">{{ $transactionYear->year }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="small d-block">
+                                    Download laporan dalam format : 
+                                </span>
+                                <button class="text-right btn btn-sm btn-success">
+                                    Excel
+                                </button>
+                                <button class="text-right btn btn-sm btn-danger">
+                                    PDF
+                                </button>
                             </div>
                         </div>
                     </form>
