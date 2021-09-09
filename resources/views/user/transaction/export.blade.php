@@ -8,26 +8,28 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
+    <h4 class="text-center font-weight-bold">{{$title}}</h4>
+    <hr>
      <div class="container-fluid">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>
+                    <td class="small text-center font-weight-bold">
                         No
                     </th>
-                    <th>
+                    <td class="small text-center font-weight-bold">
                         Nama Pembeli
                     </th>
-                    <th>
+                    <td class="small text-center font-weight-bold">
                         Berat
                     </th>
-                    <th>
+                    <td class="small text-center font-weight-bold">
                         Harga Jual Perkilogram
                     </th>
-                    <th>
+                    <td class="small text-center font-weight-bold">
                         Hasil
                     </th>
-                    <th>
+                    <td class="small text-center font-weight-bold">
                         Tanggal Transaksi
                     </th>
                 </tr>
@@ -35,22 +37,22 @@
             <tbody>
                 @foreach ($transactions as $transaction)
                     <tr>
-                        <td>
+                        <td class="small">
                             {{$loop->iteration}}
                         </td>
-                        <td>
+                        <td class="small">
                             {{$transaction->buyer}}
                         </td>
-                        <td>
+                        <td class="small">
                             {{$transaction->weight}} Kg
                         </td>
-                        <td>
+                        <td class="small">
                             Rp. {{$transaction->price_per_kilo}}
                         </td>
-                        <td>
+                        <td class="small">
                             Rp. {{$transaction->total_price}}
                         </td>
-                        <td>
+                        <td class="small">
                             {{$transaction->created_at}}
                         </td>
                     </tr>

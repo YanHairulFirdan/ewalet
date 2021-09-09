@@ -23,8 +23,8 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
-                    <form action="" method="post" class="mb-4">
+                <div class="col-md-8">
+                    <form action="" id="filter-form" method="post" class="mb-4">
                         @csrf
                         @method('POST')
                         <div class="row">
@@ -42,22 +42,21 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <span class="small d-block">
+                                {{-- <span class="small d-block">
                                     Download laporan dalam format : 
-                                </span>
-                                <button formaction="{{route('export.excel')}}" class="text-right btn btn-sm btn-success">
-                                    Excel
-                                </button>
-                                <button formaction="{{route('export.pdf')}}" class="text-right btn btn-sm btn-danger">
-                                    PDF
-                                </button>
+                                </span> --}}
+                                <select name="export" id="export" class="form-control">
+                                    <option value="">Pilih untuk mendownload laporan</option>
+                                    <option value="{{route('export.excel')}}">Dalam bentuk Excel</option>
+                                    <option value="{{route('export.pdf')}}">Dalam bentuk PDF</option>
+                                </select>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="transactions" class="table table-bordered table-hover table-striped">
+                <table id="transactions" class="w-100 table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th>
@@ -279,6 +278,16 @@
         $('.filter').on('change', function (event) {
             datatable.draw()
             event.preventDefault()
-        })
+        });
+       
+        $('#export').on('change', function (event) {
+            console.log('change');
+            console.log(this.value);
+            if(this.value){
+                $('#filter-form').attr('action',this.value)
+                $('#filter-form').submit()
+            }
+            console.log($('#filter-form').attr('action'));
+        });
     </script>
 @endpush

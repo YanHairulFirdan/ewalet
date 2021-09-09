@@ -16,9 +16,8 @@ const crudDataTable = {
         let transaction = {};
         let button = event.target
         let id = button.getAttribute('data-id')
-        let url = button.getAttribute('data-url')
-
-        $.get(url+'/'+id, function (data, status) {
+        
+        $.get(id, function (data, status) {
             transaction = data.transaction;
             $('#updateModal').modal('show');
             $('#edit_id').val(id)
@@ -35,7 +34,7 @@ const crudDataTable = {
         if(confirm('Apakah anda ingin menghapus data ini?')){
             let form = new FormData();
             form.append('_method', 'DELETE');
-            this.ajax(url+'/'+id, form, '', 'DELETE');
+            this.ajax(id, form, '', 'DELETE');
         }
     },
     update : function (event) {
@@ -45,7 +44,7 @@ const crudDataTable = {
         let formData =  new FormData(form);
         formData.set('price_per_kilo', removeComma(formData.get('price_per_kilo')))
 
-        this.ajax('transactions/'+id, formData, '#updateModal', 'POST')
+        this.ajax(id, formData, '#updateModal', 'POST')
     },
     ajax : function(url, formData, modal, method) {
         let dataTableObj = this.dataTable;
