@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Filters\TransactionFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\TransactionFilterRequest;
+use App\Http\Requests\User\TransactionRequest;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -69,19 +70,11 @@ class TransactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TransactionRequest $request)
     {
-        $request->validate([
-            'buyer'          => 'required|min:3',
-            'weight'         => 'required|numeric',
-            'price_per_kilo' => 'required|numeric',
-        ]);
+        $validated = $request->validated();
 
-        $totalPrice = $request->weight * $request->price_per_kilo;
-
-        $transaction = new Transaction($request->except('_token'));
-        $transaction->user_id = Auth::id();
-        $transaction->total_price = $totalPrice;
+        $transaction = new Transaction($validated);
         $transaction->save();
 
         return response()->json(['message' => 'data has been created', 'class' => 'success']);

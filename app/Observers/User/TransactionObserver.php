@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Observers;
+namespace App\Observers\User;
 
-use App\Transaction;
+use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class TransactionObserver
@@ -16,9 +17,8 @@ class TransactionObserver
      */
     public function creating(Transaction $transaction)
     {
-        Log::info("called from observer");
-
-        $transaction->total_price = $transaction->weight * $transaction->price_per_kilo;
+        $transaction->user_id = Auth::id();
+        $transaction->total_price = intval($transaction->weight) * intval($transaction->price_per_kilo);
     }
     /**
      * Handle the Transaction "created" event.
@@ -33,9 +33,8 @@ class TransactionObserver
 
     public function retrieved(Transaction $transaction)
     {
-        $transaction->created_at     = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created_at)->format('d-m-Y');
-        $transaction->weight         = $transaction->weight . ' Kg';
-        $transaction->price_per_kilo = 'Rp.' . number_format($transaction->price_per_kilo);
+        $transaction->weight         = $transaction->weight;
+        $transaction->price_per_kilo = number_format($transaction->price_per_kilo);
     }
 
     /**
