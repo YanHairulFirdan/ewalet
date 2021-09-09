@@ -2,13 +2,15 @@
 
 namespace App\Traits;
 
+use App\Contracts\Filter;
+
 /**
  * For custom filter model
  */
 trait Filterable
 {
-    public function filter($query)
+    public function scopeFilter($query, Filter $filter, $request)
     {
-        # code...
+        return $filter->apply($query, $request);
     }
 }

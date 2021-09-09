@@ -18,5 +18,7 @@ abstract class Filter
                 call_user_func_array([$this, $name], [$value]);
             }
         }
+
+        return $this->query;
     }
 }

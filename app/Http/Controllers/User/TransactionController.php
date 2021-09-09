@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Filters\TransactionFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\TransactionFilterRequest;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,18 +18,11 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(TransactionFilterRequest $request, TransactionFilter $filter)
     {
         if ($request->ajax()) {
-            $transactions = Transaction::where(function ($query) use ($request) {
-                $query = $query->where('user_id', Auth::id());
-                $query = $request->filled('month')
-                    ? $query->whereRaw("MONTHNAME(transactions.created_at) = '{$request->month}'")
-                    : $query;
-                $query = $request->filled('year')
-                    ? $query->whereRaw("YEAR(transactions.created_at) = '{$request->year}'")
-                    : $query;
-            })
+            $transactions = Transaction::where('user_id', Auth::id())
+                ->filter($filter, $request)
                 ->get();
 
             return datatables()->of($transactions)
@@ -54,13 +49,7 @@ class TransactionController extends Controller
             ->groupBy('year')
             ->get();
 
-        // $transactionMonths = Transaction::selectRaw('DISTINCT MONTHNAME(created_at) as month')
-        //     ->where('user_id', Auth::id())
-        //     ->groupBy('month')
-        //     ->orderByDesc('month')
-        //     ->get();
 
-        // dd($years);
         return view('user.transaction.index', compact('transactionYears'));
     }
 
