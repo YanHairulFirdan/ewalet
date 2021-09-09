@@ -61,7 +61,7 @@ class TransactionController extends Controller
         //     ->get();
 
         // dd($years);
-        return view('transaction.index', compact('transactionYears'));
+        return view('user.transaction.index', compact('transactionYears'));
     }
 
     /**
