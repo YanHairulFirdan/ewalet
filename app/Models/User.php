@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Models\Payment;
 use App\Models\Subscription;
+use App\Traits\Filterable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Filterable;
 
     /**
      * The attributes that are mass assignable.

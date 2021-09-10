@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filters\UserFilter;
+use App\Http\Requests\Admin\UserFilterRequest;
 use App\Models\Payment;
 use App\Transaction;
 use App\Models\User;
@@ -42,22 +44,12 @@ class DashboardController
         return view('admin.dashboard', compact('users', 'payments', 'userAmounts', 'months', 'paymentsSummary'));
     }
 
-    public function showUsers(Request $request)
+    public function showUsers(UserFilterRequest $request, UserFilter $filter)
     {
         if ($request->ajax()) {
             $users = User::join('subscriptions', 'users.id', '=', 'subscriptions.user_id')
                 ->select(['users.name', 'users.phone_number', 'subscriptions.status AS status'])
-                ->where(function ($query) use ($request) {
-                    if ($request->filled('month')) {
-                        $query->whereRaw("MONTHNAME(users.created_at) = '{$request->month}'");
-                    }
-
-                    if ($request->filled('status')) {
-                        $query->whereHas('subscription', function ($query) use ($request) {
-                            $query->where('status', $request->status);
-                        });
-                    }
-                });
+                ->filter($filter, $request);
 
             return DataTables::of($users)
                 ->addIndexColumn()
@@ -70,6 +62,8 @@ class DashboardController
                 ->make(true);
         }
 
-        return view('admin.users');
+        $signUpYears = User::selectRaw('DISTINCT YEAR(created_at) AS year')->get();
+
+        return view('admin.users', compact('signUpYears'));
     }
 }

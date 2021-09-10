@@ -11,13 +11,22 @@
         <div class="row">
             <div class="col-md-2">
                 <label for="month" class="mb-2">Select Month</label>
-                <select class="form-control" name="month" id="month">
+                <select class="form-control filter" name="month" id="month">
                     <option value="">Default</option>
                 </select>
             </div>
             <div class="col-md-2">
+                <label for="year" class="mb-2">Select year</label>
+                 <select class="form-control filter" name="year" id="year">
+                    <option value="">Default</option>
+                    @foreach ($signUpYears as $signUpYear)
+                        <option value="{{$signUpYear->year}}">{{$signUpYear->year}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2">
                 <label for="status" class="mb-2">Select Status</label>
-                 <select class="form-control" name="status" id="status">
+                 <select class="form-control filter" name="status" id="status">
                     <option value="">Default</option>
                     <option value="1">Active</option>
                     <option value="0">Not Active</option>
@@ -78,6 +87,7 @@
             ],
             callbackData : function (data) {
                                 data.month = $('#month').val();
+                                data.year = $('#year').val();
                                 data.status = $('#status').val();
                                 
             }
@@ -85,14 +95,10 @@
 
         let datatable = datatableObj.make(config, 'users')
         
-        $('#month').on('change', function (event) {
+        $('.filter').on('change', function (event) {
+            console.log('filter running');
             datatable.draw()
             event.preventDefault()
-        })
-       
-        $('#status').on('change', function (event) {
-            datatable.draw()
-            event.preventDefault()
-        })
+        });
     </script>
 @endpush
