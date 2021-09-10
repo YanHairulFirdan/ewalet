@@ -24,6 +24,7 @@ const crudDataTable = {
         let id = button.getAttribute('data-id')
         
         $.get(this.url() +'/'+ id, function (data, status) {
+            console.log($('#updateModal').length);
             transaction = data.transaction;
             $('#updateModal').modal('show');
             $('#edit_id').val(id)
@@ -47,8 +48,12 @@ const crudDataTable = {
         let form = document.getElementById('updateForm')
         let id = $('#edit_id').val();
         let formData =  new FormData(form);
-        formData.set('price_per_kilo', removeComma(formData.get('price_per_kilo')))
 
+        if ($('*[data-type="price"]').length) {
+            let name = $('*[data-type="price"]').attr('name');
+            formData.set(name, removeComma(formData.get(name)))
+        }
+        
         this.ajax(this.url() +'/'+id, formData, '#updateModal', 'POST')
     },
     ajax : function(url, formData, modal, method) {
@@ -71,7 +76,8 @@ const crudDataTable = {
                 $('#message').html(data.message);
                 $('#message').addClass('alert-' + data.class);
 
-                if (dataTableObj) dataTableObj.draw()
+                if (dataTableObj) dataTableObj.draw();
+                else window.location.reload();
             },
             error:function (error) {
                 console.log(error.status);

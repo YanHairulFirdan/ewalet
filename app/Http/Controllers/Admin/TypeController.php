@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
-class SubscriptionController extends Controller
+class TypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -44,21 +44,21 @@ class SubscriptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Type  $type
      * @return \Illuminate\Http\Response
      */
     public function show(Type $type)
     {
-        return $type;
+        return response()->json(['type' => $type]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Type $type)
     {
         //
     }
@@ -67,10 +67,10 @@ class SubscriptionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Type $type)
     {
         //
     }
@@ -78,10 +78,10 @@ class SubscriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Type $type)
     {
         //
     }

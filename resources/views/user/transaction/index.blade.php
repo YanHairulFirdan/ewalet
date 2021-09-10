@@ -182,7 +182,7 @@
                             <label for="price_per_kilo">
                                 Harga Perkilo
                             </label>
-                            <input type="text" class="form-control" name="price_per_kilo" id="edit_price_per_kilo">
+                            <input type="text" class="form-control" name="price_per_kilo" id="edit_price_per_kilo" data-type="price">
                         </div>
                         <div id="price_per_kilo_error" class="alert">
 
