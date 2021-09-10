@@ -1,4 +1,4 @@
-@extends('auth.layouts.main')
+@extends('user,auth.layouts.main')
 
 @section('title')
     <title>Login - SB Admin</title>
