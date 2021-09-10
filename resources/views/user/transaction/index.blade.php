@@ -270,11 +270,13 @@
                             data.month = $('#month').val();
                             data.year = $('#year').val();
                         }
-    };
+        };
+
+        // console.log(crudDataTable);
 
         let datatable = datatableObj.make(Config, 'transactions')
         let crud =  crudDataTable.make(datatable)
-
+        console.log(crud);
         $('.filter').on('change', function (event) {
             datatable.draw()
             event.preventDefault()

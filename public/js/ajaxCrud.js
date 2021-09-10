@@ -1,5 +1,6 @@
 const crudDataTable = {
     dataTable : null,
+    url : window.location.href
     make : function (datatable) {
         this.dataTable = datatable
     },
@@ -17,7 +18,7 @@ const crudDataTable = {
         let button = event.target
         let id = button.getAttribute('data-id')
         
-        $.get(id, function (data, status) {
+        $.get(this.url +'/'+ id, function (data, status) {
             transaction = data.transaction;
             $('#updateModal').modal('show');
             $('#edit_id').val(id)
@@ -65,7 +66,8 @@ const crudDataTable = {
                 $(modal).modal('hide');
                 $('#message').html(data.message);
                 $('#message').addClass('alert-' + data.class);
-                dataTableObj.draw()
+
+                if (dataTableObj) dataTableObj.draw()
             },
             error:function (error) {
                 console.log(error.status);
