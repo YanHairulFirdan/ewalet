@@ -17,7 +17,7 @@ class TypeController extends Controller
     {
         $types = Type::get();
 
-        return view('admin.subscription', compact('types'));
+        return view('admin.index', compact('types'));
     }
 
     /**
