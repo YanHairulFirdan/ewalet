@@ -81,8 +81,7 @@ const crudDataTable = {
                 $('#message').addClass('alert-' + data.class);
 
                 if (dataTableObj) dataTableObj.draw();
-                
-                window.location.reload();
+                else window.location.reload();
             },
             error:function (error) {
                 console.log(error);
