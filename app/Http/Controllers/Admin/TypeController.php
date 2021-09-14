@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\TypeRequest;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -70,9 +71,14 @@ class TypeController extends Controller
      * @param  \App\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Type $type)
+    public function update(TypeRequest $request, Type $type)
     {
-        //
+        $validated = $request->validated();
+
+        $type->update($validated);
+        $type->save();
+
+        return response('Type has been updated successfully');
     }
 
     /**

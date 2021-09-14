@@ -10,6 +10,8 @@ class Type extends Model
 {
     // use HasFactory;
 
+    protected $fillable = ['name', 'price', 'subscription_days'];
+
     public function payments()
     {
         return $this->hasMany(Payment::class);

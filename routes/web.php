@@ -32,7 +32,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('login', 'LoginController@login')->name('post.login');
         Route::get('/', 'DashboardController@index')->name('dashboaard');
         Route::get('/users', 'DashboardController@showUsers')->name('show.users');
-        Route::resource('types', TypeController::class);
+        Route::post('types/{type}', 'TypeController@update');
+        Route::resource('types', TypeController::class)->except('update');
     });
 });
 

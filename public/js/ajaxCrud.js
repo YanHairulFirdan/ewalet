@@ -19,17 +19,19 @@ const crudDataTable = {
         form.reset();
     },  
     edit : function (event) {
-        let transaction = {};
+        let responseData = {};
         let button = event.target
         let id = button.getAttribute('data-id')
         
         $.get(this.url() +'/'+ id, function (data, status) {
-            console.log($('#updateModal').length);
-            transaction = data.transaction;
+            let keys = Object.keys(data)
+            let responseData = data[keys[0]];
             $('#updateModal').modal('show');
+            $('#updateModal').css('opacity',1);
             $('#edit_id').val(id)
-            for (const field in transaction) {
-                $('#edit_'+field).val(transaction[field])
+            console.log(responseData);
+            for (const field in responseData) {
+                $('#edit_'+field).val(responseData[field])
             }
         });
     },
@@ -71,13 +73,14 @@ const crudDataTable = {
             cache       : false,
             processData : false,
             success : function (data) {
-                $('#messageModal').modal('show');
+                                $('#messageModal').modal('show');
                 $(modal).modal('hide');
                 $('#message').html(data.message);
                 $('#message').addClass('alert-' + data.class);
 
                 if (dataTableObj) dataTableObj.draw();
-                else window.location.reload();
+                
+                window.location.reload();
             },
             error:function (error) {
                 console.log(error.status);
