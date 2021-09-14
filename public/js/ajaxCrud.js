@@ -29,7 +29,6 @@ const crudDataTable = {
             $('#updateModal').modal('show');
             $('#updateModal').css('opacity',1);
             $('#edit_id').val(id)
-            console.log(responseData);
             for (const field in responseData) {
                 $('#edit_'+field).val(responseData[field])
             }
@@ -73,19 +72,15 @@ const crudDataTable = {
             cache       : false,
             processData : false,
             success : function (data) {
-                console.log(data);
                 $('#messageModal').modal('show');
                 $('#messageModal').css('opacity', 1);
                 $(modal).modal('hide');
                 $('#message').html(data.message);
                 $('#message').addClass('alert-' + data.class);
 
-                if (dataTableObj) dataTableObj.draw();
-                else window.location.reload();
+                dataTableObj? dataTableObj.draw() : window.location.reload();
             },
             error:function (error) {
-                console.log(error);
-                console.log(error.status);
                 if(error.status){
                     let errors = error.responseJSON.errors;
 
@@ -102,7 +97,6 @@ const crudDataTable = {
          })
     },
     showErrors : function(errors) {
-        console.log(errors);
         for (const error of Object.keys(errors)) {
             let alert = document.getElementById(error + "_error");
             alert.classList.toggle('d-none');
