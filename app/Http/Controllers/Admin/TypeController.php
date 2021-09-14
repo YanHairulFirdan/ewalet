@@ -78,7 +78,9 @@ class TypeController extends Controller
         $type->update($validated);
         $type->save();
 
-        return response('Type has been updated successfully');
+        return response()->json([
+            'message' => 'Type has been updated successfully'
+        ]);
     }
 
     /**
@@ -91,6 +93,8 @@ class TypeController extends Controller
     {
         $type->delete();
 
-        return response('this subscription type has been deleted successfully');
+        return response()->json([
+            'message' => 'this subscription type has been deleted successfully'
+        ]);
     }
 }

@@ -73,7 +73,9 @@ const crudDataTable = {
             cache       : false,
             processData : false,
             success : function (data) {
-                                $('#messageModal').modal('show');
+                console.log(data);
+                $('#messageModal').modal('show');
+                $('#messageModal').css('opacity', 1);
                 $(modal).modal('hide');
                 $('#message').html(data.message);
                 $('#message').addClass('alert-' + data.class);
@@ -83,6 +85,7 @@ const crudDataTable = {
                 window.location.reload();
             },
             error:function (error) {
+                console.log(error);
                 console.log(error.status);
                 if(error.status){
                     let errors = error.responseJSON.errors;
@@ -100,6 +103,7 @@ const crudDataTable = {
          })
     },
     showErrors : function(errors) {
+        console.log(errors);
         for (const error of Object.keys(errors)) {
             let alert = document.getElementById(error + "_error");
             alert.classList.toggle('d-none');
