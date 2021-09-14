@@ -89,6 +89,8 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        $type->delete();
+
+        return response('this subscription type has been deleted successfully');
     }
 }
