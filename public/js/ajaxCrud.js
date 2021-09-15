@@ -72,11 +72,12 @@ const crudDataTable = {
             cache       : false,
             processData : false,
             success : function (data) {
-                $('#messageModal').modal('show');
-                $('#messageModal').css('opacity', 1);
-                $(modal).modal('hide');
-                $('#message').html(data.message);
-                $('#message').addClass('alert-' + data.class);
+                // $('#messageModal').modal('show');
+                // $('#messageModal').css('opacity', 1);
+                // $(modal).modal('hide');
+                // $('#message').html(data.message);
+                // $('#message').addClass('alert-' + data.class);
+                swal("Done!", data.message, "success");
 
                 dataTableObj? dataTableObj.draw() : window.location.reload();
             },
@@ -117,5 +118,3 @@ const crudDataTable = {
 function removeComma(value) {
     return value.replace(/,/g,'');
 }
-
-    

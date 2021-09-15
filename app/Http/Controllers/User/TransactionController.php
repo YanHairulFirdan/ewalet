@@ -80,6 +80,7 @@ class TransactionController extends Controller
         $transaction = new Transaction($validated);
         $transaction->save();
 
+        Alert::success('Success Title', 'data has been created');
         return response()->json(['message' => 'data has been created', 'class' => 'success']);
     }
 
