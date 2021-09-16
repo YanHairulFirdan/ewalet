@@ -35,7 +35,9 @@
                     <td>{{$type->subscription_days}}</td>
                     <td>
                         <button class="btn btn-sm btn-warning" data-id="{{$type->id}}">Edit</button>
-                        <button class="btn btn-sm btn-danger"data-id="{{$type->id}}">Hapus</button>
+                        <button class="btn btn-sm btn-danger"data-id="{{$type->id}}">
+                           Delete
+                        </button>
                     </td>
                 </tr>
             @endforeach
@@ -183,8 +185,12 @@
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script defer>
         console.log(crudDataTable);
-        $('.btn').click(function (event) {
+        $('.btn-warning').click(function (event) {
             crudDataTable.edit(event)
+        })
+        
+        $('.btn-danger').click(function (event) {
+            crudDataTable.delete(event)
         })
     </script>
     {{-- <script defer>

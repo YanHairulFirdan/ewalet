@@ -38,10 +38,12 @@ const crudDataTable = {
         let button = event.target
         let id = button.getAttribute('data-id')
         
+        console.log(this.url() +'/'+id);
         if(confirm('Apakah anda ingin menghapus data ini?')){
             let form = new FormData();
             form.append('_method', 'DELETE');
-            this.ajax(id, form, '', 'DELETE');
+            
+            this.ajax(this.url() +'/'+id, form, '', 'DELETE');
         }
     },
     update : function (event) {
@@ -72,11 +74,6 @@ const crudDataTable = {
             cache       : false,
             processData : false,
             success : function (data) {
-                // $('#messageModal').modal('show');
-                // $('#messageModal').css('opacity', 1);
-                // $(modal).modal('hide');
-                // $('#message').html(data.message);
-                // $('#message').addClass('alert-' + data.class);
                 swal("Done!", data.message, "success");
 
                 dataTableObj? dataTableObj.draw() : window.location.reload();
