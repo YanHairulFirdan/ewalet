@@ -43,7 +43,6 @@ return [
 
         'single' => [
             'driver' => 'errorLog',
-            'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
         ],
 
