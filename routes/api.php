@@ -20,5 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('users', function () {
-    return env('APP_KEY');
+    return env('MIDTRANS_SERVER_KEY');
 });
