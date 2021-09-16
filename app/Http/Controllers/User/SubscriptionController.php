@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
 
@@ -51,5 +52,8 @@ class SubscriptionController extends Controller
 
     public function paymentfinished(Request $request)
     {
+        Log::info("request : " . $request);
+
+        return redirect('/');
     }
 }
