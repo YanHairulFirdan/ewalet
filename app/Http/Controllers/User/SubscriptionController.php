@@ -29,10 +29,10 @@ class SubscriptionController extends Controller
         ]);
 
         $amount = Type::find($request->type)->price;
-
-        $payment = new Payment();
-        $payment->user_id = Auth::id();
-        $payment->amount  = $amount;
+        $payment = new Payment([
+            'user_id' => Auth::id(),
+            'amount'  =>  $amount
+        ]);
         $payment->save();
 
         Log::info("auth id " . Auth::id());
