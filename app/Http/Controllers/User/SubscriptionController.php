@@ -35,6 +35,9 @@ class SubscriptionController extends Controller
         $payment->amount  = $amount;
         $payment->save();
 
+        Log::info("auth id " . Auth::id());
+        Log::info("payment id " . $payment->id);
+
         $transaction = [
             'transaction_details' => [
                 'order_id'     => $payment->id,
