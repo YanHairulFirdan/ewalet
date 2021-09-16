@@ -30,7 +30,7 @@ class SubscriptionController extends Controller
 
         $amount = Type::find($request->type)->price;
 
-        $payment = Payment::crete([
+        $payment = Payment::create([
             'user_id' => Auth::id(),
             'amount'  =>  $amount
         ]);
