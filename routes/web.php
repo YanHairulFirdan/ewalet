@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::namespace('User')->group(function () {
     Route::get('/', 'HomeController@Index')->name('home');
     Route::get('mulai-berlangganan', 'SubscriptionController@index')->name('subscribe');
+    Route::post('mulai-berlangganan', 'SubscriptionController@subscribe')->name('subscribe.post');
+    Route::post('subscribe-finish', 'SubscriptionController@paymentFinished')->name('subscribe.post');
     Route::middleware(['auth', 'active'])->group(function () {
         Route::post('transactions/{transaction}', 'TransactionController@update');
         Route::post('transactions/export/pdf', 'TransactionController@exportPdf')->name('export.pdf');

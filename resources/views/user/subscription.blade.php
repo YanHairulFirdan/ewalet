@@ -12,7 +12,7 @@
                 <h3 class="text-center font-weight-light my-4">Create Account</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('register') }}" method="POST">
+                <form action="{{ route('subscribe.post') }}" id="subscribeForm" method="POST">
                     @csrf
                     @method('POST')
                     <div class="form-group">
@@ -25,7 +25,7 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit">pilih</button>
+                    <button type="submit" class="btn btn-sm btn-primary btn-submit">pilih</button>
                 </form>
             </div>
             <div class="card-footer text-center py-3">
@@ -35,3 +35,30 @@
     </div>
    </div>
 @endsection
+
+@push('js')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{$clientKey}}"></script>
+
+    <script>
+        $('.btn-submit').click(function(event){
+            event.preventDefault();
+            let url = $('#subscribeForm').attr('action');
+            let formData = new FormData(document.getElementById('subscribeForm'));
+            let dataObj = {};
+
+            formData.forEach(function (value, key) {
+                dataObj[key] = value;
+            })
+            
+            $.post(url, dataObj, function (response) {
+                snap.pay(response.token,
+                {
+                    onSuccess: function(result){console.log('success');console.log(result);},
+                    onPending: function(result){console.log('pending');console.log(result);},
+                    onError: function(result){console.log('error');console.log(result);},
+                    onClose: function(){console.log('customer closed the popup without finishing the payment');}
+                });
+            })
+        })
+    </script>
+@endpush
