@@ -29,11 +29,11 @@ class SubscriptionController extends Controller
         ]);
 
         $amount = Type::find($request->type)->price;
-        $payment = new Payment([
+
+        $payment = Payment::crete([
             'user_id' => Auth::id(),
             'amount'  =>  $amount
         ]);
-        $payment->save();
 
         Log::info("auth id " . Auth::id());
         Log::info("payment id " . $payment->id);
