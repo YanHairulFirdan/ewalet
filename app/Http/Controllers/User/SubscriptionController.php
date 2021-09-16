@@ -12,6 +12,6 @@ class SubscriptionController extends Controller
     {
         $types = Type::get();
 
-        return view('user.subscription.index', compact('types'));
+        return view('user.subscription', compact('types'));
     }
 }
