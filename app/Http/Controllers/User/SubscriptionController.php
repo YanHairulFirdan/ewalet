@@ -24,12 +24,6 @@ class SubscriptionController extends Controller
 
     public function subscribe(Request $request)
     {
-        return response()->json(
-            [
-                'user_id' => Auth::id(),
-                'type_id' => $request->type
-            ]
-        );
         $request->validate([
             'type' => 'required|exists:types,id'
         ]);
