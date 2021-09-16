@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,4 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('users', function () {
     return User::get();
+});
+
+Route::get('types', function () {
+    return Type::get();
 });
