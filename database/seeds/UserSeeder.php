@@ -5,7 +5,7 @@ use App\Models\Subscription;
 use App\Models\Type;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use Faker\Factory as Faker;
+use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -17,9 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-
-        $users = factory(App\User::class, 100)->create()->each(function ($user) use ($faker) {
+        $users = factory(App\User::class, 100)->create()->each(function ($user, Faker $faker) {
             for ($i = 0; $i < rand(0, 40); $i++) {
                 $weight         = $faker->randomNumber(2);
                 $price_per_kilo = rand(8000000, 10000000);
