@@ -3,11 +3,10 @@
 use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\Type;
-use App\Transaction;
+use App\Models\Transaction;
 use Carbon\Carbon;
-use Faker\Factory;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 
 class UserSeeder extends Seeder
 {
@@ -18,7 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create();
+        $faker = Faker::create();
 
         $users = factory(App\User::class, 100)->create()->each(function ($user) use ($faker) {
             for ($i = 0; $i < rand(0, 40); $i++) {
