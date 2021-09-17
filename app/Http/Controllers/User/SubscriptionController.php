@@ -73,6 +73,9 @@ class SubscriptionController extends Controller
                 break;
         }
 
+        Log::info("request from midtrans " . $midtransResponse);
+        Log::info("payments id " . $transactionId);
+        Log::info("status " . $transactionStatus);
         Transaction::where('id', $transactionId)->update([
             'status' => $status
         ]);
