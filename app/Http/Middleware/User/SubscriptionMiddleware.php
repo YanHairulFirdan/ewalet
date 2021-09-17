@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\User;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionMiddleware
 {
@@ -15,7 +16,7 @@ class SubscriptionMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->user()->subscription->status) {
+        if (!Auth::user()->subscription->status) {
             return redirect(route('home'));
         }
 

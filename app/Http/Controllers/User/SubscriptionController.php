@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use App\Models\Subscription;
 use App\Models\Transaction;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -31,19 +32,20 @@ class SubscriptionController extends Controller
             'type' => 'required|exists:types,id'
         ]);
 
-        $amount = Type::find($request->type)->price;
+        $type             = Type::find($request->type);
+        $price            = $type->price;
+        $subscriptionDays = $type->subscription_days;
 
         $payment = Payment::create([
             'user_id' => Auth::id(),
-            'amount'  =>  $amount
+            'amount'  =>  $price
         ]);
-
-
 
         $transaction = [
             'transaction_details' => [
-                'order_id'     => $payment->id,
-                'gross_amount' => $amount
+                'order_id'          => $payment->id,
+                'gross_amount'      => $price,
+                'subscription_days' => $subscriptionDays
             ]
         ];
 
@@ -75,12 +77,12 @@ class SubscriptionController extends Controller
                 break;
         }
 
-        Log::channel('errorlog')->info("request from midtrans " . $midtransResponse);
-        Log::channel('errorlog')->info("payments id " . $transactionId);
-        Log::channel('errorlog')->info("status " . $transactionStatus);
         $transaction = Transaction::find($transactionId);
         $transaction->status = $status;
         $transaction->save();
+
+        $subscription = new Subscription();
+        $subscription->user_id = $transaction->user_id;
 
         return redirect('/');
     }
