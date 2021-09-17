@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentsTable extends Migration
+class MakePaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,6 +18,9 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('amount');
+            $table->enum('status', [1, 2, 3, 4])
+                ->comment('1=Menunggu pembayaran, 2=Sudah dibayar, 3=kadaluarsa, 4=batal')
+                ->default(1);
             $table->timestamps();
         });
 
