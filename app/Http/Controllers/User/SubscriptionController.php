@@ -18,7 +18,7 @@ class SubscriptionController extends Controller
     {
         $types = Type::get();
 
-        Log::channel('stack')->info("called in heroku");
+        Log::channel('single')->info("called in heroku");
 
         $clientKey = env('MIDTRANS_CLIENT_KEY');
 
@@ -75,9 +75,9 @@ class SubscriptionController extends Controller
                 break;
         }
 
-        Log::channel('stack')->info("request from midtrans " . $midtransResponse);
-        Log::channel('stack')->info("payments id " . $transactionId);
-        Log::channel('stack')->info("status " . $transactionStatus);
+        Log::channel('single')->info("request from midtrans " . $midtransResponse);
+        Log::channel('single')->info("payments id " . $transactionId);
+        Log::channel('single')->info("status " . $transactionStatus);
         $transaction = Transaction::find($transactionId);
         $transaction->status = $status;
         $transaction->save();
