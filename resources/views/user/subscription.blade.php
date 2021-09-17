@@ -64,9 +64,7 @@
                         onError: function(result){console.log('error');console.log(result);},
                         onClose: function(){console.log('customer closed the popup without finishing the payment');}
                     });
-                }
-
-                window.location = response.redirect_url;
+                }else window.location = response.redirect_url;
             })
         })
     </script>
