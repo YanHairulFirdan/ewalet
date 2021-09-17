@@ -57,15 +57,17 @@ class SubscriptionController extends Controller
 
             $snapToken = Snap::getSnapToken($transaction);
 
-            return response()->json(['token' => $snapToken]);
+            $response = ['token' => $snapToken];
+        } else {
+            $this->startSubscription($type, Auth::id());
+
+            $response = [
+                'status' => 'success',
+                'redirect_url' => route('transactions.index')
+            ];
         }
 
-        $this->startSubscription($type, Auth::id());
-
-        return response()->json([
-            'status' => 'success',
-            'redirect_url' => route('transactions.index')
-        ]);
+        return response()->json($response);
     }
 
     public function paymentfinished(Request $request)
