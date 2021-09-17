@@ -12,16 +12,29 @@ class TypeSeeder extends Seeder
      */
     public function run()
     {
-        $names = [
-            'Coba Gratis' => 0,
-            'Bulanan'     => 10000,
-            'Tahunan'     => 100000,
+        $types = [
+            [
+                'name'   => 'Coba Gratis',
+                'prices' => 10000,
+                'days'   => 30
+            ],
+            [
+                'name'   => 'Bulanan',
+                'prices' => 10000,
+                'days'   => 30
+            ],
+            [
+                'name'   => 'Tahunan',
+                'prices' => 100000,
+                'days'   => 365
+            ],
         ];
 
-        foreach ($names as $name => $price) {
+        foreach ($types as $name => $type) {
             Type::create([
-                'name'  => $name,
-                'price' => $price,
+                'name'              => $type['name'],
+                'price'             => $type['price'],
+                'subscription_days' => $type['subscription_days']
             ]);
         }
     }
