@@ -94,7 +94,7 @@ class SubscriptionController extends Controller
 
         $userId = $this->updatePaymentStatus($transactionId, $status);
 
-        $type = Type::wherePrice(intval($midtransResponse->gross_amount))->get();
+        $type = Type::where('price', intval($midtransResponse->gross_amount))->get();
 
         $this->startSubscription($type, $userId);
     }
