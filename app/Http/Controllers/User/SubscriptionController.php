@@ -18,6 +18,8 @@ class SubscriptionController extends Controller
     {
         $types = Type::get();
 
+        Log::info("called in heroku");
+
         $clientKey = env('MIDTRANS_CLIENT_KEY');
 
         return view('user.subscription', compact('types', 'clientKey'));
