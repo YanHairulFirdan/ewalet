@@ -14,19 +14,19 @@ class TypeSeeder extends Seeder
     {
         $types = [
             [
-                'name'   => 'Coba Gratis',
-                'price' => 10000,
-                'days'   => 30
+                'name'              => 'Coba Gratis',
+                'price'             => 10000,
+                'subscription_days' => 30
             ],
             [
-                'name'   => 'Bulanan',
-                'price' => 10000,
-                'days'   => 30
+                'name'              => 'Bulanan',
+                'price'             => 10000,
+                'subscription_days' => 30
             ],
             [
-                'name'   => 'Tahunan',
-                'price' => 100000,
-                'days'   => 365
+                'name'              => 'Tahunan',
+                'price'             => 100000,
+                'subscription_days' => 365
             ],
         ];
 
