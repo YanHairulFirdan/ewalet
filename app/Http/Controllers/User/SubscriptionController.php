@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use App\Models\Transaction;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +55,27 @@ class SubscriptionController extends Controller
 
     public function paymentfinished(Request $request)
     {
-        Log::info("request : " . $request);
+        $midtransResponse  = json_decode($request->getContent());
+        $transactionId     = $midtransResponse->order_id;
+        $transactionStatus = $midtransResponse->transaction_status;
+
+        switch ($transactionStatus) {
+            case 'capture':
+            case 'settlement':
+                $status = 2;
+                break;
+            case 'deny':
+            case 'cancel':
+                $status = 4;
+                break;
+            case 'expired':
+                $status = 3;
+                break;
+        }
+
+        Transaction::where('id', $transactionId)->update([
+            'status' => $status
+        ]);
 
         return redirect('/');
     }
