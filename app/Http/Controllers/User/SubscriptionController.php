@@ -36,7 +36,9 @@ class SubscriptionController extends Controller
         $type             = Type::find($request->type);
         $subscriptionDays = $type->subscription_days;
 
-        if ($price = $type->price > 0) {
+        if ($request->type > 1) {
+            $price = $type->price;
+
             $payment = Payment::create([
                 'user_id' => Auth::id(),
                 'amount'  =>  $price
