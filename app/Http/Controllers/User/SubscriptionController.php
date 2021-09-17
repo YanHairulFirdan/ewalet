@@ -76,6 +76,8 @@ class SubscriptionController extends Controller
         $transactionId     = $midtransResponse->order_id;
         $transactionStatus = $midtransResponse->transaction_status;
 
+        $status = 1;
+
         switch ($transactionStatus) {
             case 'capture':
             case 'settlement':
