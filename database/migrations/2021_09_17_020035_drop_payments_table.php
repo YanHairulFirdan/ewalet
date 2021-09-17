@@ -15,9 +15,9 @@ class DropPaymentsTable extends Migration
     public function up()
     {
         Schema::table('payments', function (Blueprint $table) {
-            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-            Schema::dropIfExists('payments');
-            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+            // DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+            // Schema::dropIfExists('payments');
+            // DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
             $table->drop('payments');
         });
