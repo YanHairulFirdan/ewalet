@@ -51,19 +51,22 @@
             })
             
             $.post(url, dataObj, function (response) {
-                snap.pay(response.token,
-                {
-                    onSuccess: function(result){
-                        swal("Selesai!", result.status_message, "success");
-                    },
-                    onPending: function(result){
-                        swal("Selesai!", result.status_message, "success");
-                        console.log('pending');
-                        console.log(result);
-                    },
-                    onError: function(result){console.log('error');console.log(result);},
-                    onClose: function(){console.log('customer closed the popup without finishing the payment');}
-                });
+                if (response.token) {
+                        snap.pay(response.token,{
+                        onSuccess: function(result){
+                            swal("Selesai!", result.status_message, "success");
+                        },
+                        onPending: function(result){
+                            swal("Selesai!", result.status_message, "success");
+                            console.log('pending');
+                            console.log(result);
+                        },
+                        onError: function(result){console.log('error');console.log(result);},
+                        onClose: function(){console.log('customer closed the popup without finishing the payment');}
+                    });
+                }
+
+                window.location = response.redirect_url;
             })
         })
     </script>

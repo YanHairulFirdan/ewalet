@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('User')->group(function () {
     Route::get('/', 'HomeController@Index')->name('home');
-    Route::post('subscribe-finish', 'SubscriptionController@paymentFinished')->name('subscribe.finish');
+    // Route::post('subscribe-finish', 'SubscriptionController@paymentFinished')->name('subscribe.finish');
     Route::middleware(['auth'])->group(function () {
         Route::get('mulai-berlangganan', 'SubscriptionController@index')->name('subscribe');
         Route::post('mulai-berlangganan', 'SubscriptionController@subscribe')->name('subscribe.post');

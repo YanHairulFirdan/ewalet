@@ -8,6 +8,7 @@ use App\Models\Subscription;
 use App\Models\Transaction;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
@@ -33,28 +34,36 @@ class SubscriptionController extends Controller
         ]);
 
         $type             = Type::find($request->type);
-        $price            = $type->price;
         $subscriptionDays = $type->subscription_days;
 
-        $payment = Payment::create([
-            'user_id' => Auth::id(),
-            'amount'  =>  $price
+        if ($price = $type->price > 0) {
+            $payment = Payment::create([
+                'user_id' => Auth::id(),
+                'amount'  =>  $price
+            ]);
+
+            $transaction = [
+                'transaction_details' => [
+                    'order_id'          => $payment->id,
+                    'gross_amount'      => $price,
+                    'subscription_days' => $subscriptionDays
+                ]
+            ];
+
+            Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+            Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
+
+            $snapToken = Snap::getSnapToken($transaction);
+
+            return response()->json(['token' => $snapToken]);
+        }
+
+        $this->startSubscription($type, Auth::id());
+
+        return response()->json([
+            'status' => 'success',
+            'redirect_url' => route('transactions.index')
         ]);
-
-        $transaction = [
-            'transaction_details' => [
-                'order_id'          => $payment->id,
-                'gross_amount'      => $price,
-                'subscription_days' => $subscriptionDays
-            ]
-        ];
-
-        Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
-
-        $snapToken = Snap::getSnapToken($transaction);
-
-        return response()->json(['token' => $snapToken]);
     }
 
     public function paymentfinished(Request $request)
@@ -77,13 +86,29 @@ class SubscriptionController extends Controller
                 break;
         }
 
-        $transaction = Transaction::find($transactionId);
-        $transaction->status = $status;
-        $transaction->save();
+        $userId = $this->updatePaymentStatus($transactionId, $status);
 
-        $subscription = new Subscription();
-        $subscription->user_id = $transaction->user_id;
+        $type = Type::wherePrice($midtransResponse->gross_amount)->get();
 
-        return redirect('/');
+        $this->startSubscription($type, $userId);
+    }
+
+    private function startSubscription($type, $userId)
+    {
+        $subscription             = new Subscription();
+        $subscription->user_id    = $userId;
+        $subscription->type_id    = $type->id;
+        $subscription->started_at = Carbon::now();
+        $subscription->end_at     = Carbon::now()->addDays($type->subscription_days);
+        $subscription->status     = 1;
+        $subscription->save();
+    }
+
+    private function updatePaymentStatus($id, $status)
+    {
+        $payment = Payment::whereId($id)->first();
+        $payment->update(['status' => $status]);
+
+        return $payment->user_id;
     }
 }
