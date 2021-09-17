@@ -58,6 +58,8 @@
                     },
                     onPending: function(result){
                         swal("Selesai!", result.status_message, "success");
+                        console.log('pending');
+                        console.log(result);
                     },
                     onError: function(result){console.log('error');console.log(result);},
                     onClose: function(){console.log('customer closed the popup without finishing the payment');}
