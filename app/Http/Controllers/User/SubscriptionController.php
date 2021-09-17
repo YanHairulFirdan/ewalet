@@ -113,8 +113,11 @@ class SubscriptionController extends Controller
     private function updatePaymentStatus($id, $status)
     {
         $payment = Payment::find($id);
+
+        $userId = $payment->user_id;
+
         $payment->update(['status' => $status]);
 
-        return $payment->user_id;
+        return $userId;
     }
 }
