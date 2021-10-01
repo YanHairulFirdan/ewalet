@@ -23,7 +23,7 @@ $index = 0;
 $factory->define(User::class, function (Faker $faker) use ($index) {
     return [
         'name' => $faker->name,
-        'phone_number' => $faker->phoneNumber,
+        'phone_number' => '123456',
         'password' => Hash::make('paswordku1234'), // password
         'remember_token' => Str::random(10),
         'created_at' => $faker->dateTimeThisYear()
