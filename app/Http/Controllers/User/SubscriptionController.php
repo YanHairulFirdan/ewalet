@@ -75,7 +75,7 @@ class SubscriptionController extends Controller
         $midtransResponse  = json_decode($request->getContent());
         $transactionId     = $midtransResponse->order_id;
         $transactionStatus = $midtransResponse->transaction_status;
-
+        Log::info($request->getContent());
         $status = 1;
 
         switch ($transactionStatus) {
