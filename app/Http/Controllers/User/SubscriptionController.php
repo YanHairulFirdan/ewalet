@@ -19,8 +19,9 @@ class SubscriptionController extends Controller
     public function index()
     {
         $types = Type::get();
-
-        Log::channel('errorlog')->info("called in heroku");
+        // dd('ok');
+        // Log::channel('errorlog')->info("called in heroku");
+        Log::info('logging');
 
         $clientKey = env('MIDTRANS_CLIENT_KEY');
 
