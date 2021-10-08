@@ -16,9 +16,9 @@ class SubscriptionController extends Controller
     public function index()
     {
         $types = Type::get();
-
+        // dd('ok');
         $clientKey = env('MIDTRANS_CLIENT_KEY');
-
+        Log::info('accessed');
         return view('user.subscription', compact('types', 'clientKey'));
     }
 
@@ -35,6 +35,9 @@ class SubscriptionController extends Controller
         $payment->amount  = $amount;
         $payment->save();
 
+        // Log:info
+        Log::info('payment id : ' . $payment->id);
+        // return $payment->id;
         $transaction = [
             'transaction_details' => [
                 'order_id'     => $payment->id,
@@ -54,6 +57,6 @@ class SubscriptionController extends Controller
     {
         Log::info("request : " . $request);
 
-        return redirect('/');
+        return 'ok';
     }
 }
