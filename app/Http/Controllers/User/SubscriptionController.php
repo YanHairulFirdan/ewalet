@@ -19,8 +19,7 @@ class SubscriptionController extends Controller
     public function index()
     {
         $types = Type::get();
-        // dd('ok');
-        // Log::channel('errorlog')->info("called in heroku");
+
         Log::info('logging');
 
         $clientKey = env('MIDTRANS_CLIENT_KEY');
@@ -30,9 +29,12 @@ class SubscriptionController extends Controller
 
     public function subscribe(Request $request)
     {
+        // dd('logged');
         $request->validate([
             'type' => 'required|exists:types,id'
         ]);
+
+        // return 'ok';
 
         $type             = Type::find($request->type);
         $subscriptionDays = $type->subscription_days;
@@ -52,7 +54,8 @@ class SubscriptionController extends Controller
                     'subscription_days' => $subscriptionDays
                 ]
             ];
-
+            Log::info(env('MIDTRANS_SERVER_KEY'));
+            Log::info(env('MIDTRANS_CLIENT_KEY'));
             Config::$serverKey = env('MIDTRANS_SERVER_KEY');
             Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
 

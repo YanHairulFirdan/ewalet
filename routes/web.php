@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('User')->group(function () {
+Route::namespace('User')->prefix('user')->group(function () {
     Route::get('/', 'HomeController@Index')->name('home');
+
+    Auth::routes();
+
     Route::middleware(['auth'])->group(function () {
         Route::get('mulai-berlangganan', 'SubscriptionController@index')->name('subscribe');
         Route::post('mulai-berlangganan', 'SubscriptionController@subscribe')->name('subscribe.post');
@@ -26,9 +29,6 @@ Route::namespace('User')->group(function () {
             Route::resource('transactions', TransactionController::class)->except(['create', 'edit', 'update']);
         });
     });
-
-
-    Auth::routes();
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
