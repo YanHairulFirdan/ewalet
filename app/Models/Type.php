@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Type extends Model
 {
     // use HasFactory;
+    const FREE_TRIAL = 1;
+    const MONTHLY    = 2;
+    const YEARLY     = 3;
 
     protected $fillable = ['name', 'price', 'subscription_days'];
 

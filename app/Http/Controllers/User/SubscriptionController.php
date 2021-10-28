@@ -20,26 +20,21 @@ class SubscriptionController extends Controller
     {
         $types = Type::get();
 
-        Log::info('logging');
-
-        $clientKey = env('MIDTRANS_CLIENT_KEY');
+        $clientKey = env('MIDTRANS_CLIENT_KEY_API');
 
         return view('user.subscription', compact('types', 'clientKey'));
     }
 
     public function subscribe(Request $request)
     {
-        // dd('logged');
         $request->validate([
             'type' => 'required|exists:types,id'
         ]);
 
-        // return 'ok';
-
         $type             = Type::find($request->type);
         $subscriptionDays = $type->subscription_days;
 
-        if ($request->type > 1) {
+        if ($request->type > Type::FREE_TRIAL) {
             $price = $type->price;
 
             $payment = Payment::create([
@@ -54,10 +49,9 @@ class SubscriptionController extends Controller
                     'subscription_days' => $subscriptionDays
                 ]
             ];
-            Log::info(env('MIDTRANS_SERVER_KEY'));
-            Log::info(env('MIDTRANS_CLIENT_KEY'));
-            Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-            Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
+
+            Config::$serverKey = env('MIDTRANS_SERVER_KEY_API');
+            Config::$clientKey = env('MIDTRANS_CLIENT_KEY_API');
 
             $snapToken = Snap::getSnapToken($transaction);
 
@@ -76,10 +70,11 @@ class SubscriptionController extends Controller
 
     public function paymentfinished(Request $request)
     {
-        $midtransResponse  = json_decode($request->getContent());
-        $transactionId     = $midtransResponse->order_id;
-        $transactionStatus = $midtransResponse->transaction_status;
-        Log::info($request->getContent());
+        $midtransResponse  = json_decode($request->getContent(), true);
+        Log::info($midtransResponse);
+        $transactionId     = $midtransResponse['order_id'];
+        $transactionStatus = $midtransResponse['transaction_status'];
+        // Log::info($request->getContent());
         $status = 1;
 
         switch ($transactionStatus) {
@@ -96,21 +91,26 @@ class SubscriptionController extends Controller
                 break;
         }
 
-        $userId = $this->updatePaymentStatus($transactionId, $status);
-
-        $type = Type::where('price', intval($midtransResponse->gross_amount))->get();
+        $userId = $this->updatePaymentStatus((int)$transactionId, $status);
+        $price = substr($midtransResponse['gross_amount'], 0, strpos($midtransResponse['gross_amount'], '.'));
+        Log::info($price);
+        $type = Type::where('price', $price)->first();
 
         $this->startSubscription($type, $userId);
+
+        return response()->json(['status' => 200, 'message' => 'success']);
     }
 
     private function startSubscription($type, $userId)
     {
-        $subscription             = new Subscription();
-        $subscription->user_id    = $userId;
-        $subscription->type_id    = $type->id;
-        $subscription->started_at = Carbon::now();
-        $subscription->end_at     = Carbon::now()->addDays($type->subscription_days);
-        $subscription->status     = 1;
+        $subscription = new Subscription([
+            'user_id'    => $userId,
+            'type_id'    => $type->id,
+            'started_at' => Carbon::now(),
+            'end_at'     => Carbon::now()->addDays($type->subscription_days),
+            'status'     => Subscription::STATUS_ACTIVE,
+        ]);
+
         $subscription->save();
     }
 

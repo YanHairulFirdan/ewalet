@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('User')->prefix('user')->group(function () {
+Route::namespace('User')->group(function () {
     Route::get('/', 'HomeController@Index')->name('home');
 
     Auth::routes();
