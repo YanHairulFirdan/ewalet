@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\Transaction;
 use App\Models\Type;
+use App\Traits\Midtrans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,8 @@ use Midtrans\Snap;
 
 class SubscriptionController extends Controller
 {
+    use Midtrans;
+
     public function index()
     {
         $types = Type::get();
@@ -31,69 +34,33 @@ class SubscriptionController extends Controller
             'type' => 'required|exists:types,id'
         ]);
 
-        $type             = Type::find($request->type);
-        $subscriptionDays = $type->subscription_days;
+        $type = Type::find($request->type);
 
         if ($request->type > Type::FREE_TRIAL) {
-            $price = $type->price;
-
-            $payment = Payment::create([
-                'user_id' => Auth::id(),
-                'amount'  =>  $price
-            ]);
-
-            $transaction = [
-                'transaction_details' => [
-                    'order_id'          => $payment->id,
-                    'gross_amount'      => $price,
-                    'subscription_days' => $subscriptionDays
-                ]
-            ];
-
-            Config::$serverKey = env('MIDTRANS_SERVER_KEY_API');
-            Config::$clientKey = env('MIDTRANS_CLIENT_KEY_API');
-
-            $snapToken = Snap::getSnapToken($transaction);
+            $snapToken = $this->setPaidSubscription($type);
 
             $response = ['token' => $snapToken];
         } else {
-            $this->startSubscription($type, Auth::id());
-
             $response = [
-                'status' => 'success',
+                'status'       => 'success',
                 'redirect_url' => route('transactions.index')
             ];
         }
+
+        $this->startSubscription($type, Auth::id());
 
         return response()->json($response);
     }
 
     public function paymentfinished(Request $request)
     {
-        $midtransResponse  = json_decode($request->getContent(), true);
-        Log::info($midtransResponse);
-        $transactionId     = $midtransResponse['order_id'];
-        $transactionStatus = $midtransResponse['transaction_status'];
-        // Log::info($request->getContent());
-        $status = 1;
+        $midtransResponse = json_decode($request->getContent(), true);
+        $transactionId    = $midtransResponse['order_id'];
 
-        switch ($transactionStatus) {
-            case 'capture':
-            case 'settlement':
-                $status = 2;
-                break;
-            case 'deny':
-            case 'cancel':
-                $status = 4;
-                break;
-            case 'expired':
-                $status = 3;
-                break;
-        }
-
+        $status = $this->getTransactionStatus($midtransResponse['transaction_status']);
         $userId = $this->updatePaymentStatus((int)$transactionId, $status);
-        $price = substr($midtransResponse['gross_amount'], 0, strpos($midtransResponse['gross_amount'], '.'));
-        Log::info($price);
+        $price  = $this->getPriceAmount($midtransResponse);
+
         $type = Type::where('price', $price)->first();
 
         $this->startSubscription($type, $userId);
@@ -123,5 +90,27 @@ class SubscriptionController extends Controller
         $payment->update(['status' => $status]);
 
         return $userId;
+    }
+
+    private function setPaidSubscription($type)
+    {
+        $price = $type->price;
+
+        $payment = Payment::create([
+            'user_id' => Auth::id(),
+            'amount'  =>  $price
+        ]);
+
+        $transaction = [
+            'transaction_details' => [
+                'order_id'          => $payment->id,
+                'gross_amount'      => $price,
+                'subscription_days' => $type->subscription_days
+            ]
+        ];
+
+        $this->setup();
+
+        return Snap::getSnapToken($transaction);
     }
 }
