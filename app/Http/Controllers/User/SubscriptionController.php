@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\Transaction;
 use App\Models\Type;
+use App\Subscription\SubscriptionFactory;
 use App\Traits\Midtrans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -35,6 +36,12 @@ class SubscriptionController extends Controller
         ]);
 
         $type = Type::find($request->type);
+
+        // call subscription factory
+        $subscriptionType = $request->type != Type::FREE_TRIAL ? 'paid' : 'trial';
+
+        $subsription = SubscriptionFactory::make($subscriptionType);
+
 
         if ($request->type != Type::FREE_TRIAL) {
             $snapToken = $this->setPaidSubscription($type);
