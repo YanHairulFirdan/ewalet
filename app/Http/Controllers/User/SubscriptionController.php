@@ -36,7 +36,7 @@ class SubscriptionController extends Controller
 
         $type = Type::find($request->type);
 
-        if ($request->type > Type::FREE_TRIAL) {
+        if ($request->type != Type::FREE_TRIAL) {
             $snapToken = $this->setPaidSubscription($type);
 
             $response = ['token' => $snapToken];
@@ -45,9 +45,9 @@ class SubscriptionController extends Controller
                 'status'       => 'success',
                 'redirect_url' => route('transactions.index')
             ];
+            $this->startSubscription($type, Auth::id());
         }
 
-        $this->startSubscription($type, Auth::id());
 
         return response()->json($response);
     }
