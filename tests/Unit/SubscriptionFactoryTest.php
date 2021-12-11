@@ -18,7 +18,9 @@ class SubscriptionFactoryTest extends TestCase
     {
         $type = 'paid';
         $subscription = new PaidSubscription();
+        // dd(class_exists('PaidSubscription'));
         $this->assertEquals($subscription, SubscriptionFactory::make($type));
+        // $this->assertClassHasAttribute('props', 'App\Subscription\PaidSubscription');
     }
 
     public function testCreatTrialSubsription()

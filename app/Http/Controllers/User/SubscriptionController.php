@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Factories\SubscriptionFactory as FactoriesSubscriptionFactory;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\Subscription;
@@ -37,12 +38,6 @@ class SubscriptionController extends Controller
 
         $type = Type::find($request->type);
 
-        // call subscription factory
-        $subscriptionType = $request->type != Type::FREE_TRIAL ? 'paid' : 'trial';
-
-        $subsription = SubscriptionFactory::make($subscriptionType);
-
-
         if ($request->type != Type::FREE_TRIAL) {
             $snapToken = $this->setPaidSubscription($type);
 
@@ -52,7 +47,8 @@ class SubscriptionController extends Controller
                 'status'       => 'success',
                 'redirect_url' => route('transactions.index')
             ];
-            $this->startSubscription($type, Auth::id());
+
+            FactoriesSubscriptionFactory::freeTrial();
         }
 
 
@@ -70,13 +66,17 @@ class SubscriptionController extends Controller
 
         $type = Type::where('price', $price)->first();
 
-        $this->startSubscription($type, $userId);
+        FactoriesSubscriptionFactory::paidSubscription(
+            $type->id,
+            $type->subscription_days
+        );
 
         return response()->json(['status' => 200, 'message' => 'success']);
     }
 
     private function startSubscription($type, $userId)
     {
+
         $subscription = new Subscription([
             'user_id'    => $userId,
             'type_id'    => $type->id,

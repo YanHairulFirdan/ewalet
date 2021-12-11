@@ -12,7 +12,7 @@ class SubscriptionFactory
     public static function make($type = 'trial')
     {
         try {
-            return new static::$subscriptionType[$type]();
+            return new static::$subscriptionType[$type](request());
         } catch (\Throwable $th) {
             throw $th;
         }

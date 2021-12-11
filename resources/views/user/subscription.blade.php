@@ -53,6 +53,7 @@
             })
 
             $.post(url, dataObj, function(response) {
+                console.log(response);
                 if (response.token) {
                     snap.pay(response.token, {
                         onSuccess: function(result) {

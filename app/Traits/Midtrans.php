@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 
 /**
@@ -13,6 +14,8 @@ trait Midtrans
     {
         Config::$serverKey = env('MIDTRANS_SERVER_KEY_API');
         Config::$clientKey = env('MIDTRANS_CLIENT_KEY_API');
+
+        Log::info([env('MIDTRANS_SERVER_KEY_API'), env('MIDTRANS_CLIENT_KEY_API')]);
     }
 
     private function getPriceAmount($midtransResponse)
