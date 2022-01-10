@@ -29,6 +29,9 @@ trait Midtrans
 
     public function getTransactionStatus($transactionStatus)
     {
+        Log::info($transactionStatus);
+        if (in_array($transactionStatus, ['pending'])) return 1;
+
         if (in_array($transactionStatus, ['capture', 'settlement'])) return 2;
 
         if (in_array($transactionStatus, ['deny', 'cancel'])) return 4;

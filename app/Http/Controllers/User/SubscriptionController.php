@@ -67,6 +67,7 @@ class SubscriptionController extends Controller
         $type = Type::where('price', $price)->first();
 
         FactoriesSubscriptionFactory::paidSubscription(
+            $userId,
             $type->id,
             $type->subscription_days
         );
@@ -91,26 +92,24 @@ class SubscriptionController extends Controller
     private function updatePaymentStatus($id, $status)
     {
         $payment = Payment::find($id);
-
-        $userId = $payment->user_id;
-
         $payment->update(['status' => $status]);
 
-        return $userId;
+        return $payment->user_id;
     }
 
     private function setPaidSubscription($type)
     {
-        $price = $type->price;
-
-        $payment = Payment::create([
-            'user_id' => Auth::id(),
-            'amount'  =>  $price
-        ]);
+        $price   = $type->price;
+        $payment = Auth::user()
+            ->payments()
+            ->create([
+                'amount' => $price
+            ]);
 
         $transaction = [
             'transaction_details' => [
                 'order_id'          => $payment->id,
+                'user_id'           => Auth::id(),
                 'gross_amount'      => $price,
                 'subscription_days' => $type->subscription_days
             ]

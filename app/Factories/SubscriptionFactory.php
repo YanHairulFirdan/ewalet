@@ -4,6 +4,7 @@ namespace App\Factories;
 
 use App\Models\Subscription;
 use App\Models\Type;
+use App\Models\User;
 
 class SubscriptionFactory
 {
@@ -19,11 +20,12 @@ class SubscriptionFactory
         ]);
     }
 
-    public static function paidSubscription($type, $days)
+    public static function paidSubscription($userId, $type, $days)
     {
         $startDate = now();
+        $user      = User::find($userId);
 
-        return auth()->user()->subscription()->create([
+        return $user->subscription()->create([
             'type_id'    => $type,
             'started_at' => $startDate,
             'end_at'     => $startDate->addDays($days),
