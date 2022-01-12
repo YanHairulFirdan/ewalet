@@ -39,8 +39,9 @@
 @endsection
 
 @push('js')
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
-
+    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script> --}}
+    <script src="https://sandbox.doku.com/jokul-checkout-js/v1/jokul-checkout-1.0.0.js
+                            "></script>
     <script>
         $('.btn-submit').click(function(event) {
             event.preventDefault();
@@ -55,25 +56,27 @@
             $.post(url, dataObj, function(response) {
                 console.log(response);
                 if (response.token) {
-                    snap.pay(response.token, {
-                        onSuccess: function(result) {
-                            swal("Selesai!", result.status_message, "success");
-                        },
-                        onPending: function(result) {
-                            swal("Selesai!", result.status_message, "success");
-                            console.log('pending');
-                            console.log(result);
-                        },
-                        onError: function(result) {
-                            console.log('error');
-                            console.log(result);
-                        },
-                        onClose: function() {
-                            console.log(
-                                'customer closed the popup without finishing the payment');
-                        }
-                    });
-                } else window.location = response.redirect_url;
+                    loadJokulCheckout(response.token)
+                    // snap.pay(response.token, {
+                    //     onSuccess: function(result) {
+                    //         swal("Selesai!", result.status_message, "success");
+                    //     },
+                    //     onPending: function(result) {
+                    //         swal("Selesai!", result.status_message, "success");
+                    //         console.log('pending');
+                    //         console.log(result);
+                    //     },
+                    //     onError: function(result) {
+                    //         console.log('error');
+                    //         console.log(result);
+                    //     },
+                    //     onClose: function() {
+                    //         console.log(
+                    //             'customer closed the popup without finishing the payment');
+                    //     }
+                    // });
+                }
+                // else window.location = response.redirect_url;
             }).fail(function(response) {
                 console.log(response);
             })

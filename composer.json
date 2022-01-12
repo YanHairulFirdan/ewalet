@@ -11,6 +11,7 @@
         "php": "^7.2.5|^8.0",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "doctrine/dbal": "^3.1",
+        "doku/jokul-php-library": "^2.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\DokuUtil\DokuHandler;
+use App\DokuUtil\DokuTrait;
 use App\Factories\SubscriptionFactory as FactoriesSubscriptionFactory;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
@@ -16,16 +18,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Illuminate\Support\Str;
 
 class SubscriptionController extends Controller
 {
-    use Midtrans;
+    use Midtrans, DokuTrait;
 
     public function index()
     {
         $types = Type::get();
 
-        $clientKey = env('MIDTRANS_CLIENT_KEY_API');
+        $clientKey = $this->getClientID();
 
         return view('user.subscription', compact('types', 'clientKey'));
     }
@@ -57,22 +60,22 @@ class SubscriptionController extends Controller
 
     public function paymentfinished(Request $request)
     {
-        $midtransResponse = json_decode($request->getContent(), true);
-        $transactionId    = $midtransResponse['order_id'];
+        // $midtransResponse = json_decode($request->getContent(), true);
+        // $transactionId    = $midtransResponse['order_id'];
 
-        $status = $this->getTransactionStatus($midtransResponse['transaction_status']);
-        $userId = $this->updatePaymentStatus((int)$transactionId, $status);
-        $price  = $this->getPriceAmount($midtransResponse);
+        // $status = $this->getTransactionStatus($midtransResponse['transaction_status']);
+        // $userId = $this->updatePaymentStatus((int)$transactionId, $status);
+        // $price  = $this->getPriceAmount($midtransResponse);
 
-        $type = Type::where('price', $price)->first();
+        // $type = Type::where('price', $price)->first();
 
-        FactoriesSubscriptionFactory::paidSubscription(
-            $userId,
-            $type->id,
-            $type->subscription_days
-        );
+        // FactoriesSubscriptionFactory::paidSubscription(
+        //     $userId,
+        //     $type->id,
+        //     $type->subscription_days
+        // );
 
-        return response()->json(['status' => 200, 'message' => 'success']);
+        // return response()->json(['status' => 200, 'message' => 'success']);
     }
 
     private function startSubscription($type, $userId)
@@ -100,6 +103,7 @@ class SubscriptionController extends Controller
     private function setPaidSubscription($type)
     {
         $price   = $type->price;
+        $invoice = 'INV-' . Str::random();
         $payment = Auth::user()
             ->payments()
             ->create([
@@ -115,8 +119,18 @@ class SubscriptionController extends Controller
             ]
         ];
 
-        $this->setup();
+        $doku = new DokuHandler($price, $invoice, Auth::user()->only(['name', 'phone_number']));
+        $doku->makeRequest();
 
-        return Snap::getSnapToken($transaction);
+
+
+        return $doku->isRequestSuccess()
+            ? $doku->getPaymentUrl()
+            : '';
+        // return $doku->getPaymentUrl();
+
+        // $this->setup();
+
+        // return Snap::getSnapToken($transaction);
     }
 }
