@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
-use App\DokuUtil\DokuHandler;
-use App\DokuUtil\DokuTrait;
+// use App\DokuUtil\DokuHandler;
+// use App\DokuUtil\DokuTrait;
 use App\Factories\SubscriptionFactory as FactoriesSubscriptionFactory;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Illuminate\Support\Str;
+use Timedoor\Doku\DokuHandler;
+use Timedoor\Doku\DokuTrait;
 
 class SubscriptionController extends Controller
 {

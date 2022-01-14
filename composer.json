@@ -39,12 +39,16 @@
         "laravel": {
             "dont-discover": [
                 "barryvdh/laravel-debugbar"
+            ],
+            "providers": [
+                "packages\\timedoor\\doku\\TimedoorDokuServiceProvider"
             ]
         }
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Timedoor\\Doku\\": "packages/timedoor/doku/src"
         },
         "classmap": [
             "database/seeds",
