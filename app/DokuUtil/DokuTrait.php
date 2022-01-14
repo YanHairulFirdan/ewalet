@@ -3,6 +3,7 @@
 namespace App\DokuUtil;
 
 use DOKU\Client;
+use Illuminate\Support\Facades\Log;
 
 /**
  * 
@@ -11,25 +12,24 @@ trait DokuTrait
 {
     private function getClientID()
     {
-        $envKey = $this->isProduction()
-            ? 'DOKU_CLIENT_KEY_ID_PROD'
-            : 'DOKU_CLIENT_KEY_ID_DEV';
+        $configKey = $this->isProduction()
+            ? 'doku.client_id_prod'
+            : 'doku.client_id_dev';
 
-        return env($envKey);
+        return config($configKey);
     }
 
     private function getSecretID()
     {
-        $envKey = $this->isProduction()
-            ? 'DOKU_SECRET_KEY_ID_PROD'
-            : 'DOKU_SECRET_KEY_ID_DEV';
+        $configKey = $this->isProduction()
+            ? 'doku.secret_id_prod'
+            : 'doku.secret_id_dev';
 
-        return env($envKey);
+        return config($configKey);
     }
 
     private function getEndPointAPI()
     {
-
         return $this->isProduction()
             ? config('doku.api_endpoint_sandbox_prod')
             : config('doku.api_endpoint_sandbox_dev');
@@ -37,6 +37,7 @@ trait DokuTrait
 
     private function isProduction()
     {
-        return env('APP_PRODUCTION') == true;
+        Log::info(env('APP_ENV'));
+        return env('APP_ENV') == 'production';
     }
 }

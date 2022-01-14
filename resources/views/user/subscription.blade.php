@@ -41,7 +41,7 @@
 @push('js')
     {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script> --}}
     <script src="https://sandbox.doku.com/jokul-checkout-js/v1/jokul-checkout-1.0.0.js
-                            "></script>
+                                "></script>
     <script>
         $('.btn-submit').click(function(event) {
             event.preventDefault();

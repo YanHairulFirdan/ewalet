@@ -2,15 +2,8 @@
 
 namespace App\DokuUtil;
 
-use App\Models\User;
-use DOKU\Client;
-use DOKU\Common\Utils;
 use GuzzleHttp\Client as GuzzleHttpClient;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-
-use function PHPSTORM_META\map;
 
 class DokuHandler
 {
@@ -18,7 +11,7 @@ class DokuHandler
 
     private $request;
 
-    private $header;
+    private $headers;
 
     private $body;
 
@@ -43,25 +36,36 @@ class DokuHandler
 
     private function setHeader()
     {
-        $this->util            = new SignatureUtil($this->body);
-        $this->header    = $this->util->getHeader();
-        $this->signature = $this->util->getSignature();
+        $this->headers              =
+            [
+                'Client-Id'         => $this->getClientID(),
+                'Request-Id'        => Str::random(),
+                'Request-Timestamp' => now()->toDateTimeLocalString() . 'Z',
+                'Request-Target'    => config('doku.request_target'),
+            ];
+        $this->util                 = new SignatureUtil($this->body, $this->headers);
+        $this->headers['Signature'] = $this->util->getSignature();
     }
 
     private function generateBody($amount, $invoiceNumber, $dataCustomer, $items = null)
     {
         $this->body = [
-            'order' => [
-                'amount' => $amount,
+            'order'   => [
+                'amount'         => $amount,
                 'invoice_number' => $invoiceNumber,
-                'currency' => config('doku.currency'),
-                'callback_url' => 'https://doku.com',
-                'session_id' => Str::random()
+                'currency'       => config('doku.currency'),
+                'callback_url'   => config('doku.callback_url'),
+                'session_id'     => Str::random()
             ],
-            'payment' => [
-                'payment_due_date' => 60,
+            'payment'  => [
+                'payment_due_date' => config('doku.payment_due_date'),
             ],
-            'customer' => array_merge($dataCustomer, ['address' => Str::random(), 'country' => 'ID']),
+            'customer' => array_merge(
+                $dataCustomer,
+                [
+                    'country' => 'ID'
+                ]
+            ),
         ];
 
         if ($items) $this->body['order']['line_items'] = $items;
@@ -80,12 +84,11 @@ class DokuHandler
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
-            'Signature:' . $this->header['Signature'],
-            'Request-Id:' . $this->header['Request-Id'],
-            'Client-Id:' . $this->header['Client-Id'],
-            'Request-Timestamp:' . $this->header['Request-Timestamp'],
-            'Request-Target:' . $this->header['Request-Target'],
-
+            'Signature:' . $this->headers['Signature'],
+            'Request-Id:' . $this->headers['Request-Id'],
+            'Client-Id:' . $this->headers['Client-Id'],
+            'Request-Timestamp:' . $this->headers['Request-Timestamp'],
+            'Request-Target:' . $this->headers['Request-Target'],
         ));
 
         $this->response = curl_exec($ch);
