@@ -3,6 +3,7 @@
 namespace Timedoor\Doku;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DokuHandler
@@ -93,6 +94,8 @@ class DokuHandler
 
         $this->response = curl_exec($ch);
         $this->httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        Log::info('ok');
+        Log::info($this->response);
 
         curl_close($ch);
     }
@@ -101,7 +104,9 @@ class DokuHandler
     {
         $responseBody = json_decode($this->response, true);
 
-        return $responseBody['credit_card_payment_page']['url'];
+        Log::info($responseBody);
+
+        return $responseBody;
     }
 
     public function getSignature()

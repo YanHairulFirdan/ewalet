@@ -37,7 +37,7 @@ trait DokuTrait
 
     private function isProduction()
     {
-        Log::info(env('APP_ENV'));
+        // Log::info(env('APP_ENV'));
         return env('APP_ENV') == 'production';
     }
 }
