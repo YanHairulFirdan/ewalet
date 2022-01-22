@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $users = factory(User::class, 100)->create()->each(function ($user) use ($faker) {
+        $users = factory(User::class, 100)->create()->each(function ($user) {
             $faker = Factory::create();
 
             for ($i = 0; $i < rand(0, 40); $i++) {
@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
             ]);
 
             $user->subscription()->create([
-                'type_id' => $type->id,
+                'type_id'    => $type->id,
                 'started_at' => $started_at,
                 'end_at'     => $started_at->addDays($subscriptionDays),
                 'status'     => true
