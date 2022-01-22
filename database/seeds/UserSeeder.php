@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
     {
         $users = factory(User::class, 100)->create()->each(function ($user) use ($faker) {
             $faker = Factory::create();
+
             for ($i = 0; $i < rand(0, 40); $i++) {
                 $weight           = $faker->randomNumber(2);
                 $price_per_kilo   = rand(8000000, 10000000);
