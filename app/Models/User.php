@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Subscription::class);
     }
+
+    public function scopeWherePhoneNumber($query, $value)
+    {
+        $query->where('phone_number', $value);
+    }
 }

@@ -4,6 +4,7 @@
 
 use App\Models\Subscription;
 use App\Models\Type;
+use App\Models\User as ModelsUser;
 use App\User;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
@@ -21,7 +22,7 @@ $factory->define(Subscription::class, function (Faker $faker) {
     Log::info("ended at " . $ended_at);
     return
         [
-            'user_id'    => factory(User::class),
+            'user_id'    => factory(ModelsUser::class),
             'type_id'    => $type->id,
             'started_at' => $started_at,
             'end_at'     => $ended_at,

@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class Transaction extends Model
 {
-    // use HasFactory;
-    use Filterable;
+    use HasFactory, Filterable;
+
     protected $fillable = ['user_id', 'buyer', 'weight', 'price_per_kilo', 'total_price', 'created_at'];
 
     protected $casts = [
