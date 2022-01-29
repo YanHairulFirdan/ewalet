@@ -2,11 +2,8 @@
 return [
     'api_endpoint_sandbox_dev'  => 'https://api-sandbox.doku.com/checkout/v1/payment',
     'api_endpoint_sandbox_prod' => 'https://api.doku.com/checkout/v1/payment',
-    // 'api_endpoint_sandbox_dev'  => 'https://api-sandbox.doku.com/credit-card/v1/payment-page',
-    // 'api_endpoint_sandbox_prod' => 'https://api.doku.com/credit-card/v1/payment-page',
     'currency'                  => 'IDR',
     'payment_method_types'      => [
-        // 'CREDIT_CARD'
         "VIRTUAL_ACCOUNT_BCA",
         "VIRTUAL_ACCOUNT_BANK_MANDIRI",
         "VIRTUAL_ACCOUNT_BANK_SYARIAH_MANDIRI",

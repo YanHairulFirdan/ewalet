@@ -8,5 +8,17 @@
         }
     ],
     "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Timedoor\\Doku\\TimedoorDokuServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Timedoor\\Doku\\": "src/"
+        }
+    },
     "stability": "dev"
 }
