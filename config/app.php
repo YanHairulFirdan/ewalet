@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Timedoor\Doku\TimedoorDokuServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
