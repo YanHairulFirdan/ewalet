@@ -46,6 +46,8 @@ class DokuHandler
             ];
         $this->util                 = new SignatureUtil($this->body, $this->headers);
         $this->headers['Signature'] = $this->util->getSignature();
+
+        Log::info($this->headers);
     }
 
     private function generateBody($amount, $invoiceNumber, $dataCustomer, $items = null)
@@ -104,9 +106,9 @@ class DokuHandler
     {
         $responseBody = json_decode($this->response, true);
 
-        Log::info($responseBody);
+        Log::info([$responseBody, $this->httpcode]);
 
-        return $responseBody;
+        return $responseBody['response']['payment']['url'];
     }
 
     public function getSignature()

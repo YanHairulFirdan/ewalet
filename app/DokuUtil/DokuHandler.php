@@ -3,6 +3,7 @@
 namespace App\DokuUtil;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DokuHandler
@@ -45,6 +46,8 @@ class DokuHandler
             ];
         $this->util                 = new SignatureUtil($this->body, $this->headers);
         $this->headers['Signature'] = $this->util->getSignature();
+
+        Log::info($this->headers);
     }
 
     private function generateBody($amount, $invoiceNumber, $dataCustomer, $items = null)
@@ -94,6 +97,8 @@ class DokuHandler
         $this->response = curl_exec($ch);
         $this->httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+        Log::info([$this->response, $this->httpcode]);
+
         curl_close($ch);
     }
 
@@ -101,7 +106,7 @@ class DokuHandler
     {
         $responseBody = json_decode($this->response, true);
 
-        return $responseBody['credit_card_payment_page']['url'];
+        return $responseBody['response']['payment']['url'];
     }
 
     public function getSignature()

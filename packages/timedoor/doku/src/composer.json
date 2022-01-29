@@ -7,5 +7,17 @@
             "email": "yan.1754@students.amikom.ac.id"
         }
     ],
-    "require": {}
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "timedoor\\doku\\TodolistServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Timedoor\\Doku\\": "src/"
+        }
+    }
 }
