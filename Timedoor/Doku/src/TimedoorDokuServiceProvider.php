@@ -13,7 +13,7 @@ class TimedoorDokuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make(DokuHandler::class);
+        //
     }
 
     /**
