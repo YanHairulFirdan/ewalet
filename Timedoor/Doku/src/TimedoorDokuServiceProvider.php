@@ -13,7 +13,7 @@ class TimedoorDokuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->make(DokuHandler::class);
     }
 
     /**
@@ -23,6 +23,6 @@ class TimedoorDokuServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->mergeConfigFrom(__DIR__ . '/config/doku.php', 'doku');
     }
 }
