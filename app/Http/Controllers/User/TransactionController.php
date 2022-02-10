@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Alert;
+use App\Http\Resources\SuccessResource;
 use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
@@ -115,11 +116,10 @@ class TransactionController extends Controller
      */
     public function update(TransactionRequest $request, Transaction $transaction)
     {
-
         $transaction->update($request->except('_token'));
         $transaction->save();
 
-        return response()->json(['message' => 'data has been updated', 'class' => 'success']);
+        return new SuccessResource((object)['message' => 'data has been updated', 'class' => 'success']);
     }
 
     /**
