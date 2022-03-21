@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\DokuUtil\DokuHandler;
+use App\DokuUtil\DokuResponseHandler;
 use App\DokuUtil\DokuTrait;
 use App\Factories\SubscriptionFactory as FactoriesSubscriptionFactory;
 use App\Http\Controllers\Controller;
@@ -60,8 +61,10 @@ class SubscriptionController extends Controller
         return response()->json($response);
     }
 
-    public function paymentfinished(Request $request)
+    public function paymentfinished(Request $request, DokuResponseHandler $responseHandler)
     {
+        if ($responseHandler->verifySignature()) {
+        }
         // $midtransResponse = json_decode($request->getContent(), true);
         // $transactionId    = $midtransResponse['order_id'];
 
@@ -105,21 +108,21 @@ class SubscriptionController extends Controller
     private function setPaidSubscription($type)
     {
         $price   = $type->price;
-        $invoice = 'INV-' . Str::random();
         $payment = Auth::user()
             ->payments()
             ->create([
                 'amount' => $price
             ]);
 
-        $transaction = [
-            'transaction_details' => [
-                'order_id'          => $payment->id,
-                'user_id'           => Auth::id(),
-                'gross_amount'      => $price,
-                'subscription_days' => $type->subscription_days
-            ]
-        ];
+        $invoice = $payment->invoice;
+        // $transaction = [
+        //     'transaction_details' => [
+        //         'order_id'          => $payment->id,
+        //         'user_id'           => Auth::id(),
+        //         'gross_amount'      => $price,
+        //         'subscription_days' => $type->subscription_days
+        //     ]
+        // ];
 
         $doku = new DokuHandler($price, $invoice, Auth::user()->only(['name', 'phone_number']));
         $doku->makeRequest();
