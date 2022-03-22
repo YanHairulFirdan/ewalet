@@ -2,25 +2,36 @@
 
 namespace App\Http\Controllers\User;
 
+use App\DokuUtil\DokuHandler;
+use App\DokuUtil\DokuResponseHandler;
+use App\DokuUtil\DokuTrait;
+use App\Factories\SubscriptionFactory as FactoriesSubscriptionFactory;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\Transaction;
 use App\Models\Type;
+use App\Subscription\SubscriptionFactory;
+use App\Traits\Midtrans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Illuminate\Support\Str;
+// use Timedoor\Doku\DokuHandler;
+// use Timedoor\Doku\DokuTrait;
 
 class SubscriptionController extends Controller
 {
+    use Midtrans, DokuTrait;
+
     public function index()
     {
         $types = Type::get();
 
-        $clientKey = env('MIDTRANS_CLIENT_KEY_API');
+        $clientKey = $this->getClientID();
 
         return view('user.subscription', compact('types', 'clientKey'));
     }
@@ -31,78 +42,50 @@ class SubscriptionController extends Controller
             'type' => 'required|exists:types,id'
         ]);
 
-        $type             = Type::find($request->type);
-        $subscriptionDays = $type->subscription_days;
+        $type = Type::find($request->type);
 
-        if ($request->type > Type::FREE_TRIAL) {
-            $price = $type->price;
-
-            $payment = Payment::create([
-                'user_id' => Auth::id(),
-                'amount'  =>  $price
-            ]);
-
-            $transaction = [
-                'transaction_details' => [
-                    'order_id'          => $payment->id,
-                    'gross_amount'      => $price,
-                    'subscription_days' => $subscriptionDays
-                ]
-            ];
-
-            Config::$serverKey = env('MIDTRANS_SERVER_KEY_API');
-            Config::$clientKey = env('MIDTRANS_CLIENT_KEY_API');
-
-            $snapToken = Snap::getSnapToken($transaction);
+        if ($request->type != Type::FREE_TRIAL) {
+            $snapToken = $this->setPaidSubscription($type);
 
             $response = ['token' => $snapToken];
         } else {
-            $this->startSubscription($type, Auth::id());
-
             $response = [
-                'status' => 'success',
+                'status'       => 'success',
                 'redirect_url' => route('transactions.index')
             ];
+
+            FactoriesSubscriptionFactory::freeTrial();
         }
+
 
         return response()->json($response);
     }
 
-    public function paymentfinished(Request $request)
+    public function paymentfinished(Request $request, DokuResponseHandler $responseHandler)
     {
-        $midtransResponse  = json_decode($request->getContent(), true);
-        Log::info($midtransResponse);
-        $transactionId     = $midtransResponse['order_id'];
-        $transactionStatus = $midtransResponse['transaction_status'];
-        // Log::info($request->getContent());
-        $status = 1;
-
-        switch ($transactionStatus) {
-            case 'capture':
-            case 'settlement':
-                $status = 2;
-                break;
-            case 'deny':
-            case 'cancel':
-                $status = 4;
-                break;
-            case 'expired':
-                $status = 3;
-                break;
+        if ($responseHandler->verifySignature()) {
         }
+        // $midtransResponse = json_decode($request->getContent(), true);
+        // $transactionId    = $midtransResponse['order_id'];
 
-        $userId = $this->updatePaymentStatus((int)$transactionId, $status);
-        $price = substr($midtransResponse['gross_amount'], 0, strpos($midtransResponse['gross_amount'], '.'));
-        Log::info($price);
-        $type = Type::where('price', $price)->first();
+        // $status = $this->getTransactionStatus($midtransResponse['transaction_status']);
+        // $userId = $this->updatePaymentStatus((int)$transactionId, $status);
+        // $price  = $this->getPriceAmount($midtransResponse);
 
-        $this->startSubscription($type, $userId);
+        // $type = Type::where('price', $price)->first();
 
-        return response()->json(['status' => 200, 'message' => 'success']);
+        // FactoriesSubscriptionFactory::paidSubscription(
+        //     $userId,
+        //     $type->id,
+        //     $type->subscription_days
+        // );
+
+        // return response()->json(['status' => 200, 'message' => 'success']);
     }
 
     private function startSubscription($type, $userId)
     {
+
         $subscription = new Subscription([
             'user_id'    => $userId,
             'type_id'    => $type->id,
@@ -117,11 +100,40 @@ class SubscriptionController extends Controller
     private function updatePaymentStatus($id, $status)
     {
         $payment = Payment::find($id);
-
-        $userId = $payment->user_id;
-
         $payment->update(['status' => $status]);
 
-        return $userId;
+        return $payment->user_id;
+    }
+
+    private function setPaidSubscription($type)
+    {
+        $price   = $type->price;
+        $payment = Auth::user()
+            ->payments()
+            ->create([
+                'amount' => $price
+            ]);
+
+        $invoice = $payment->invoice;
+        // $transaction = [
+        //     'transaction_details' => [
+        //         'order_id'          => $payment->id,
+        //         'user_id'           => Auth::id(),
+        //         'gross_amount'      => $price,
+        //         'subscription_days' => $type->subscription_days
+        //     ]
+        // ];
+
+        $doku = new DokuHandler($price, $invoice, Auth::user()->only(['name', 'phone_number']));
+        $doku->makeRequest();
+
+        return $doku->isRequestSuccess()
+            ? $doku->getPaymentUrl()
+            : '';
+        // return $doku->getPaymentUrl();
+
+        // $this->setup();
+
+        // return Snap::getSnapToken($transaction);
     }
 }

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Alert;
+use App\Http\Resources\SuccessResource;
+use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
 {
@@ -40,7 +42,7 @@ class TransactionController extends Controller
                         '" class="btn btn-xs btn-success btn-edit"
                          onclick="crudDataTable.edit(event)">Edit</button>';
                     $html .= '<button data-id="' . $transaction->id .
-                        '" class="btn btn-xs btn-danger btn-delete" 
+                        '" class="btn btn-xs btn-danger btn-delete"
                         onclick="crudDataTable.delete(event, ' . "transactions" . ')">Del</button>';
 
                     return $html;
@@ -80,7 +82,7 @@ class TransactionController extends Controller
         $transaction = new Transaction($validated);
         $transaction->save();
 
-        Alert::success('Success Title', 'data has been created');
+        // Alert::success('Success Title', 'data has been created');
         return response()->json(['message' => 'data has been created', 'class' => 'success']);
     }
 
@@ -92,7 +94,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        return response()->json(['transaction' => $transaction]);
+        return TransactionResource::make($transaction);
     }
 
     /**
@@ -114,11 +116,10 @@ class TransactionController extends Controller
      */
     public function update(TransactionRequest $request, Transaction $transaction)
     {
-
         $transaction->update($request->except('_token'));
         $transaction->save();
 
-        return response()->json(['message' => 'data has been updated', 'class' => 'success']);
+        return new SuccessResource((object)['message' => 'data has been updated', 'class' => 'success']);
     }
 
     /**

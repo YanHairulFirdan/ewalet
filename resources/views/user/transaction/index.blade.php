@@ -37,18 +37,19 @@
                                 <select name="year" id="year" class="filter form-control">
                                     <option value="">Select Year</option>
                                     @foreach ($transactionYears as $transactionYear)
-                                        <option value="{{ $transactionYear->year }}">{{ $transactionYear->year }}</option>
+                                        <option value="{{ $transactionYear->year }}">{{ $transactionYear->year }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 {{-- <span class="small d-block">
-                                    Download laporan dalam format : 
+                                    Download laporan dalam format :
                                 </span> --}}
                                 <select name="export" id="export" class="form-control">
                                     <option value="">Pilih untuk mendownload laporan</option>
-                                    <option value="{{route('export.excel')}}">Dalam bentuk Excel</option>
-                                    <option value="{{route('export.pdf')}}">Dalam bentuk PDF</option>
+                                    <option value="{{ route('export.excel') }}">Dalam bentuk Excel</option>
+                                    <option value="{{ route('export.pdf') }}">Dalam bentuk PDF</option>
                                 </select>
                             </div>
                         </div>
@@ -182,7 +183,8 @@
                             <label for="price_per_kilo">
                                 Harga Perkilo
                             </label>
-                            <input type="text" class="form-control" name="price_per_kilo" id="edit_price_per_kilo" data-type="price">
+                            <input type="text" class="form-control" name="price_per_kilo" id="edit_price_per_kilo"
+                                data-type="price">
                         </div>
                         <div id="price_per_kilo_error" class="alert">
 
@@ -203,7 +205,8 @@
     {{-- end of update modal --}}
 
     {{-- message modal --}}
-    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="deleteTitle" aria-hidden="true">
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="deleteTitle"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -230,66 +233,63 @@
     <script src="{{ asset('js/ajaxCrud.js') }}"></script>
     <script>
         const months = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December" ];
+            "July", "August", "September", "October", "November", "December"
+        ];
 
-        months.forEach(month=>$('#month').append(`<option value="${month}">${month}</option>`))
+        months.forEach(month => $('#month').append(`<option value="${month}">${month}</option>`))
 
-        let Config ={
+        let Config = {
             column: [{
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex'
-            },
-            {
-                data: 'created_at',
-                name: 'created_at'
-            },
-            {
-                data: 'buyer',
-                name: 'buyer'
-            },
-            {
-                data: 'weight',
-                name: 'weight'
-            },
-            {
-                data: 'price_per_kilo',
-                name: 'price_per_kilo'
-            },
-            {
-                data: 'total_price',
-                name: 'total_price'
-            },
-            {
-                data: 'Aksi',
-                name: 'Aksi',
-                orderable: false,
-                searchable: false,
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: 'buyer',
+                    name: 'buyer'
+                },
+                {
+                    data: 'weight',
+                    name: 'weight'
+                },
+                {
+                    data: 'price_per_kilo',
+                    name: 'price_per_kilo'
+                },
+                {
+                    data: 'total_price',
+                    name: 'total_price'
+                },
+                {
+                    data: 'Aksi',
+                    name: 'Aksi',
+                    orderable: false,
+                    searchable: false,
+                }
+            ],
+            callbackData: function(data) {
+                data.month = $('#month').val();
+                data.year = $('#year').val();
             }
-        ],
-        callbackData : function (data) {
-                            data.month = $('#month').val();
-                            data.year = $('#year').val();
-                        }
         };
 
-        // console.log(crudDataTable);
 
         let datatable = datatableObj.make(Config, 'transactions')
-        let crud =  crudDataTable.make(datatable)
-        
-        $('.filter').on('change', function (event) {
+        let crud = crudDataTable.make(datatable)
+
+        $('.filter').on('change', function(event) {
             datatable.draw()
             event.preventDefault()
         });
-       
-        $('#export').on('change', function (event) {
-            console.log('change');
-            console.log(this.value);
-            if(this.value){
-                $('#filter-form').attr('action',this.value)
+
+        $('#export').on('change', function(event) {
+            if (this.value) {
+                $('#filter-form').attr('action', this.value)
                 $('#filter-form').submit()
             }
-            console.log($('#filter-form').attr('action'));
         });
     </script>
 @endpush

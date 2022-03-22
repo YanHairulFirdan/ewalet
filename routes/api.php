@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('midtrans/notification', 'User\SubscriptionController@paymentFinished');
+Route::post('payment-finished/notification', 'User\SubscriptionController@paymentFinished');
 
 Route::get('users', function () {
     return User::get();

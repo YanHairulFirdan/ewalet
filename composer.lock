@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61425b5ab838a527a8f543f9c08b79d5",
+    "content-hash": "cb19487eb8733ac42503864e38570e73",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -776,6 +776,42 @@
                 }
             ],
             "time": "2020-05-25T17:44:05+00:00"
+        },
+        {
+            "name": "doku/jokul-php-library",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PTNUSASATUINTIARTHA-DOKU/jokul-php-library.git",
+                "reference": "fafccb5eb1e91f1149bc1fc5d29864ce6cb6b44f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PTNUSASATUINTIARTHA-DOKU/jokul-php-library/zipball/fafccb5eb1e91f1149bc1fc5d29864ce6cb6b44f",
+                "reference": "fafccb5eb1e91f1149bc1fc5d29864ce6cb6b44f",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DOKU\\": "src/DOKU/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Devex Dev",
+                    "email": "devexdev@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/PTNUSASATUINTIARTHA-DOKU/jokul-php-library/issues",
+                "source": "https://github.com/PTNUSASATUINTIARTHA-DOKU/jokul-php-library/tree/2.0.0"
+            },
+            "time": "2020-11-13T04:01:20+00:00"
         },
         {
             "name": "dompdf/dompdf",

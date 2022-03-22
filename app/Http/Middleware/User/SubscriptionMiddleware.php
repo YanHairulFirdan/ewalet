@@ -16,7 +16,7 @@ class SubscriptionMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()->subscription->status) {
+        if (!Auth::user()->subscription) {
             return redirect(route('home'));
         }
 
